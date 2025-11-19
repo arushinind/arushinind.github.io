@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTRA </title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom crazy styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0d0d; /* Deep Dark Background */
+            color: #E0E0E0; /* Light Gray Text */
+            overflow-x: hidden; /* Prevent horizontal scroll from embeds */
+        }
+        .vortex-border {
+            /* Intentional overlapping neon border effect */
+            border: 4px solid #FF00FF; /* Hot Pink */
+            box-shadow: 0 0 10px #39FF14, 0 0 20px #FF00FF, inset 0 0 10px #39FF14; /* Neon green/pink glow */
+            animation: pulse-glow 3s infinite alternate;
+        }
+        @keyframes pulse-glow {
+            from {
+                box-shadow: 0 0 5px #39FF14, 0 0 10px #FF00FF;
+            }
+            to {
+                box-shadow: 0 0 15px #39FF14, 0 0 30px #FF00FF;
+            }
+        }
+        .twitter-column {
+            /* Ensure the Twitter widget script has a defined height to prevent CLS */
+            min-height: 800px;
+        }
+        .text-glitch {
+            /* Simple text glitch effect for the title */
+            color: #FF00FF;
+            text-shadow: 2px 2px #39FF14, -2px -2px #FF00FF;
+            font-weight: 900;
+        }
+
+        /* Override Tailwind's default dark mode for the widgets to be truly dark */
+        .twitter-timeline {
+            border: 1px dashed #39FF14 !important;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <!-- HEADER: INTENSE AND BRUTALIST -->
+        <header class="text-center py-8 mb-10 vortex-border bg-gray-900 rounded-xl">
+            <h1 class="text-5xl md:text-7xl uppercase text-glitch font-mono">
+               ASTRA LIVE
+            </h1>
+            <h2><a href="home.html">HOME</a></h2>
+            <p class="text-xl md:text-2xl text-yellow-400 mt-2 font-mono tracking-wider">
+              ASTRA LTD <span class="text-red-600 ml-4">[[ VIEW TWEETS DIRECTLY  FROM ASTRA ]]</p>
+            <p class="mt-4 text-sm text-gray-400">
+                WEBSITE DEVELOPED BY ASTRA TECHNOLOGY
+            </p>
+            
+        </header>
+
+        <!-- MAIN CONTENT GRID: CROWDED TWITTER FEEDS -->
+        <div id="timeline-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <!-- COLUMN 1: BREAKING NEWS -->
+            <div class="twitter-column p-2 bg-gray-900 rounded-lg vortex-border">
+                <h2 class="text-xl text-center text-yellow-400 font-bold mb-3 border-b border-gray-700 pb-2">VIDEOS</h2>
+                <!-- Embed 1: Associated Press (Serious Breaking News) -->
+                <a class="twitter-timeline" 
+                   data-lang="en" 
+                   data-theme="dark" 
+                   data-height="750" 
+                   data-width="100%" 
+                   data-chrome="nofooter noborders transparent"
+                   href="https://x.com/MrSinha_/status/1991119843643601001?s=20">
+                    
+                </a>
+                <blockquote class="twitter-tweet" data-media-max-width="560"><p lang="en" dir="ltr">When we takeover Karachi, it will be renamed to Vikrant in tribute to INS Vikrant 🔥 <a href="https://t.co/n2fgY27I4p">pic.twitter.com/n2fgY27I4p</a></p>&mdash; Frontalforce 🇮🇳 (@FrontalForce) <a href="https://twitter.com/FrontalForce/status/1991029030683095469?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <blockquote class="twitter-tweet" data-media-max-width="560"><p lang="qme" dir="ltr">🔥🔥🔥<br> <a href="https://t.co/2i39ezTiFZ">pic.twitter.com/2i39ezTiFZ</a></p>&mdash; Gems of Politics (@GemsOf_Politics) <a href="https://twitter.com/GemsOf_Politics/status/1990635885315174906?ref_src=twsrc%5Etfw">November 18, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+
+            <!-- COLUMN 2: CONTROVERSY / TECH GURU -->
+            <div class="twitter-column p-2 bg-gray-900 rounded-lg vortex-border">
+                <h2 class="text-xl text-center text-red-400 font-bold mb-3 border-b border-gray-700 pb-2">TWEETS</h2>
+                <!-- Embed 2: Elon Musk (High Volume, Chaotic) -->
+                <a class="twitter-timeline" 
+                   data-lang="en" 
+                   data-theme="dark" 
+                   data-height="750" 
+                   data-width="100%" 
+                   data-chrome="nofooter noborders transparent"
+                   href="https://twitter.com/elonmusk?ref_src=twsrc%5Etfw">
+                    
+                </a>
+                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">No, they&#39;re not against movies showing violence....<br><br>They&#39;re against movies showing Pakistan in a bad light, the real face of terrorism and promoting patriotism among Youths....</p>&mdash; Mr Sinha (@MrSinha_) <a href="https://twitter.com/MrSinha_/status/1991119843643601001?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+
+            <!-- COLUMN 3: SATIRE / ABSURDITY -->
+            <div class="twitter-column p-2 bg-gray-900 rounded-lg vortex-border">
+                <h2 class="text-xl text-center text-green-400 font-bold mb-3 border-b border-gray-700 pb-2">NEWS</h2>
+                <!-- Embed 3: The Onion (Satirical News) -->
+                <a class="twitter-timeline" 
+                   data-lang="en" 
+                   data-theme="dark" 
+                   data-height="750" 
+                   data-width="100%" 
+                   data-chrome="nofooter noborders transparent"
+                   href="https://twitter.com/TheOnion?ref_src=twsrc%5Etfw">
+                  
+                </a>
+                <blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/BREAKING?src=hash&amp;ref_src=twsrc%5Etfw">#BREAKING</a>: Meta has removed all videos of Delhi Suicide Bomber Umar from its platforms Instagram and Facebook. Meta says video goes against user guidelines. The video had gone viral since yesterday morning.</p>&mdash; Aditya Raj Kaul (@AdityaRajKaul) <a href="https://twitter.com/AdityaRajKaul/status/1991118451981885628?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+
+            <!-- COLUMN 4: RANDOM TRENDS / CULTURE SHOCK -->
+            <div class="twitter-column p-2 bg-gray-900 rounded-lg vortex-border">
+                <h2 class="text-xl text-center text-indigo-400 font-bold mb-3 border-b border-gray-700 pb-2">LIVE UPDATES</h2>
+                <!-- Embed 4: A trending hashtag or a culture focused account like NBC News -->
+                <a class="twitter-timeline" 
+                   data-lang="en" 
+                   data-theme="dark" 
+                   data-height="750" 
+                   data-width="100%" 
+                   data-chrome="nofooter noborders transparent"
+                   href="https://twitter.com/NBCNews?ref_src=twsrc%5Etfw">
+                   <blockquote class="twitter-tweet"><p lang="en" dir="ltr">🚨 BIG! Meta has REMOVED all videos of Delhi suicide bomber Umar from Instagram and Facebook, stating that the content violates their community guidelines. <br><br>👉 The clips had gone viral since yesterday morning.</p>&mdash; Megh Updates 🚨™ (@MeghUpdates) <a href="https://twitter.com/MeghUpdates/status/1991126286614278446?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    
+                </a>
+                
+            </div>
+
+        </div>
+        
+        <!-- FOOTER: FOR LACK OF CLOSURE -->
+        <footer class="text-center py-6 mt-10 text-xs text-gray-500 font-mono">
+            <p>ASTRA IS A PRIVATE OWNED NEWS AGENCY @ ASTRA 2025</p>
+        </footer>
+    </div>
+
+    <!-- THE CRITICAL TWITTER WIDGETS SCRIPT -->
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+</body>
+</html>

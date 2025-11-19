@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTRA</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use the Inter font, but also a mono font for the 'unhuman' feel -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap');
+
+        /* --- THE FRACTAL CORE: GLOBAL STYLES & ANIMATIONS --- */
+        :root {
+            --neon-green: #39ff14;
+            --neon-blue: #00ffff;
+            --neon-red: #ff073a;
+            --dark-bg: #0d001f;
+            --glitch-offset: 5px;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--neon-green);
+            font-family: 'Share Tech Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Glitch Effect Keyframes - Chaos Engine */
+        @keyframes glitch {
+            0% { text-shadow: var(--glitch-offset) 0 0 var(--neon-red), calc(var(--glitch-offset) * -1) 0 0 var(--neon-blue); }
+            14% { text-shadow: none; }
+            15% { text-shadow: calc(var(--glitch-offset) * -1) 0 0 var(--neon-red), var(--glitch-offset) 0 0 var(--neon-blue); }
+            16% { text-shadow: none; }
+            17% { text-shadow: 0 var(--glitch-offset) 0 var(--neon-green); }
+            18% { text-shadow: none; }
+            20% { text-shadow: calc(var(--glitch-offset) * 0.5) 0 0 var(--neon-blue); }
+            100% { text-shadow: none; }
+        }
+
+        .glitch-text {
+            animation: glitch 3s infinite linear alternate-reverse;
+        }
+
+        /* Matrix Background Grid */
+        .matrix-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(0deg, var(--dark-bg) 5%, transparent 5%), linear-gradient(90deg, var(--dark-bg) 5%, transparent 5%);
+            background-size: 10px 10px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* Neon Glow Utility */
+        .neon-glow {
+            box-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 15px var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
+        }
+
+        /* Glassmorphism/Frosted Layer for Modularity */
+        .frosted-glass {
+            background-color: rgba(0, 255, 255, 0.05); /* Very light neon blue base */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(57, 255, 20, 0.3);
+        }
+
+        /* Ticker Animation - Relentless Scroll */
+        @keyframes scroll-left {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .ticker-inner {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scroll-left 120s linear infinite;
+        }
+
+        .news-card-animation {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            animation: fadeInScale 0.5s ease-out forwards;
+        }
+
+        @keyframes fadeInScale {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Custom Scrollbar (Aesthetic Override) */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a012e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body class="selection:bg-cyan-900 selection:text-white">
+
+    <!-- FRACTAL CORE BACKGROUND -->
+    <div class="matrix-grid"></div>
+
+    <!-- HEADER: SYSTEM INITIALIZATION SCREEN -->
+    <header class="p-4 border-b border-cyan-500/50 frosted-glass z-10 sticky top-0">
+        <div class="flex justify-between items-center max-w-7xl mx-auto">
+            <h1 class="text-3xl font-bold uppercase glitch-text" style="font-family: 'Orbitron', sans-serif;">
+                BJP NEWS
+            </h1>
+            <h2><a href="home.html">HOME</a></h2>
+            <div id="status-display" class="text-sm font-mono tracking-widest text-cyan-400">
+                <span id="load-status" class="blink-slow">VERIFING....</span> | <span id="timestamp"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN DATA STREAM CONTAINER -->
+    <main class="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full">
+
+        <!-- PRIMARY REAL-TIME ALERT CONSOLE -->
+        <section id="alert-console" class="frosted-glass p-4 mb-8 rounded-lg neon-glow shadow-2xl shadow-cyan-900/50">
+            <h2 class="text-xl font-bold text-red-500 mb-2 uppercase" style="font-family: 'Orbitron', sans-serif;">[AKAND BHARATH]</h2>
+            
+            <p id="major-alert" class="text-2xl font-bold tracking-widest glitch-text text-red-300">
+                AWAITING YOGI JI 2029... (Lat. 10ms)
+            </p>
+        </section>
+
+        <!-- LIVE DATA GRID -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6" id="data-grid">
+            <!-- News Cards will be injected here -->
+        </section>
+    </main>
+
+    <!-- HORIZONTAL SCROLLING NEWS TICKER (Relentless Stream) -->
+    <footer class="w-full bg-black/70 border-t border-red-500/50 overflow-hidden py-2 sticky bottom-0 z-10">
+        <div class="whitespace-nowrap ticker-wrap">
+            <div class="ticker-inner text-lg font-bold uppercase text-red-500">
+                <!-- Ticker content duplicated for seamless loop -->
+                <span id="ticker-content-1"></span>
+                <span id="ticker-content-2" class="ml-[50vw]"></span>
+            </div>
+        </div>
+    </footer>
+
+
+    <script>
+        // --- ADVANCED JAVASCRIPT LOGIC: ASYNC DATA MANIPULATION & RENDERING ---
+
+        // GLOBAL CONFIGURATION MATRIX
+        const CONFIG = {
+            API_KEY: "", // If you want to use models other than gemini-2.5-flash-image-preview or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+            NEWS_MODEL: "gemini-2.5-flash-preview-09-2025",
+            SIMULATED_DATA: [
+                { title: "BJP WINS BIHAR.", category: "ELECTION", sentiment: "RED" },
+                { title: "BJP HAS 56% OF TOTAL MLA'S IN THE COUNTRY.", category: "POLITICS", sentiment: "RED" },
+                { title: "Nitish Kumar Elected NDA Leader in Bihar; Swearing-in Tomorrow.", category: "POLITICS", sentiment: "BLUE" },
+                { title: "PM Modi to Release 21st Installment of PM-KISAN Scheme Today.", category: "POLITICS", sentiment: "RED" },
+                { title: "BJP Appoints Central Observer for Bihar Legislative Party Leader Election.", category: "Economy", sentiment: "BLUE" },
+                { title: "'Emotional Mode' Wins Elections: PM Modi Rejects '24x7 Election Mode' Critique.", category: "POLITICS", sentiment: "RED" },
+                { title: "Pressure Mounts on BJP Brass to Decide on Karnataka State President.", category: "Justice", sentiment: "RED" },
+                { title: "Assam CM Himanta Sarma Vows to 'Sweep' 2026 Assembly Polls.", category: "Global", sentiment: "RED" },
+                { title: "BJP Accuses Left Parties and 'Urban Naxals' of Shielding Maoists in Andhra Pradesh.", category: "POLITICS", sentiment: "BLUE" },
+                { title: "PM Modi to Address South India Natural Farming Summit Today.", category: "POLITICS", sentiment: "RED" },
+            ],
+            TICKER_INTERVAL_MS: 120000, // Ticker content refresh (2 minutes)
+            GRID_UPDATE_INTERVAL_MS: 3000, // New card injection (3 seconds)
+            GLITCH_FREQUENCY_MS: 20000, // Glitch effect on header (20 seconds)
+        };
+
+        // DOM ELEMENTS MAPPING
+        const DOMElements = {
+            status: document.getElementById('load-status'),
+            timestamp: document.getElementById('timestamp'),
+            alertConsole: document.getElementById('major-alert'),
+            dataGrid: document.getElementById('data-grid'),
+            ticker1: document.getElementById('ticker-content-1'),
+            ticker2: document.getElementById('ticker-content-2'),
+        };
+
+        // --- CORE FUNCTIONALITY MODULES ---
+
+        /**
+         * The Quantum Flux Engine: Transforms raw data into aesthetic HTML.
+         * @param {Object} data - The news data object.
+         * @returns {string} - The HTML string for the news card.
+         */
+        const createNewsCard = (data) => {
+            const colors = {
+                RED: { border: 'border-red-500', text: 'text-red-300', shadow: 'shadow-red-900/50' },
+                BLUE: { border: 'border-cyan-500', text: 'text-cyan-300', shadow: 'shadow-cyan-900/50' },
+                GREEN: { border: 'border-lime-500', text: 'text-lime-300', shadow: 'shadow-lime-900/50' },
+            };
+            const style = colors[data.sentiment] || colors.BLUE;
+            const uniqueId = crypto.randomUUID();
+
+            return `
+                <div id="card-${uniqueId}" class="news-card-animation p-4 rounded-lg frosted-glass ${style.border} border-l-4 shadow-lg ${style.shadow} hover:scale-[1.01] transition-transform duration-300 ease-in-out">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-xs uppercase font-bold tracking-widest text-gray-400">[ CATEGORY: ${data.category} ]</span>
+                        <div class="text-sm font-bold ${style.text} italic">[ ${data.sentiment} ]</div>
+                    </div>
+                    <h3 class="text-xl font-extrabold mb-3 leading-tight ${style.text} glitch-text" style="font-family: 'Orbitron', sans-serif;">
+                        ${data.title}
+                    </h3>
+                    <button onclick="simulateDataDrill('${uniqueId}', '${data.category}')"
+                        class="mt-2 w-full py-1 text-xs uppercase font-bold tracking-wider rounded-md bg-transparent border border-white/30 text-white/70 hover:bg-white/10 transition duration-150">
+                        // VERIFY NEWS
+                    </button>
+                </div>
+            `;
+        };
+
+        /**
+         * Simulates a deep dive into data, triggering a temporary major alert.
+         * This uses object composition (functional programming concept) and DOM manipulation.
+         */
+        window.simulateDataDrill = (cardId, category) => {
+            const card = document.getElementById(`card-${cardId}`);
+            if (!card) return;
+
+            // Functional Data Mapping: Create a complex analysis string
+            const analysis = CONFIG.SIMULATED_DATA
+                .filter(d => d.category === category)
+                .map(d => `[SEARCH:${d.sentiment.substring(0, 1)}::${d.title.slice(0, 15)}...]`)
+                .reduce((acc, current) => acc + current, `>>> ASTRA IS OPENING  ${category}: `);
+
+            // Temporary Glitch/Alert
+            DOMElements.alertConsole.textContent = analysis;
+            DOMElements.alertConsole.classList.add('neon-glow', 'text-red-500');
+            card.style.transform = 'scale(1.05) rotate(1deg)';
+            card.style.boxShadow = '0 0 20px var(--neon-red)';
+
+            // Revert after a short delay
+            setTimeout(() => {
+                DOMElements.alertConsole.textContent = `--NEWS ACCESS COMPLETE-- ${category} --NEWS VERIFIED--`;
+                DOMElements.alertConsole.classList.remove('neon-glow', 'text-red-500');
+                card.style.transform = '';
+                card.style.boxShadow = '';
+            }, 1500);
+        };
+
+        /**
+         * Live Data Ingestion Loop (Simulates WebSocket/SSE stream)
+         */
+        const liveDataIngestion = () => {
+            // Get the next item using modulo arithmetic to loop the data endlessly
+            const index = liveDataIngestion.counter % CONFIG.SIMULATED_DATA.length;
+            const newData = CONFIG.SIMULATED_DATA[index];
+            const cardHtml = createNewsCard(newData);
+
+            // Prepend the new card to the grid
+            DOMElements.dataGrid.insertAdjacentHTML('afterbegin', cardHtml);
+
+            // Optional: Limit total cards to prevent DOM bloat
+            while (DOMElements.dataGrid.children.length > 9) {
+                DOMElements.dataGrid.lastElementChild.remove();
+            }
+
+            liveDataIngestion.counter++;
+        };
+        liveDataIngestion.counter = 0; // Initialize static counter for loop
+
+        /**
+         * Updates the relentless horizontal news ticker.
+         */
+        const updateTicker = () => {
+            const tickerText = CONFIG.SIMULATED_DATA
+                .map(d => `<span class="px-8 text-white/50 hover:text-white transition-colors duration-200">| ${d.category.toUpperCase()}: ${d.title} //</span>`)
+                .join('');
+
+            // Duplicate the content to create the seamless infinite scroll effect
+            DOMElements.ticker1.innerHTML = tickerText;
+            DOMElements.ticker2.innerHTML = tickerText;
+        };
+
+        /**
+         * Glitch effect toggle on the main header
+         */
+        const toggleGlitchEffect = () => {
+            const headerText = document.querySelector('header h1');
+            headerText.classList.toggle('glitch-text');
+            setTimeout(() => {
+                headerText.classList.toggle('glitch-text');
+            }, 300); // Glitch for 300ms
+        };
+
+        /**
+         * System Clock Updater
+         */
+        const updateClock = () => {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const dateStr = now.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+            DOMElements.timestamp.textContent = `TIME: ${dateStr} ${timeStr} INDIA`;
+        };
+
+        /**
+         * System Initialization: The entry point (Main thread)
+         */
+        const initializeSystem = () => {
+            // 1. Initial UI Setup
+            updateClock();
+            updateTicker();
+            DOMElements.status.textContent = 'STATUS: ONLINE';
+            DOMElements.status.classList.remove('blink-slow');
+            DOMElements.alertConsole.textContent = 'ASTRA IS SEARCHING FOR NEWS....';
+
+            // 2. Start Core Loops
+            // Clock/Time Update (standard setInterval)
+            setInterval(updateClock, 1000);
+
+            // Data Ingestion (simulating real-time feed)
+            setInterval(liveDataIngestion, CONFIG.GRID_UPDATE_INTERVAL_MS);
+
+            // Glitch Effect (Random system instability simulation)
+            setInterval(toggleGlitchEffect, CONFIG.GLITCH_FREQUENCY_MS);
+
+            // 3. Initial Data Load (Fill the grid immediately)
+            CONFIG.SIMULATED_DATA.slice(0, 6).forEach(data => {
+                const cardHtml = createNewsCard(data);
+                DOMElements.dataGrid.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        };
+
+        // EXECUTION START: Wait for the DOM to be fully parsed
+        document.addEventListener('DOMContentLoaded', initializeSystem);
+
+    </script>
+</body>
+</html>

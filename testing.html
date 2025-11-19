@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTRA: MAXIMUM IMPACT NEWS</title>
+
+    <style>
+        /* FONT IMPORT - Using Arial Black for maximum visual noise */
+        @import url('https://fonts.googleapis.com/css2?family=Arial+Black&display=swap');
+
+        /* --- GLOBAL CONFIGURATION --- */
+        :root {
+            --loud-yellow: #def701;
+            --loud-red: #ec0606;
+            --loud-black: #000000;
+            --loud-white: #ffffff;
+            --loud-blue: #0000ff;
+        }
+
+        /* BASIC RESET */
+        * {
+            box-sizing: border-box;
+            transition: all 0.1s ease-out; /* Enable quick transitions for glitch effects */
+        }
+
+        /* BODY STYLES - LOUD BACKGROUND & FONT */
+        body {
+            font-family: 'Arial Black', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--loud-yellow);
+            color: var(--loud-red);
+            line-height: 1.2;
+        }
+
+        /* HEADER - AGGRESSIVE BAR */
+        header {
+            background-color: var(--loud-black);
+            color: var(--loud-white);
+            padding: 10px 0;
+            border-bottom: 5px solid var(--loud-red);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            text-transform: uppercase;
+            /* Create a shaky, glitch effect */
+            animation: glitch-color 0.5s infinite alternate; 
+            white-space: nowrap;
+        }
+
+        /* GLITCH ANIMATION */
+        @keyframes glitch-color {
+            0% { color: #ffff00; }
+            50% { color: #ff00ff; }
+            100% { color: #00ff00; }
+        }
+
+        /* STATUS DISPLAY */
+        .status-display {
+            font-size: 0.8em;
+            text-align: right;
+            line-height: 1.2;
+            color: var(--loud-yellow);
+            white-space: nowrap;
+        }
+
+        /* NAVIGATION - CHAOTIC LINKS */
+        nav {
+            background-color: #333333; /* Dark Grey Bar */
+            text-align: center;
+            padding: 5px 0;
+            border-bottom: 3px solid var(--loud-yellow);
+            position: sticky;
+            top: 45px; /* Adjust based on header height */
+            z-index: 40;
+        }
+
+        nav a {
+            color: var(--loud-white);
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px 15px;
+            display: inline-block;
+            transition: background-color 0.1s;
+            /* Crazy hover effect */
+            transform: skewX(-10deg); 
+        }
+
+        nav a:hover {
+            background-color: var(--loud-red);
+            color: var(--loud-yellow);
+            transform: skewX(0deg) scale(1.05); /* Straightens and expands on hover */
+        }
+
+        /* --- HORIZONTAL TICKER BAR --- */
+        .ticker-bar {
+            background-color: var(--loud-red);
+            border-bottom: 3px solid var(--loud-black);
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 5px 0;
+            position: sticky;
+            top: 90px;
+            z-index: 30;
+        }
+
+        .ticker-inner {
+            display: inline-block;
+            animation: scroll-left 15s linear infinite; /* Aggressively fast scroll */
+        }
+        @keyframes scroll-left {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .ticker-inner span {
+            color: var(--loud-black);
+            font-size: 1.1em;
+            padding: 0 40px;
+            text-shadow: 1px 1px 0px var(--loud-yellow);
+            font-weight: bold;
+        }
+        
+        /* MAIN CONTENT LAYOUT - UNCONVENTIONAL GRID */
+        main {
+            max-width: 1300px;
+            margin: 20px auto;
+            padding: 0 10px;
+            display: grid;
+            /* Uneven, asymmetric columns */
+            grid-template-columns: 1fr 2fr 1fr; 
+            gap: 20px;
+        }
+
+        /* ARTICLE STYLES - HIGH IMPACT */
+        .article {
+            background-color: var(--loud-white); /* White background for contrast */
+            padding: 15px;
+            border: 4px dashed var(--loud-red); /* Dashed, aggressive border */
+            margin-bottom: 20px;
+            box-shadow: 10px 10px 0px var(--loud-black); /* Heavy black shadow */
+            transform: rotate(-1deg); /* Slight tilt for chaos */
+            cursor: pointer;
+        }
+
+        /* Dynamic styles for sentiment colors */
+        .article[data-sentiment="RED"] h2 { color: var(--loud-red); border-color: var(--loud-red); }
+        .article[data-sentiment="BLUE"] h2 { color: var(--loud-blue); border-color: var(--loud-blue); }
+        .article[data-sentiment="GREEN"] h2 { color: #008000; border-color: #008000; }
+        
+        .article h2 {
+            font-size: 2em;
+            margin-top: 0;
+            border-bottom: 2px solid;
+            text-shadow: 1px 1px var(--loud-yellow);
+        }
+
+        .article p {
+            font-family: Arial, sans-serif; /* Less aggressive font for body */
+            color: #333;
+            font-weight: bold;
+        }
+
+        .read-more {
+            display: block;
+            background-color: var(--loud-black);
+            color: var(--loud-red);
+            padding: 8px;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 10px;
+            /* Pulsing Button effect */
+            animation: pulse-border 1.5s infinite; 
+        }
+        
+        /* The effect for the data drill */
+        .drill-active {
+            box-shadow: 0 0 20px 10px rgba(255, 0, 0, 0.8), 10px 10px 0px var(--loud-red) !important;
+            transform: scale(1.03) rotate(0deg) !important;
+            border: 5px solid var(--loud-yellow) !important;
+        }
+
+        @keyframes pulse-border {
+            0% { border: 2px solid var(--loud-red); }
+            50% { border: 2px solid var(--loud-yellow); }
+            100% { border: 2px solid var(--loud-red); }
+        }
+        
+        /* SIDEBARS - OVERLOADED INFO */
+        .sidebar {
+            background-color: var(--loud-black);
+            color: var(--loud-yellow);
+            padding: 15px;
+            border: 3px solid var(--loud-red);
+            text-align: center;
+        }
+        
+        .sidebar h3 {
+            color: var(--loud-white);
+            font-size: 1.5em;
+            margin-top: 0;
+            text-shadow: 1px 1px 0px var(--loud-red);
+        }
+
+        /* FOOTER - LOUD CLOSURE */
+        footer {
+            background-color: var(--loud-red);
+            color: var(--loud-black);
+            text-align: center;
+            padding: 15px 0;
+            font-weight: bold;
+            clear: both;
+        }
+        
+        /* Status blinking */
+        .status-blink {
+            animation: status-flicker 0.1s step-end infinite alternate;
+        }
+        @keyframes status-flicker {
+            from, 50% { opacity: 1; }
+            51%, to { opacity: 0.5; color: var(--loud-red); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-inner">
+            <h1 id="header-title">ASTRA NEWS AND TECHNOLOGY</h1>
+            <div id="status-container" class="status-display">
+                <div id="load-status" class="status-blink">!! SYSTEM BOOTING !!</div>
+                <div id="timestamp">TIME: 00:00:00</div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <a href="#" onclick="alert('ACCESS DENIED: LIVE TRACKER OFFLINE')">LIVE TRACKER</a>
+        <a href="#" onclick="alert('ACCESS DENIED: REDIRECT LOOP INITIATED')">BJP NEWS</a>
+        <a href="#" onclick="alert('ACCESS DENIED: 404 DATA NOT FOUND')">TWITTER NEWS</a>
+        <a href="#" onclick="window.location.reload();">REFRESH</a>
+    </nav>
+    
+    <!-- DYNAMIC SCROLLING TICKER -->
+    <div class="ticker-bar">
+        <div class="ticker-inner">
+            <span id="ticker-content-1"></span>
+            <span id="ticker-content-2"></span>
+        </div>
+    </div>
+
+    <main>
+        
+        <!-- STATIC SIDEBAR CONTENT (LEFT) -->
+        <aside id="alert-console" class="sidebar">
+            <h3>🔴 LATEST UPDATES</h3>
+            <p>🚨Prime Minister Modi's massive roadshow in Coimbatore..! 
+            People of Tamilnadu chanted "Modi Modi" and welcomed PM with flower showers and dances..</p>
+            <p>🚨Pakistan takes responsibility for Delhi blast
+            POK Ex PM Anwarul Haq says “I earlier said that if you keep bleeding Balochistan, we'll hit India from Red Fort to the forests of Kashmir and we've done it, they're still unable to count bodies."</p>
+            <p>🚨 BIG! India’s first bullet train is set to run the 100 km Surat–Vapi stretch by August 2027.</p>
+            <p>🚨 BIG STATEMENT by Home Minister Amit Shah
+            “We will HUNT DOWN the CULPRITS of the Delhi bomb blast even from the depths of the netherworld (Pataal) and ensure they receive the STRICTEST PUNISHMENT.”</p>
+            <p>🚨Big Breaking 
+            A close friend of Putin, Nikolai Patrushev meets Modiji in India while Subramanyam Jaishankar saab meets Russian President Vladimir Putin in Moscow Today! 
+            I can give you a hint, Kisi desh ki ga*n marne wali hai very sooon 🔥
+            </p>
+            <p>🚨 BIG BREAKING
+            272 eminent citizens including 16 judges, 123 retired bureaucrats with 14 ambassadors, and 133 retired armed forces officers have released an open letter. 
+            They condemn LoP Rahul Gandhi and the Congress Party for trying to tarnish institutions like the Election Commission. </p>
+        </aside>
+
+        <!-- DYNAMIC NEWS GRID (CENTER) -->
+        <section id="center-content">
+            <!-- Dynamic news articles will be injected here -->
+        </section>
+
+        <!-- STATIC SIDEBAR CONTENT (RIGHT) -->
+        <aside class="sidebar">
+            <h3>🔥 LATEST TWEETS</h3>
+            <!-- Note: Twitter embeds will not render in this environment, but the code is kept for authenticity -->
+            <p>TWEET FEED OFFLINE - MANUAL DATA INPUT:</p>
+            <p style="color: var(--loud-red); font-weight: 900;">🚨 BIG! Russia proposes building ship-building & repair clusters in Mumbai & Chennai with India.</p>
+            <p style="color: var(--loud-yellow);">NITISH KUMAR : We are receiving a lot of support from PM Modi and centre.</p>
+            <p style="color: var(--loud-white);">Temple servitors said the father had brought his son straight from the hospital. In a moment that many described as miraculous, the ailing boy reportedly moved his head.</p>
+            
+            <a href="#" class="read-more" style="background-color: var(--loud-yellow); color: var(--loud-red); border: 2px solid var(--loud-black);">!! RE-INITIALIZE TWEET SCRAPE !!</a>
+        </aside>
+
+    </main>
+
+    <footer>
+        <p>THANKS FOR READING</p>
+        <p>© 2025 ASTRA NEWS AND TECHNOLOGY</p>
+    </footer>
+
+
+    <script>
+        // --- ADVANCED JAVASCRIPT LOGIC: ASYNC DATA MANIPULATION & RENDERING ---
+
+        // GLOBAL CONFIGURATION MATRIX
+        const CONFIG = {
+            API_KEY: "", 
+            NEWS_MODEL: "gemini-2.5-flash-preview-09-2025",
+            // Consolidated and themed data
+            SIMULATED_DATA: [
+                { title: "YOGI ADITHYANATH: Ayodhya prayers completed. Unapologetic Sanatani CM 🚩", category: "RELIGION/POLITICS", sentiment: "RED" },
+                { title: "LAWRENCE IN POWER! Bishnoi in same jail as Terrorist Dr Ahmed. SOURCES: Ahmed was crying last night!", category: "JUSTICE/SECURITY", sentiment: "RED" },
+                { title: "INDIA AND RUSSIA'S DIPLOMACY: Russia offers Su-57 fighter jet production in India with full tech transfer.", category: "GLOBAL/DEFENCE", sentiment: "BLUE" },
+                { title: "DELHI IS HEALING: Delhi Govt to re-develop Sahibi river 💙", category: "ENVIRONMENT", sentiment: "GREEN" },
+                { title: "BIHAR GOVERNMENT: No change in Bihar-BJP leadership. Samrat Chaudhary and Vijay Sinha to continue as Dy-CMs.", category: "POLITICS", sentiment: "BLUE" },
+                { title: "PM Modi to attend G7 summit in Italy. Global power shift confirmed.", category: "GLOBAL", sentiment: "GREEN" },
+                { title: "OPPOSITION CHAOS: 272 eminent citizens condemn Rahul Gandhi for tarnishing institutions.", category: "POLITICS", sentiment: "RED" },
+                { title: "PAKISTAN THREAT: Ex PM Anwarul Haq claims responsibility for Delhi blast.", category: "SECURITY", sentiment: "RED" },
+            ],
+            GRID_UPDATE_INTERVAL_MS: 3000, // Card injection (3 seconds)
+            GLITCH_FREQUENCY_MS: 5000, // Glitch header more often (5 seconds)
+        };
+
+        // DOM ELEMENTS MAPPING
+        const DOMElements = {
+            headerH1: document.getElementById('header-title'),
+            loadStatus: document.getElementById('load-status'),
+            timestamp: document.getElementById('timestamp'),
+            alertConsole: document.getElementById('alert-console'), // Repurposed left sidebar for focus
+            dataGrid: document.getElementById('center-content'),
+            ticker1: document.getElementById('ticker-content-1'),
+            ticker2: document.getElementById('ticker-content-2'),
+            body: document.body,
+        };
+
+        // --- CORE FUNCTIONALITY MODULES ---
+
+        /**
+         * The Quantum Flux Engine: Transforms raw data into aesthetic HTML, matching the Y2K style.
+         * @param {Object} data - The news data object.
+         * @returns {string} - The HTML string for the news card.
+         */
+        const createNewsCard = (data) => {
+            const uniqueId = crypto.randomUUID();
+
+            return `
+                <div id="card-${uniqueId}" class="article" data-sentiment="${data.sentiment}">
+                    <h2 style="text-shadow: 1px 1px var(--loud-yellow);">
+                        🚨 ${data.title.toUpperCase()}
+                    </h2>
+                    <p style="color: #333; font-weight: bold;">[CATEGORY: ${data.category}] - [ACCESS TIME: ${new Date().toLocaleTimeString()}]</p>
+                    <a href="#" onclick="simulateDataDrill(event, '${uniqueId}', '${data.category}')" class="read-more">
+                        !!! ACCESS DATA STREAM !!! &raquo;
+                    </a>
+                </div>
+            `;
+        };
+
+        /**
+         * Simulates an aggressive deep dive into data, triggering a screen flash and alert overload.
+         */
+        window.simulateDataDrill = (event, cardId, category) => {
+            event.preventDefault(); // Stop link navigation
+            const card = document.getElementById(`card-${cardId}`);
+            if (!card) return;
+
+            // Save original styles
+            const originalBodyBg = DOMElements.body.style.backgroundColor;
+            const originalBodyColor = DOMElements.body.style.color;
+
+            // --- 1. MAXIMUM CHAOS EFFECT ---
+
+            // Screen flash (Flicker the body colors wildly)
+            DOMElements.body.style.backgroundColor = 'var(--loud-red)';
+            DOMElements.body.style.color = 'var(--loud-yellow)';
+            
+            // Temporary Glitch/Alert Overload in the Sidebar
+            DOMElements.alertConsole.innerHTML = `
+                <h3 style="color: var(--loud-yellow); text-shadow: none;">!! SYSTEM OVERRIDE INITIATED !!</h3>
+                <p class="status-blink" style="color: var(--loud-yellow);">
+                    >>> DUMPING: ${category} DATASTREAM... [ERROR: 0xFEDC]
+                </p>
+            `;
+            DOMElements.alertConsole.classList.add('drill-active');
+            card.classList.add('drill-active');
+
+
+            // --- 2. REVERT AFTER SHORT DRAMATIC DELAY ---
+            setTimeout(() => {
+                // Revert Body Colors
+                DOMElements.body.style.backgroundColor = originalBodyBg;
+                DOMElements.body.style.color = originalBodyColor;
+
+                // Revert Sidebar Alert (Use a generic success message)
+                DOMElements.alertConsole.innerHTML = `
+                    <h3>!! ACCESS SUCCESSFUL !!</h3>
+                    <p style="color: var(--loud-green); font-weight: 900;">
+                        [STATUS: DATA VERIFIED - ${category} STREAM ONLINE]
+                    </p>
+                    <p style="color: var(--loud-yellow);">
+                        (RELOAD TO RESTORE STATIC NEWS FEED)
+                    </p>
+                `;
+                
+                DOMElements.alertConsole.classList.remove('drill-active');
+                card.classList.remove('drill-active');
+                
+            }, 750);
+        };
+
+        /**
+         * Live Data Ingestion Loop
+         */
+        const liveDataIngestion = () => {
+            const index = liveDataIngestion.counter % CONFIG.SIMULATED_DATA.length;
+            const newData = CONFIG.SIMULATED_DATA[index];
+            const cardHtml = createNewsCard(newData);
+
+            DOMElements.dataGrid.insertAdjacentHTML('afterbegin', cardHtml);
+
+            // Limit total cards to prevent DOM bloat (max 12 cards)
+            while (DOMElements.dataGrid.children.length > 12) {
+                const lastChild = DOMElements.dataGrid.lastElementChild;
+                lastChild.style.opacity = '0';
+                setTimeout(() => lastChild.remove(), 100);
+            }
+
+            liveDataIngestion.counter++;
+        };
+        liveDataIngestion.counter = 0; // Initialize static counter for loop
+
+        /**
+         * Updates the relentless horizontal news ticker.
+         */
+        const updateTicker = () => {
+            const tickerText = CONFIG.SIMULATED_DATA
+                .map(d => `<span>!! ${d.category.toUpperCase()} // ${d.title.toUpperCase()} // ALERT 777 !!</span>`)
+                .join('');
+
+            // Duplicate the content to create the seamless infinite scroll effect
+            DOMElements.ticker1.innerHTML = tickerText;
+            DOMElements.ticker2.innerHTML = tickerText;
+        };
+
+        /**
+         * Glitch effect toggle on the main header for simulated instability.
+         */
+        const toggleGlitchEffect = () => {
+            // Toggle the glitch-color animation class quickly
+            DOMElements.headerH1.classList.toggle('glitch-color');
+            setTimeout(() => {
+                DOMElements.headerH1.classList.toggle('glitch-color');
+            }, 100); 
+        };
+
+        /**
+         * System Clock Updater
+         */
+        const updateClock = () => {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const dateStr = now.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+            
+            // Flicker the status text color
+            if (now.getMilliseconds() < 100) {
+                 DOMElements.loadStatus.style.color = 'var(--loud-red)';
+            } else {
+                 DOMElements.loadStatus.style.color = 'var(--loud-yellow)';
+            }
+
+            DOMElements.timestamp.textContent = `TIME: ${dateStr} ${timeStr} IST`;
+        };
+
+        /**
+         * System Initialization: The entry point (Main thread)
+         */
+        const initializeSystem = () => {
+            // 1. Initial UI Setup
+            updateClock();
+            updateTicker();
+            DOMElements.loadStatus.textContent = 'STATUS: CORE ONLINE';
+            DOMElements.loadStatus.classList.remove('status-blink');
+            
+            // 2. Start Core Loops
+            setInterval(updateClock, 100); // Faster update for the flicker effect
+            setInterval(liveDataIngestion, CONFIG.GRID_UPDATE_INTERVAL_MS);
+            setInterval(toggleGlitchEffect, CONFIG.GLITCH_FREQUENCY_MS);
+
+            // 3. Initial Data Load (Fill the grid immediately)
+            // Use the first 5 items to fill the center on load
+            CONFIG.SIMULATED_DATA.slice(0, 5).forEach((data) => {
+                const cardHtml = createNewsCard(data);
+                DOMElements.dataGrid.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        };
+
+        // EXECUTION START: Wait for the DOM to be fully parsed
+        document.addEventListener('DOMContentLoaded', initializeSystem);
+
+    </script>
+</body>
+</html>
