@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chaos Activity Monitor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:wght@400;700&display=swap');
+
+        body {
+            background-color: #0f0f13;
+            color: #ffffff;
+            font-family: 'Roboto Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #5865F2; 
+            border-radius: 4px;
+        }
+
+        /* Glitch Animation for Header */
+        .glitch {
+            position: relative;
+            font-family: 'Press Start 2P', cursive;
+        }
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .glitch::before {
+            left: 2px;
+            text-shadow: -1px 0 #ff00c1;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        .glitch::after {
+            left: -2px;
+            text-shadow: -1px 0 #00fff9;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(30px, 9999px, 10px, 0); }
+            5% { clip: rect(80px, 9999px, 90px, 0); }
+            10% { clip: rect(40px, 9999px, 10px, 0); }
+            15% { clip: rect(10px, 9999px, 95px, 0); }
+            20% { clip: rect(50px, 9999px, 20px, 0); }
+            100% { clip: rect(60px, 9999px, 80px, 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(10px, 9999px, 80px, 0); }
+            5% { clip: rect(30px, 9999px, 10px, 0); }
+            10% { clip: rect(90px, 9999px, 50px, 0); }
+            15% { clip: rect(15px, 9999px, 30px, 0); }
+            100% { clip: rect(5px, 9999px, 60px, 0); }
+        }
+
+        /* Card Styles */
+        .activity-card {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid #2f3136;
+        }
+        .activity-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 0 15px rgba(88, 101, 242, 0.5);
+            border-color: #5865F2;
+            z-index: 10;
+        }
+
+        /* Status Dots Pulse */
+        .status-dot {
+            box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            animation: pulse-green 2s infinite;
+        }
+        .status-idle {
+            box-shadow: 0 0 0 0 rgba(234, 179, 8, 0.7);
+            animation: pulse-yellow 2s infinite;
+        }
+        .status-dnd {
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        }
+
+        /* Background Grid Animation */
+        .bg-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            animation: grid-move 20s linear infinite;
+        }
+        @keyframes grid-move {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 40px; }
+        }
+
+        /* CRT Scanline effect */
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 999;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(255, 255, 255, 0.02) 50%, rgba(0,0,0,0) 100%);
+            opacity: 0.1;
+            position: fixed;
+            bottom: 100%;
+            animation: scanline 10s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes scanline {
+            0% { bottom: 100%; }
+            100% { bottom: -100%; }
+        }
+
+        .rich-presence-image {
+            transition: transform 0.5s ease;
+        }
+        .activity-card:hover .rich-presence-image {
+            transform: rotate(5deg) scale(1.1);
+        }
+
+        /* Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #5865F2;
+            cursor: pointer;
+            margin-top: -8px;
+            box-shadow: 0 0 10px #5865F2;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #40444b;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative">
+
+    <!-- Background FX -->
+    <div class="fixed inset-0 bg-grid pointer-events-none z-0"></div>
+    <div class="scanline"></div>
+
+    <!-- Content Wrapper -->
+    <div class="relative z-10 container mx-auto px-4 py-8">
+        
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-bold mb-2 text-white tracking-tighter glitch" data-text="ACTIVITY_MONITOR_V99">ACTIVITY_MONITOR_V99</h1>
+            <p class="text-gray-400 mt-4 text-sm md:text-base">TRACKING <span id="user-count" class="text-green-400 font-bold">0</span> ENTITIES IN REAL-TIME</p>
+            
+            <!-- Chaos Control -->
+            <div class="mt-8 bg-gray-900/80 backdrop-blur-md border border-gray-700 p-4 rounded-xl inline-block shadow-2xl max-w-md w-full">
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Chaos Intensity Level</label>
+                <div class="flex items-center gap-4">
+                    <span class="text-blue-400 text-xs"><i class="fas fa-snowflake"></i> CHILL</span>
+                    <input type="range" id="chaos-slider" min="100" max="3000" value="1000" class="w-full">
+                    <span class="text-red-500 text-xs"><i class="fas fa-skull"></i> PANIC</span>
+                </div>
+                <div id="chaos-text" class="text-center text-xs mt-2 text-purple-400 font-mono">Current Status: NORMAL</div>
+            </div>
+        </header>
+
+        <!-- Grid -->
+        <div id="grid-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <!-- Cards injected via JS -->
+        </div>
+
+    </div>
+
+    <!-- Floating Add Button -->
+    <button onclick="addNewUser()" class="fixed bottom-8 right-8 bg-indigo-600 hover:bg-indigo-500 text-white p-4 rounded-full shadow-lg transition-transform transform hover:rotate-90 focus:outline-none z-50 border border-indigo-400">
+        <i class="fas fa-plus text-2xl"></i>
+    </button>
+
+    <script>
+        // --- Data Banks --- //
+        const usernames = [
+            "xX_Slayer_Xx", "GlitchWizard", "NullPointer", "Caffeine_OS", "RetroVibe", 
+            "System32_Delete", "LagSpike", "PixelNinja", "404_NotFound", "CyberPunk_2020",
+            "KeyboardWarrior", "AltF4_Master", "StackOverflow", "GitPushForce", "DivCenterer"
+        ];
+
+        const avatars = [
+            "adventurer", "bottts", "avataaars", "big-smile", "micah", "miniavs", "open-peeps", "personas"
+        ];
+
+        const activities = [
+            { name: "VS Code", type: "Coding", icon: "fa-code", color: "text-blue-400", details: ["Fixing bugs", "Creating bugs", "Staring at screen", "Copying StackOverflow", "Deleting production DB"] },
+            { name: "Minecraft", type: "Gaming", icon: "fa-cube", color: "text-green-500", details: ["Punching trees", "Falling in lava", "Building dirt hut", "Fighting Herobrine", "Mining diamonds"] },
+            { name: "Spotify", type: "Listening", icon: "fa-spotify", color: "text-green-400", details: ["Lo-fi Hip Hop", "Dubstep 2012", "White Noise", "Heavy Metal", "Podcast about nothing"] },
+            { name: "Chrome", type: "Browsing", icon: "fa-chrome", color: "text-yellow-400", details: ["Opening 100th tab", "Googling 'how to center div'", "Watching cat videos", "Downloading RAM", "Updating drivers"] },
+            { name: "Discord", type: "Chatting", icon: "fa-discord", color: "text-indigo-400", details: ["Argument in #general", "Sharing memes", "Ignoring DMs", "In voice channel alone", "Streaming desktop"] },
+            { name: "Terminal", type: "Hacking", icon: "fa-terminal", color: "text-gray-200", details: ["sudo rm -rf /", "pinging google.com", "pretending to hack", "updating packages", "compiling nonsense"] },
+            { name: "Adobe Photoshop", type: "Designing", icon: "fa-pen-nib", color: "text-blue-600", details: ["Crashing...", "Adding lens flare", "Masking hair", "Exporting final_final_v2.png", "Staring at blank canvas"] },
+            { name: "League of Legends", type: "Suffering", icon: "fa-gamepad", color: "text-yellow-600", details: ["Feeding mid", "Blaming jungle", "Surrender @ 20", "Buying skins", "Tilt queuing"] }
+        ];
+
+        const stateColors = {
+            online: "bg-green-500",
+            idle: "bg-yellow-500",
+            dnd: "bg-red-500",
+            offline: "bg-gray-500"
+        };
+
+        // --- State --- //
+        let users = [];
+        let updateInterval;
+        let chaosSpeed = 1000; // Start slow-ish
+
+        // --- Init --- //
+        function init() {
+            // Create initial batch of users
+            for(let i=0; i<12; i++) {
+                addNewUser(false);
+            }
+            render();
+            startLoop();
+        }
+
+        // --- Logic --- //
+        function generateUser() {
+            const seed = Math.random().toString(36).substring(7);
+            const avatarStyle = avatars[Math.floor(Math.random() * avatars.length)];
+            
+            return {
+                id: Math.random().toString(36).substr(2, 9),
+                name: usernames[Math.floor(Math.random() * usernames.length)] + "#" + Math.floor(1000 + Math.random() * 9000),
+                avatar: `https://api.dicebear.com/7.x/${avatarStyle}/svg?seed=${seed}`,
+                status: getRandomStatus(),
+                activity: getRandomActivity(),
+                startTime: Date.now() - Math.floor(Math.random() * 3600000) // Started sometime in last hour
+            };
+        }
+
+        function getRandomStatus() {
+            const statuses = ['online', 'online', 'online', 'idle', 'dnd']; // Weighted
+            return statuses[Math.floor(Math.random() * statuses.length)];
+        }
+
+        function getRandomActivity() {
+            const base = activities[Math.floor(Math.random() * activities.length)];
+            return {
+                ...base,
+                currentDetail: base.details[Math.floor(Math.random() * base.details.length)]
+            };
+        }
+
+        function addNewUser(shouldRender = true) {
+            const u = generateUser();
+            users.push(u);
+            document.getElementById('user-count').innerText = users.length;
+            if (shouldRender) renderCard(u, true);
+        }
+
+        // --- Rendering --- //
+        function formatTime(ms) {
+            const seconds = Math.floor((ms / 1000) % 60);
+            const minutes = Math.floor((ms / (1000 * 60)) % 60);
+            const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+            
+            if (hours > 0) return `${hours}h ${minutes}m`;
+            return `${minutes}:${seconds < 10 ? '0' : ''}${seconds} elapsed`;
+        }
+
+        function getCardHTML(user) {
+            const timeString = formatTime(Date.now() - user.startTime);
+            const statusColor = stateColors[user.status];
+            
+            // Dynamic Rich Presence Image (using FontAwesome icons as placeholder visuals or colored blocks)
+            // In a real crazy app, we'd use wild GIFs. Let's simulate a game art block.
+            const artColor = user.activity.color.replace('text-', 'bg-').replace('400', '900').replace('500', '900').replace('600', '900');
+
+            return `
+                <div class="flex items-center gap-4">
+                    <div class="relative shrink-0">
+                        <img src="${user.avatar}" class="w-16 h-16 rounded-full bg-gray-700 border-2 border-gray-600" alt="avatar">
+                        <div class="absolute bottom-0 right-0 w-5 h-5 ${statusColor} border-4 border-gray-800 rounded-full ${user.status === 'online' ? 'status-dot' : ''} ${user.status === 'idle' ? 'status-idle' : ''} ${user.status === 'dnd' ? 'status-dnd' : ''}"></div>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h3 class="text-white font-bold truncate">${user.name}</h3>
+                        <p class="text-xs text-gray-400 truncate mb-1">Current Status: <span class="uppercase font-semibold">${user.status}</span></p>
+                    </div>
+                </div>
+                
+                <!-- Rich Presence Box -->
+                <div class="mt-4 bg-gray-800/50 rounded-lg p-3 border border-gray-700 flex items-start gap-3 relative overflow-hidden group">
+                    <!-- Background glow for effect -->
+                    <div class="absolute inset-0 ${artColor} opacity-20 group-hover:opacity-30 transition-opacity"></div>
+                    
+                    <div class="relative w-16 h-16 rounded bg-gray-900 flex items-center justify-center shrink-0 rich-presence-image overflow-hidden border border-white/10">
+                        <i class="fab ${user.activity.icon} text-3xl ${user.activity.color}"></i>
+                    </div>
+                    
+                    <div class="relative z-10 min-w-0 flex-1">
+                        <h4 class="text-sm font-bold text-white leading-tight">${user.activity.name}</h4>
+                        <p class="text-xs text-gray-300 truncate">${user.activity.currentDetail}</p>
+                        <p class="text-xs text-gray-400 mt-1 font-mono time-display" data-start="${user.startTime}">${timeString}</p>
+                    </div>
+
+                    ${user.activity.name === 'Spotify' ? `
+                    <div class="absolute right-2 top-2 animate-bounce">
+                        <i class="fas fa-music text-green-500 text-xs"></i>
+                    </div>` : ''}
+                </div>
+
+                <!-- Fake Buttons -->
+                ${user.status !== 'dnd' ? `
+                <div class="mt-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <button class="flex-1 bg-gray-700 hover:bg-gray-600 text-xs py-1 rounded text-white transition-colors">Ask to Join</button>
+                    <button class="w-8 bg-gray-700 hover:bg-gray-600 text-xs py-1 rounded text-white transition-colors flex items-center justify-center"><i class="fas fa-eye"></i></button>
+                </div>
+                ` : `
+                <div class="mt-3 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <span class="text-xs text-red-400 font-mono">DO NOT DISTURB</span>
+                </div>
+                `}
+            `;
+        }
+
+        function renderCard(user, isNew = false) {
+            const container = document.getElementById('grid-container');
+            let card = document.getElementById(`card-${user.id}`);
+            
+            if (!card) {
+                card = document.createElement('div');
+                card.id = `card-${user.id}`;
+                card.className = `activity-card bg-[#18191c] p-4 rounded-xl shadow-lg group relative overflow-hidden`;
+                // Add a random subtle border color
+                card.style.borderTop = `2px solid ${['#5865F2', '#EB459E', '#FEE75C', '#57F287'][Math.floor(Math.random()*4)]}`;
+                container.appendChild(card);
+                
+                if (isNew) {
+                    card.style.animation = 'fadeIn 0.5s ease-out';
+                }
+            }
+            
+            card.innerHTML = getCardHTML(user);
+        }
+
+        function render() {
+            users.forEach(u => renderCard(u));
+        }
+
+        // --- Chaos Engine --- //
+
+        function startLoop() {
+            // 1. Time ticker (Fast, for smooth seconds)
+            setInterval(() => {
+                document.querySelectorAll('.time-display').forEach(el => {
+                    const start = parseInt(el.dataset.start);
+                    el.innerText = formatTime(Date.now() - start);
+                });
+            }, 1000);
+
+            // 2. Chaos Ticker (Variable Speed)
+            scheduleChaos();
+        }
+
+        function scheduleChaos() {
+            clearTimeout(updateInterval);
+            updateInterval = setTimeout(() => {
+                causeChaos();
+                scheduleChaos();
+            }, Math.max(200, 3000 - chaosSpeed)); // Speed determined by slider
+        }
+
+        function causeChaos() {
+            // Pick a random user
+            const victimIndex = Math.floor(Math.random() * users.length);
+            const victim = users[victimIndex];
+            
+            const action = Math.random();
+
+            // 40% chance to change specific detail of current activity
+            if (action < 0.4) {
+                victim.activity.currentDetail = victim.activity.details[Math.floor(Math.random() * victim.activity.details.length)];
+            } 
+            // 30% chance to change activity entirely
+            else if (action < 0.7) {
+                victim.activity = getRandomActivity();
+                victim.startTime = Date.now(); // Reset timer
+            }
+            // 20% chance to change status
+            else if (action < 0.9) {
+                victim.status = getRandomStatus();
+            }
+            // 10% chance for user to "Disconnect" and a new one replaces them
+            else {
+                // Simulate logout/login
+                const card = document.getElementById(`card-${victim.id}`);
+                if(card) {
+                    card.style.opacity = '0.5';
+                    card.style.filter = 'grayscale(100%)';
+                    
+                    setTimeout(() => {
+                        // Remove old
+                        users.splice(victimIndex, 1);
+                        card.remove();
+                        // Add new
+                        addNewUser(true);
+                    }, 500);
+                    return; // Skip render for this cycle as we handled it manually
+                }
+            }
+
+            renderCard(victim);
+        }
+
+        // --- Event Listeners --- //
+        const slider = document.getElementById('chaos-slider');
+        const chaosText = document.getElementById('chaos-text');
+
+        slider.addEventListener('input', (e) => {
+            chaosSpeed = parseInt(e.target.value);
+            
+            if (chaosSpeed < 500) {
+                chaosText.innerText = "Status: CHILL VIBES";
+                chaosText.className = "text-center text-xs mt-2 text-blue-400 font-mono";
+            } else if (chaosSpeed < 1500) {
+                chaosText.innerText = "Status: ACTIVE";
+                chaosText.className = "text-center text-xs mt-2 text-green-400 font-mono";
+            } else if (chaosSpeed < 2500) {
+                chaosText.innerText = "Status: HIGH TRAFFIC";
+                chaosText.className = "text-center text-xs mt-2 text-orange-400 font-mono";
+            } else {
+                chaosText.innerText = "Status: TOTAL MAYHEM";
+                chaosText.className = "text-center text-xs mt-2 text-red-500 font-bold font-mono animate-pulse";
+            }
+        });
+
+        // Run
+        init();
+
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</body>
+</html>
