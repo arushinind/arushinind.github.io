@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <link rel="icon" type="image/x-icon" href="astralogoverified.png">
+    <link rel="icon" type="image/png" href="astralogoverified.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modi's Vision 2047 - ASTRA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['Space Grotesk', 'monospace'],
+                    },
+                    colors: {
+                        'accent': '#22d3ee', // Cyan-400
+                        'dark-bg': '#0a0a0a',
+                        'card-bg': '#171717',
+                        'glass': 'rgba(255, 255, 255, 0.05)',
+                    },
+                    animation: {
+                        'ticker': 'ticker 30s linear infinite',
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        ticker: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        /* Text Selection */
+        ::selection { background: #22d3ee; color: #000; }
+
+        /* Progress Bar */
+        #progress-bar { width: 0%; height: 4px; background: #22d3ee; position: fixed; top: 0; left: 0; z-index: 100; transition: width 0.1s; }
+
+        /* Glass Blur */
+        .glass-panel {
+            background: rgba(23, 23, 23, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Typography Overrides for Article */
+        .article-content p { margin-bottom: 1.5rem; line-height: 1.8; color: #d1d5db; font-weight: 300; }
+        .article-content h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: white; margin-top: 3rem; margin-bottom: 1rem; font-weight: 700; }
+        .article-content h3 { font-family: 'Space Grotesk', monospace; font-size: 1.25rem; color: #22d3ee; margin-top: 2rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .article-content ul { margin-bottom: 1.5rem; list-style-type: none; padding-left: 1rem; }
+        .article-content li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; color: #9ca3af; }
+        .article-content li::before { content: "→"; position: absolute; left: 0; color: #22d3ee; }
+        .drop-cap::first-letter { float: left; font-size: 4.5rem; line-height: 0.8; font-family: 'Playfair Display', serif; font-weight: 700; margin-right: 0.75rem; margin-top: 0.25rem; color: #22d3ee; }
+    </style>
+</head>
+<body class="bg-dark-bg text-gray-200 antialiased overflow-x-hidden">
+
+    <!-- Reading Progress Bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel transition-all duration-300 top-0" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Back Button (Mobile) -->
+                <div class="flex items-center md:hidden">
+                    <a href="javascript:history.back()" class="text-gray-300 hover:text-white p-2 transition-colors">
+                        <i class="ph ph-arrow-left text-2xl"></i>
+                    </a>
+                </div>
+
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="https://arushinind.github.io/" class="font-serif text-3xl font-bold tracking-tighter text-white hover:text-accent transition-colors duration-300">
+                        ASTRA.
+                    </a>
+                </div>
+
+                <!-- Desktop Links -->
+                <div class="hidden md:flex space-x-12">
+                    <a href="https://arushinind.github.io/livet.html" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">LIVE TRACKER</a>
+                    <a href="https://arushinind.github.io/bjpn.html" class="text-sm font-mono uppercase tracking-widest text-accent transition-colors">POLITICS</a>
+                    <a href="https://arushinind.github.io/twitter.html" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">TWEETS</a>
+                    <a href="home2.html" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">ASTRA PREMIUM</a>
+                </div>
+
+                <!-- Right Icons -->
+                <div class="flex items-center space-x-6">
+                    <button class="text-gray-300 hover:text-accent transition-colors" onclick="window.print()">
+                        <i class="ph ph-printer text-xl"></i>
+                    </button>
+                    <button class="text-gray-300 hover:text-accent transition-colors">
+                        <i class="ph ph-share-network text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pb-20">
+
+        <!-- Article Hero -->
+        <section class="relative w-full h-[70vh] flex items-end pb-20 justify-center overflow-hidden">
+            <div class="absolute inset-0">
+                <!-- You can replace this URL with a specific Modi/India Infrastructure image -->
+                <img src="https://wallpapers.com/images/hd/narendra-modi-india-flag-8rwmh1jtmbmtvmh7.jpg" 
+                     alt="PM Modi Vision" 
+                     class="w-full h-full object-cover opacity-50 fixed-bg">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-bg via-dark-bg/80 to-transparent"></div>
+            
+            <div class="relative z-10 max-w-4xl mx-auto px-4 text-center w-full animate-slide-up">
+                <div class="flex items-center justify-center space-x-3 mb-6">
+                    <span class="px-3 py-1 border border-accent text-accent text-[10px] font-mono uppercase tracking-widest">Politics & Policy</span>
+                    <span class="text-gray-500 font-mono text-xs uppercase tracking-widest">• 6 Min Read</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white leading-tight mb-6">
+                    The Path to 2047: Viksit Bharat
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 font-light max-w-2xl mx-auto italic">
+                    "We have to make India a developed nation in the next 25 years."
+                </p>
+            </div>
+        </section>
+
+        <!-- Article Body -->
+        <article class="max-w-3xl mx-auto px-4 -mt-10 relative z-20">
+            <!-- Author Meta -->
+            <div class="bg-card-bg p-6 border-l-4 border-accent mb-12 flex items-center justify-between shadow-2xl">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-gray-700 mr-4 overflow-hidden">
+                         <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Arush" alt="Author" class="w-full h-full">
+                    </div>
+                    <div>
+                        <p class="text-white font-mono text-sm uppercase tracking-wide">By Arush Shetty</p>
+                        <p class="text-gray-500 text-xs">Political Analyst • Astra Intelligence</p>
+                    </div>
+                </div>
+                <div class="text-gray-500 text-xs font-mono" id="article-date"></div>
+            </div>
+
+            <!-- Content -->
+            <div class="article-content text-lg">
+                <p class="drop-cap">
+                    Prime Minister Narendra Modi's vision for India is not merely a roadmap of economic policies; it is a clarion call for a civilizational resurgence. As the nation marches toward the centenary of its independence in 2047, the mantra of <strong>"Viksit Bharat"</strong> (Developed India) has become the central organizing principle of governance.
+                </p>
+
+                <p>
+                    The vision is audacious in its scope and granular in its execution. It envisages an India that is not just a participant in the global order but a leader—a "Vishwa Guru." From digital public infrastructure to green energy transitions, the blueprint for 2047 rests on several immutable pillars.
+                </p>
+
+                <div class="my-12 border-y border-gray-800 py-8">
+                    <blockquote class="text-2xl md:text-3xl font-serif italic text-center text-white leading-relaxed">
+                        "Reform, Perform, and Transform is the mantra for the new India."
+                    </blockquote>
+                </div>
+
+                <h2>1. The Economic Powerhouse</h2>
+                <p>
+                    At the heart of the vision is the goal to make India a $35 trillion economy by 2047. The strategy involves moving beyond the agrarian past and the service-sector boom to a robust manufacturing future. Initiatives like <strong>Make in India</strong> and PLI (Production Linked Incentive) schemes are designed to integrate India into global supply chains.
+                </p>
+                <h3>Key Targets:</h3>
+                <ul>
+                    <li>Becoming the world's 3rd largest economy by 2027.</li>
+                    <li>Reducing logistics costs to single digits of GDP via PM Gati Shakti.</li>
+                    <li>Establishing India as a global hub for semiconductors and defense manufacturing.</li>
+                </ul>
+
+                
+
+                <h2>2. The Digital Public Infrastructure (DPI)</h2>
+                <p>
+                    Perhaps the most recognized success of the Modi era is the "Techade." India has created a model where technology acts as a leveler rather than a divider. The success of UPI (Unified Payments Interface) has shown the world that digital finance can be democratized.
+                </p>
+                <p>
+                    The future vision expands this to health (Ayushman Bharat Digital Mission) and education (PM e-VIDYA), ensuring that the poorest citizen has access to the same digital rights as the urban elite.
+                </p>
+
+                <h2>3. Green Growth & Sustainability</h2>
+                <p>
+                    Contrary to the western narrative that developing nations pollute to grow, Modi's vision intertwines growth with sustainability. The commitment to <strong>Net Zero by 2070</strong> is backed by massive investments in Green Hydrogen and solar energy.
+                </p>
+                <p>
+                    The "Mission LiFE" (Lifestyle for Environment) initiative seeks to nudge individual behaviors toward sustainability, moving climate change from conference rooms to dining tables.
+                </p>
+
+                <div class="bg-accent/10 border border-accent/20 p-6 my-8 rounded-lg">
+                    <h4 class="text-accent font-mono uppercase tracking-widest text-sm mb-2">Did You Know?</h4>
+                    <p class="text-white text-sm mb-0">
+                        India is the only G20 nation to have met its climate targets ahead of schedule, achieving 40% non-fossil fuel energy capacity 9 years before the 2030 deadline.
+                    </p>
+                </div>
+
+                <h2>4. Social Welfare & Saturation</h2>
+                <p>
+                    The philosophy of "Antyodaya" (serving the last person in the queue) drives the welfare model. The vision has shifted from "entitlement" to "empowerment." Whether it is housing (PM Awas Yojana), water (Jal Jeevan Mission), or cooking gas (Ujjwala), the government aims for 100% saturation—ensuring no beneficiary is left behind due to bureaucratic friction.
+                </p>
+
+                <h2>Conclusion</h2>
+                <p>
+                    Narendra Modi's vision for 2047 is a challenge to the status quo. It asks 1.4 billion Indians to shed the "mentality of slavery" and embrace a confidence rooted in heritage and driven by technology. As the Amrit Kaal (Era of Elixir) unfolds, the journey from a developing nation to a developed superpower will define the 21st century.
+                </p>
+            </div>
+
+            <!-- Tags -->
+            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-gray-800 text-gray-400 text-xs font-mono uppercase hover:text-white transition-colors cursor-pointer">#ViksitBharat</span>
+                <span class="px-3 py-1 bg-gray-800 text-gray-400 text-xs font-mono uppercase hover:text-white transition-colors cursor-pointer">#India2047</span>
+                <span class="px-3 py-1 bg-gray-800 text-gray-400 text-xs font-mono uppercase hover:text-white transition-colors cursor-pointer">#Economy</span>
+                <span class="px-3 py-1 bg-gray-800 text-gray-400 text-xs font-mono uppercase hover:text-white transition-colors cursor-pointer">#ModiVision</span>
+            </div>
+
+            <!-- Share Section -->
+            <div class="mt-12 flex justify-center">
+                <div class="inline-flex items-center space-x-4 bg-white/5 px-6 py-3 rounded-full border border-white/10 backdrop-blur-md">
+                    <span class="text-xs font-mono uppercase tracking-widest text-gray-400">Share this story</span>
+                    <div class="h-4 w-px bg-gray-600"></div>
+                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="ph ph-twitter-logo text-lg"></i></a>
+                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="ph ph-facebook-logo text-lg"></i></a>
+                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="ph ph-whatsapp-logo text-lg"></i></a>
+                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="ph ph-linkedin-logo text-lg"></i></a>
+                </div>
+            </div>
+        </article>
+
+        <!-- Recommended Stories -->
+        <section class="max-w-7xl mx-auto px-4 mt-24">
+            <h3 class="text-2xl font-serif font-bold text-white mb-8 border-b border-gray-800 pb-4">More on Politics</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="group cursor-pointer">
+                    <div class="overflow-hidden h-48 w-full mb-4">
+                        <img src="https://th-i.thgim.com/public/incoming/27sqxg/article70290072.ece/alternates/LANDSCAPE_1200/PTI11_17_2025_000142B.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                    </div>
+                    <span class="text-accent text-xs font-mono uppercase tracking-widest">Politics</span>
+                    <h4 class="text-lg font-serif text-white mt-2 group-hover:text-accent transition-colors">Nitish Kumar Takes Oath for Record 10th Time</h4>
+                </div>
+                <!-- Card 2 -->
+                <div class="group cursor-pointer">
+                    <div class="overflow-hidden h-48 w-full mb-4">
+                        <img src="https://akm-img-a-in.tosshub.com/indiatoday/images/story/202502/stalin-annamalai-065212183-16x9_0.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                    </div>
+                    <span class="text-accent text-xs font-mono uppercase tracking-widest">Politics</span>
+                    <h4 class="text-lg font-serif text-white mt-2 group-hover:text-accent transition-colors">BJP Demands Arrest of DMK Functionary</h4>
+                </div>
+                <!-- Card 3 -->
+                <div class="group cursor-pointer">
+                    <div class="overflow-hidden h-48 w-full mb-4">
+                        <img src="https://www.aljazeera.com/wp-content/uploads/2023/07/AP23199419571303-1689681056.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                    </div>
+                    <span class="text-accent text-xs font-mono uppercase tracking-widest">Analysis</span>
+                    <h4 class="text-lg font-serif text-white mt-2 group-hover:text-accent transition-colors">The Future of the INDI Alliance</h4>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer (Same as Main) -->
+    <footer class="bg-black py-12 border-t border-gray-900 mt-20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
+                <div>
+                    <a href="#" class="font-serif text-2xl font-bold text-white tracking-tighter">ASTRA.</a>
+                    <p class="text-gray-500 text-sm mt-2 font-mono">Est. 2025 • India </p>
+                </div>
+                <div class="flex space-x-6 mt-6 md:mt-0">
+                    <a href="https://www.instagram.com/arushshetty__/" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-instagram-logo text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-twitter-logo text-xl"></i></a>
+                    <a href="https://www.linkedin.com/in/arush-shetty-2a39ba377/" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-linkedin-logo text-xl"></i></a>
+                </div>
+            </div>
+            <div class="mt-12 text-center text-xs text-gray-700 font-mono">
+                &copy; 2025 ASTRA NEWS AND TECHNOLOGY. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Set Current Date in Article
+        const dateElement = document.getElementById('article-date');
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        dateElement.textContent = new Date().toLocaleDateString('en-US', options).toUpperCase();
+
+        // Scroll Progress Bar Logic
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+
+            // Navbar Glass Effect
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+                nav.classList.add('bg-black/90');
+            } else {
+                nav.classList.remove('shadow-lg');
+                nav.classList.remove('bg-black/90');
+            }
+        };
+    </script>
+</body>
+</html>

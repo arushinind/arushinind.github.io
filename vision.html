@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTRA - MODI'S VISION</title>
+
+    <style>
+        /* FONT IMPORT - Using Arial Black for maximum visual noise */
+        @import url('https://fonts.googleapis.com/css2?family=Arial+Black&display=swap');
+
+        /* BASIC RESET */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* BODY STYLES - LOUD BACKGROUND & FONT */
+        body {
+            font-family: 'Arial Black', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #def701; /* Neon Yellow Background */
+            color: #ec0606; /* Bright Red Text */
+            line-height: 1.2;
+        }
+
+        /* HEADER - AGGRESSIVE BAR */
+        header {
+            background-color: #000000; /* Solid Black */
+            color: #ffffff; /* White Text */
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 5px solid #ff0000; /* Red Border */
+        }
+        
+        header h1 {
+            font-size: 3.5em;
+            margin: 0;
+            text-transform: uppercase;
+            /* Create a shaky, glitch effect */
+            animation: glitch-color 0.5s infinite alternate; 
+        }
+
+        /* GLITCH ANIMATION */
+        @keyframes glitch-color {
+            0% { color: #ffff00; }
+            50% { color: #ff00ff; }
+            100% { color: #00ff00; }
+        }
+
+        /* NAVIGATION - CHAOTIC LINKS */
+        nav {
+            background-color: #333333; /* Dark Grey Bar */
+            text-align: center;
+            padding: 5px 0;
+            border-bottom: 3px solid #ffff00;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px 15px;
+            display: inline-block;
+            transition: background-color 0.1s;
+            /* Crazy hover effect */
+            transform: skewX(-10deg); 
+        }
+
+        nav a:hover {
+            background-color: #ff0000;
+            color: #ffff00;
+            transform: skewX(0deg); /* Straightens on hover */
+        }
+        
+        /* MAIN CONTENT LAYOUT - UNCONVENTIONAL GRID */
+        main {
+            max-width: 1300px;
+            margin: 20px auto;
+            padding: 0 10px;
+            display: grid;
+            /* Uneven, asymmetric columns */
+            grid-template-columns: 1fr 3fr 1fr; 
+            gap: 20px;
+        }
+
+        /* ARTICLE STYLES - HIGH IMPACT */
+        .article {
+            background-color: #ffffff; /* White background for contrast */
+            padding: 25px;
+            border: 4px dashed #ff0000; /* Dashed, aggressive border */
+            margin-bottom: 20px;
+            box-shadow: 15px 15px 0px #000000; /* Heavy black shadow */
+            transform: rotate(1deg); /* Slight tilt for chaos */
+        }
+        
+        .article h2 {
+            font-size: 2.5em;
+            color: #0000ff; /* Blue headline for contrast */
+            margin-top: 0;
+            border-bottom: 4px solid #0000ff;
+            text-shadow: 2px 2px #ffff00;
+            text-transform: uppercase;
+        }
+
+        .article h3 {
+            font-size: 1.8em;
+            background: #000;
+            color: #fff;
+            display: inline-block;
+            padding: 5px;
+            transform: skewX(-15deg);
+        }
+
+        .article p {
+            font-family: Arial, sans-serif; /* Less aggressive font for body */
+            color: #000;
+            font-size: 1.1em;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        .highlight-box {
+            background: #ffff00;
+            border: 3px solid #000;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 1.2em;
+            text-align: center;
+            animation: pulse-bg 2s infinite;
+        }
+
+        @keyframes pulse-bg {
+            0% { background-color: #ffff00; }
+            50% { background-color: #ff9900; }
+            100% { background-color: #ffff00; }
+        }
+
+        .read-more {
+            display: block;
+            background-color: #000000;
+            color: #ff0000;
+            padding: 15px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1.5em;
+            margin-top: 20px;
+            text-transform: uppercase;
+            /* Pulsing Button effect */
+            animation: pulse-border 0.2s infinite; 
+        }
+
+        @keyframes pulse-border {
+            0% { border: 4px solid #ff0000; transform: scale(1); }
+            50% { border: 4px solid #ffffff; transform: scale(1.02); }
+            100% { border: 4px solid #ff0000; transform: scale(1); }
+        }
+        
+        /* SIDEBARS - OVERLOADED INFO */
+        .sidebar {
+            background-color: #000000;
+            color: #ffff00;
+            padding: 15px;
+            border: 3px solid #ff0000;
+            text-align: center;
+            height: fit-content;
+        }
+        
+        .sidebar h3 {
+            color: #ffffff;
+            font-size: 1.5em;
+            margin-top: 0;
+            border-bottom: 2px dashed #fff;
+            padding-bottom: 10px;
+        }
+
+        .stat-box {
+            border: 2px solid #fff;
+            margin: 10px 0;
+            padding: 10px;
+            background: #333;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            color: #00ff00;
+            display: block;
+        }
+
+        /* FOOTER - LOUD CLOSURE */
+        footer {
+            background-color: #ff0000;
+            color: #000000;
+            text-align: center;
+            padding: 20px 0;
+            font-weight: bold;
+            clear: both;
+            border-top: 5px solid #000;
+            margin-top: 50px;
+        }
+
+        /* Responsive for Mobile */
+        @media (max-width: 768px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>ASTRA NEWS</h1>
+        <h2 style="font-size: 1.5em; margin-top: -10px; color: #fff;">SPECIAL REPORT: VISION 2047</h2>
+    </header>
+
+    <nav>
+        <a href="index.html">🏠 HOME</a> <!-- Assuming previous file is index.html -->
+        <a href="livet.html">LIVE TRACKER</a>
+        <a href="bjpn.html">BJP NEWS</a>
+        <a href="twitter.html">TWITTER NEWS</a>
+        <a href="https://arushinind.github.io/">OFFICIAL</a>
+    </nav>
+
+    <main>
+        
+        <!-- LEFT SIDEBAR: KEY STATS -->
+        <aside class="sidebar">
+            <h3>⚡ FAST FACTS</h3>
+            <div class="stat-box">
+                <span class="stat-number">2047</span>
+                TARGET YEAR FOR "VIKSIT BHARAT"
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">$30T</span>
+                PROJECTED ECONOMY SIZE
+            </div>
+            <div class="stat-box">
+                <span class="stat-number">#1</span>
+                GLOBAL SUPERPOWER GOAL
+            </div>
+            <p style="margin-top: 20px; color: #ff0000;">🚨 "We will not stop. We will not tire." - PM Modi</p>
+        </aside>
+
+        <!-- CENTER CONTENT: THE VISION ARTICLE -->
+        <section id="center-content">
+            <div class="article">
+                <h2>🇮🇳 THE BLUEPRINT: VIKSIT BHARAT 2047</h2>
+                
+                <div class="highlight-box">
+                    "The era of dependence is OVER. The era of DOMINANCE begins now."
+                </div>
+
+                <h3>1. TOTAL DEFENSE INDIGENIZATION</h3>
+                <p>PM Modi has made it clear: <strong>NO MORE IMPORTED WEAPONS.</strong> <br>
+                The vision mandates 100% local production of fighter jets (TEJAS MK2, AMCA), submarines, and missiles. As seen with the recent "Operation Sindoor" success, indigenous tech is the backbone of New India. The Defense Corridor in UP and Tamil Nadu is set to become the "World's Forge".</p>
+
+                <h3>2. THE $30 TRILLION ECONOMY</h3>
+                <p>Forget $5 Trillion. The sights are now set on <strong>$30 Trillion by 2047.</strong><br>
+                The roadmap includes massive scaling of Digital Infrastructure, making the Rupee a global trade currency, and dominating the Global South supply chain.</p>
+
+                <div style="background: #000; color: #fff; padding: 10px; margin: 10px 0; transform: rotate(-2deg);">
+                    🔥 "From the Moon (Chandrayaan) to the Sun (Aditya), India's flag is everywhere!"
+                </div>
+
+                <h3>3. TECH & INFRASTRUCTURE BLITZKRIEG</h3>
+                <p>The Bullet Train is just the start. The vision includes:</p>
+                <ul style="list-style-type: square; font-weight: bold;">
+                    <li>📍 100 New Smart Cities</li>
+                    <li>📍 6G Technology Leadership by 2030</li>
+                    <li>📍 Global Semiconductor Hub (Gujarat & Assam plants)</li>
+                </ul>
+
+                <h3>4. CULTURAL RENAISSANCE</h3>
+                <p>Viksit Bharat isn't just concrete and chips. It's about <strong>Sanatan Dharma</strong> regaining its global glory. The renovation of Kashi, Ayodhya, and Ujjain are merely the first steps in establishing India as the "Vishwa Guru" (World Teacher).</p>
+
+                <a href="https://www.narendramodi.in/viksitbharat" class="read-more">READ THE FULL WHITE PAPER &raquo;</a>
+            </div>
+
+            <div class="article" style="transform: rotate(-1deg); border-color: #0000ff;">
+                <h2>🎥 WATCH: THE PLEDGE</h2>
+                <p>PM Modi addressing the youth on the ramparts of the Red Fort, declaring the "Panch Pran" (5 Pledges) for 2047.</p>
+                <div style="background: #000; height: 200px; display: flex; align-items: center; justify-content: center; color: #fff;">
+                    [VIDEO PLACEHOLDER: MODI SPEECH]
+                </div>
+                <a href="https://www.youtube.com/user/narendramodi" class="read-more" style="background: #ff0000; color: #fff;">OPEN YOUTUBE &raquo;</a>
+            </div>
+
+        </section>
+
+        <!-- RIGHT SIDEBAR: QUOTES & REACTIONS -->
+        <aside class="sidebar">
+            <h3>🌍 WORLD REACTS</h3>
+            
+            <div style="border-bottom: 1px solid #fff; padding-bottom: 10px; margin-bottom: 10px;">
+                <p><strong>🇺🇸 US President:</strong><br> "India is not just rising; it has arrived. Modi's vision is terrifyingly ambitious."</p>
+            </div>
+
+            <div style="border-bottom: 1px solid #fff; padding-bottom: 10px; margin-bottom: 10px;">
+                <p><strong>🇷🇺 Vladimir Putin:</strong><br> "My friend Modi knows what his people need. Russia stands with Viksit Bharat."</p>
+            </div>
+
+            <div style="border-bottom: 1px solid #fff; padding-bottom: 10px; margin-bottom: 10px;">
+                <p><strong>🇫🇷 Macron:</strong><br> "The future of technology is written in Hindi."</p>
+            </div>
+
+            <div style="margin-top: 20px; background: #fff; color: #000; padding: 5px;">
+                <strong>POLL:</strong><br>
+                Will India achieve this by 2047?<br>
+                <span style="font-size: 1.5em; color: green;">YES: 98%</span><br>
+                <span style="font-size: 0.8em; color: red;">NO: 2%</span>
+            </div>
+        </aside>
+
+    </main>
+
+    <footer>
+        <p>JAI HIND | VANDE MATARAM</p>
+        <p>© 2025 ASTRA NEWS AND TECHNOLOGY</p>
+    </footer>
+
+</body>
+</html>
