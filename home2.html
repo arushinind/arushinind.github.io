@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTRA</title>
+
+    <style>
+        /* FONT IMPORT - Using Arial Black for maximum visual noise */
+        @import url('https://fonts.googleapis.com/css2?family=Arial+Black&display=swap');
+
+        /* BASIC RESET */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* BODY STYLES - LOUD BACKGROUND & FONT */
+        body {
+            font-family: 'Arial Black', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #def701; /* Neon Yellow Background */
+            color: #ec0606; /* Bright Red Text */
+            line-height: 1.2;
+        }
+
+        /* HEADER - AGGRESSIVE BAR */
+        header {
+            background-color: #000000; /* Solid Black */
+            color: #ffffff; /* White Text */
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 5px solid #ff0000; /* Red Border */
+        }
+        
+        header h1 {
+            font-size: 3.5em;
+            margin: 0;
+            text-transform: uppercase;
+            /* Create a shaky, glitch effect */
+            animation: glitch-color 0.5s infinite alternate; 
+        }
+
+        /* GLITCH ANIMATION */
+        @keyframes glitch-color {
+            0% { color: #ffff00; }
+            50% { color: #ff00ff; }
+            100% { color: #00ff00; }
+        }
+
+        /* NAVIGATION - CHAOTIC LINKS */
+        nav {
+            background-color: #333333; /* Dark Grey Bar */
+            text-align: center;
+            padding: 5px 0;
+            border-bottom: 3px solid #ffff00;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px 15px;
+            display: inline-block;
+            transition: background-color 0.1s;
+            /* Crazy hover effect */
+            transform: skewX(-10deg); 
+        }
+
+        nav a:hover {
+            background-color: #ff0000;
+            color: #ffff00;
+            transform: skewX(0deg); /* Straightens on hover */
+        }
+        
+        /* MAIN CONTENT LAYOUT - UNCONVENTIONAL GRID */
+        main {
+            max-width: 1300px;
+            margin: 20px auto;
+            padding: 0 10px;
+            display: grid;
+            /* Uneven, asymmetric columns */
+            grid-template-columns: 1fr 2fr 1fr; 
+            gap: 20px;
+        }
+
+        /* ARTICLE STYLES - HIGH IMPACT */
+        .article {
+            background-color: #ffffff; /* White background for contrast */
+            padding: 15px;
+            border: 4px dashed #ff0000; /* Dashed, aggressive border */
+            margin-bottom: 20px;
+            box-shadow: 10px 10px 0px #000000; /* Heavy black shadow */
+            transform: rotate(-1deg); /* Slight tilt for chaos */
+        }
+        
+        .article h2 {
+            font-size: 2em;
+            color: #0000ff; /* Blue headline for contrast */
+            margin-top: 0;
+            border-bottom: 2px solid #0000ff;
+            text-shadow: 1px 1px #ffff00;
+        }
+
+        .article p {
+            font-family: Arial, sans-serif; /* Less aggressive font for body */
+            color: #333;
+        }
+
+        .read-more {
+            display: block;
+            background-color: #000000;
+            color: #ff0000;
+            padding: 8px;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 10px;
+            /* Pulsing Button effect */
+            animation: pulse-border 1.5s infinite; 
+        }
+
+        @keyframes pulse-border {
+            0% { border: 2px solid #ff0000; }
+            50% { border: 2px solid #ffff00; }
+            100% { border: 2px solid #ff0000; }
+        }
+        
+        /* SIDEBARS - OVERLOADED INFO */
+        .sidebar {
+            background-color: #000000;
+            color: #ffff00;
+            padding: 15px;
+            border: 3px solid #ff0000;
+            text-align: center;
+        }
+        
+        .sidebar h3 {
+            color: #ffffff;
+            font-size: 1.5em;
+            margin-top: 0;
+        }
+
+        /* FOOTER - LOUD CLOSURE */
+        footer {
+            background-color: #ff0000;
+            color: #000000;
+            text-align: center;
+            padding: 15px 0;
+            font-weight: bold;
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>ASTRA NEWS AND TECHNOLOGY</h1>
+    </header>
+
+    <nav>
+        <a href="livet.html">LIVE TRACKER</a>
+        <a href="bjpn.html">BJP NEWS</a>
+        <a href="twitter.html">TWITTER NEWS</a>
+        <a href="https://arushinind.github.io/">REFRESH</a>
+    </nav>
+
+    <main>
+        
+        <aside class="sidebar">
+            <h3>🔴 Latest Updates</h3>
+            <p>🚨 Union Science & Technology Minister announces a nationwide innovation challenge focused on deep tech innovations that can impact atleast 1000 lives & can accelerate India’s journey towards Aatmanirbhar Bharat 🇮🇳
+
+Minister will personally mentor the top innovators & help in scaling up through Department of Science and Technology. Good opportunity for the Gen Z innovators.</p>
+            <p>🚨Prime Minister Modi's massive roadshow in Coimbatore..! 
+
+People of Tamilnadu chanted "Modi Modi" and welcomed PM with flower showers and dances..</p>
+            <p>🚨Pakistan takes responsibility for Delhi blast
+
+POK Ex PM Anwarul Haq says “I earlier said that if you keep bleeding Balochistan, we'll hit India from Red Fort to the forests of Kashmir and we've done it, they're still unable to count bodies."</p>
+            <p>🚨 BIG! India’s first bullet train is set to run the 100 km Surat–Vapi stretch by August 2027.</p>
+            <p>🚨 BIG STATEMENT by Home Minister Amit Shah
+
+“We will HUNT DOWN the CULPRITS of the Delhi bomb blast even from the depths of the netherworld (Pataal) and ensure they receive the STRICTEST PUNISHMENT.”</p>
+            <p>🚨Big Breaking 
+A close friend of Putin, Nikolai Patrushev meets Modiji in India while Subramanyam Jaishankar saab meets Russian President Vladimir Putin in Moscow Today! 
+
+I can give you a hint, Kisi desh ki ga*n marne wali hai very sooon 🔥
+</p>
+            <p>🚨 BIG BREAKING
+
+272 eminent citizens including 16 judges, 123 retired bureaucrats with 14 ambassadors, and 133 retired armed forces officers have released an open letter. 
+
+They condemn LoP Rahul Gandhi and the Congress Party for trying to tarnish institutions like the Election Commission. </p>
+           
+        </aside>
+
+        <section id="center-content">
+            <div class="article">
+                <h2>🚨YOGI ADITHYANATH</h2>
+                <p>📍Ayodhya: UP CM Yogi Adityanath offers prayers at Shri Ram Janmbhoomi Mandir 🙏
+                    — Unapologetic Sanatani CM 🚩
+                </p>
+                <a href="https://x.com/i/status/1990999215523463629" class="read-more">SEE THE VIDEO &raquo;</a>
+
+
+
+
+
+            </div>
+                    
+            <div class="article">
+                <h2> 😎LAWRENCE IN POWER !!</h2>
+                <P>
+Big Breaking 🚨 
+Lawrence Bishnoi is in same jail where Terrorist Dr Ahmed got beaten in Sabarmati Jail, Gujarat! 
+
+Some sources said Ahmed was crying last night bcz someone put lathi inside him 🔥</P>
+ <a href="https://x.com/i/status/1991074792691171561" class="read-more">SEE THE VIDEO &raquo;</a></div>
+<div class="article">
+                <h2> 🔥INDIA AND RUSSIA'S DIPLOMACY </h2>
+                <p>🚨Russia offers Su-57 fighter jet production in India, with full tech transfer ahead of President Putin's visit.</p>
+                <a href="https://pbs.twimg.com/media/G6FbHEwbMAYjL7L?format=jpg&name=small" class="read-more">SEE THE PHOTO &raquo;</a>
+            </div>
+
+            <div class="article">
+                <h2>💥 DELHI IS HEALING</h2>
+                <p> 🚨 Delhi Govt to re-develop Sahibi river 💙</p>
+                <a href="https://pbs.twimg.com/media/G6GcMFbaUAAlYo2?format=jpg&name=small" class="read-more">DELHI RIVER IMAGE &raquo;</a>
+            </div>
+
+            <div class="article">
+                <h2>🏹 BIHAR GOVERNMENT </h2>
+                <p>No change in Bihar-BJP leadership.
+Samrat Chaudhary and Vijay Sinha to continue as Dy-CMs...
+</p>
+                <a href="https://www.google.com/search?q=bihar&ie=UTF-8" class="read-more">LOOK IN BIHAR &raquo;</a>
+            </div>
+
+        </section>
+
+        <aside class="sidebar">
+            <h3>🔥 LATEST TWEETS</h3>
+            <ul>
+                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">🚨 SHOCKER from Bengaluru <br><br>Fake officials stopped a cash-van, lifted ₹7 crore, ditched the crew near a flyover, and vanished in an Innova.<br><br>👉 Massive citywide hunt underway. <a href="https://t.co/G2YuugdINU">pic.twitter.com/G2YuugdINU</a></p>&mdash; Megh Updates 🚨™ (@MeghUpdates) <a href="https://twitter.com/MeghUpdates/status/1991169595227386350?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">🚨 BIG! Russia proposes building ship-building &amp; repair clusters in Mumbai &amp; Chennai with India. <a href="https://t.co/3C6mweLSVh">pic.twitter.com/3C6mweLSVh</a></p>&mdash; Megh Updates 🚨™ (@MeghUpdates) <a href="https://twitter.com/MeghUpdates/status/1991117361014038835?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">NITISH KUMAR : We are receiving a lot of support from PM Modi and centre.</p>&mdash; News Algebra (@NewsAlgebraIND) <a href="https://twitter.com/NewsAlgebraIND/status/1991141711536656814?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+               <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Temple servitors said the father had brought his son straight from the hospital.<br><br>Many devotees and temple staff also silently joined in prayer.<br><br>In a moment that many described as miraculous, the ailing boy reportedly moved his head. <a href="https://t.co/Qem2gPJIz2">https://t.co/Qem2gPJIz2</a> <a href="https://t.co/Bb9dKdLwZ1">pic.twitter.com/Bb9dKdLwZ1</a></p>&mdash; News Algebra (@NewsAlgebraIND) <a href="https://twitter.com/NewsAlgebraIND/status/1991144329654468742?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <li style="list-style: none; margin: 10px 0;"><a href="https://arushinind.github.io/" style="color: #ff0000; text-decoration: none; background: #ffff00; padding: 5px; display: block;">REFRESH TWEETS</a></li>
+               
+            </ul>
+        </aside>
+
+    </main>
+
+    <footer>
+        <p>THANKS FOR READING</p>
+        <p>© 2025 ASTRA NEWS AND TECHNOLOGY</p>
+    </footer>
+
+</body>
+
+</html>
+
+

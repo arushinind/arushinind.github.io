@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASTRA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['Space Grotesk', 'monospace'],
+                    },
+                    colors: {
+                        'accent': '#22d3ee', // Cyan-400
+                        'dark-bg': '#0a0a0a',
+                        'card-bg': '#171717',
+                        'glass': 'rgba(255, 255, 255, 0.05)',
+                    },
+                    animation: {
+                        'ticker': 'ticker 30s linear infinite',
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        ticker: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Text Selection */
+        ::selection {
+            background: #22d3ee;
+            color: #000;
+        }
+
+        /* Image Hover Effect Classes */
+        .img-zoom-container {
+            overflow: hidden;
+        }
+        .img-zoom {
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .group:hover .img-zoom {
+            transform: scale(1.05);
+        }
+
+        /* Loader */
+        .loader {
+            border-top-color: #22d3ee;
+            -webkit-animation: spinner 1.5s linear infinite;
+            animation: spinner 1.5s linear infinite;
+        }
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Glass Blur */
+        .glass-panel {
+            background: rgba(23, 23, 23, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body class="bg-dark-bg text-gray-200 antialiased overflow-x-hidden">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Menu Trigger (Mobile) -->
+                <div class="flex items-center md:hidden">
+                    <button class="text-gray-300 hover:text-white p-2 transition-colors">
+                        <i class="ph ph-list text-2xl"></i>
+                    </button>
+                </div>
+
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="https://arushinind.github.io/" class="font-serif text-3xl font-bold tracking-tighter text-white hover:text-accent transition-colors duration-300">
+                        ASTRA.
+                    </a>
+                </div>
+
+                <!-- Desktop Links -->
+                <div class="hidden md:flex space-x-12">
+                    <a href="https://arushinind.github.io/livet.html" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">LIVE TRACKER</a>
+                    <a href="https://arushinind.github.io/bjpn.html" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">POLITICS</a>
+                    <a href="https://arushinind.github.io/twitter.html" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">TWEETS</a>
+                    <a href="https://arushinind.github.io/" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">REFRESH</a>
+                    <a href="home2.html" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">ASTRA PREMIUM</a>
+                </div>
+                </div>
+
+                <!-- Right Icons -->
+                <div class="flex items-center space-x-6">
+                    <div class="hidden md:block text-xs font-mono text-gray-500" id="current-date"></div>
+                    <button class="text-gray-300 hover:text-accent transition-colors">
+                        <i class="ph ph-magnifying-glass text-xl"></i>
+                    </button>
+                    <button class="text-gray-300 hover:text-accent transition-colors relative">
+                        <i class="ph ph-bell text-xl"></i>
+                        <span class="absolute -top-1 -right-1 h-2 w-2 bg-accent rounded-full animate-pulse"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breaking News Ticker -->
+    <div class="fixed bottom-0 w-full z-40 bg-accent text-black py-2 font-mono text-xs uppercase tracking-widest border-t border-black overflow-hidden">
+        <div class="whitespace-nowrap animate-ticker w-full" id="ticker-content">
+            <!-- Content injected via JS -->
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="pt-20 pb-16">
+
+        <!-- Hero Section -->
+        <section class="relative w-full h-[85vh] md:h-[70vh] flex items-center justify-center overflow-hidden mb-16 group">
+            <div class="absolute inset-0 img-zoom-container">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301&auto=format&fit=crop" 
+                     alt="Hero Background" 
+                     class="w-full h-full object-cover opacity-60 img-zoom">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-bg via-dark-bg/50 to-transparent"></div>
+            
+            <div class="relative z-10 max-w-7xl mx-auto px-4 text-center md:text-left w-full mt-20">
+                <span class="inline-block py-1 px-3 border border-white/30 rounded-full text-xs font-mono uppercase tracking-widest text-white mb-6 backdrop-blur-sm animate-slide-up" style="animation-delay: 0.1s;">
+                    Featured Story
+                </span>
+                <h1 class="text-5xl md:text-8xl font-serif font-bold text-white leading-tight mb-6 animate-slide-up max-w-4xl" style="animation-delay: 0.2s;">
+                    The Future of India Is in Safe Hands
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 max-w-2xl mb-8 animate-slide-up font-light" style="animation-delay: 0.3s;">
+                    NARENDRA MODI'S VISION FOR A TRANSFORMED NATION BY 2030
+                </p>
+                <div class="flex flex-col md:flex-row items-center gap-4 animate-slide-up" style="animation-delay: 0.4s;">
+                    <button class="px-8 py-3 bg-white text-black font-mono text-sm uppercase tracking-wider hover:bg-accent transition-colors duration-300 w-full md:w-auto">
+                        Read Article
+                    </button>
+                    <span class="text-sm text-gray-400 font-mono">By Arush Shetty • 6 min read</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter / Categories -->
+        <div class="max-w-7xl mx-auto px-4 mb-12">
+            <div class="flex flex-wrap gap-4 justify-center md:justify-start border-b border-gray-800 pb-6" id="category-filters">
+                <button class="filter-btn active text-sm font-mono uppercase tracking-widest px-4 py-2 text-accent border-b-2 border-accent transition-all" data-category="all">All</button>
+                <button class="filter-btn text-sm font-mono uppercase tracking-widest px-4 py-2 text-gray-500 hover:text-white border-b-2 border-transparent hover:border-gray-700 transition-all" data-category="technology">LATEST UPDATES</button>
+                <button class="filter-btn text-sm font-mono uppercase tracking-widest px-4 py-2 text-gray-500 hover:text-white border-b-2 border-transparent hover:border-gray-700 transition-all" data-category="design">DEVELOPMENT</button>
+                <button class="filter-btn text-sm font-mono uppercase tracking-widest px-4 py-2 text-gray-500 hover:text-white border-b-2 border-transparent hover:border-gray-700 transition-all" data-category="environment">ELECTION</button>
+                <button class="filter-btn text-sm font-mono uppercase tracking-widest px-4 py-2 text-gray-500 hover:text-white border-b-2 border-transparent hover:border-gray-700 transition-all" data-category="art">TWITTER</button>
+            </div>
+        </div>
+
+        <!-- News Grid -->
+        <div class="max-w-7xl mx-auto px-4 mb-20">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="news-grid">
+                <!-- Items injected via JS -->
+            </div>
+            
+            <!-- Load More -->
+            <div class="mt-16 text-center">
+                <button id="load-more-btn" class="px-8 py-3 border border-gray-700 text-white font-mono text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-all duration-300">
+                    Load More Stories
+                </button>
+                
+            </div>
+        </div>
+
+        <!-- Newsletter Section -->
+        <section class="border-y border-gray-800 bg-card-bg py-20 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50"></div>
+            <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+                <i class="ph ph-paper-plane-tilt text-5xl text-accent mb-6 inline-block"></i>
+                <h2 class="text-3xl md:text-4xl font-serif font-bold text-white mb-4">Astra Intelligence</h2><br>
+                <p class="text-gray-400 mb-8 font-light">JOIN US NOW.</p>
+                
+                <form class="flex flex-col md:flex-row gap-4 max-w-md mx-auto" onsubmit="event.preventDefault(); alert('Subscribed! Welcome to NØRTH.');">
+                    <input type="email" placeholder="Enter your email address" class="flex-1 bg-black/30 border border-gray-700 px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all font-mono text-sm">
+                    <button type="submit" class="bg-white text-black px-8 py-3 font-mono text-sm uppercase tracking-widest hover:bg-accent transition-colors duration-300">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+            <!-- Decorative Elements -->
+            <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-accent/5 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -right-20 -top-20 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black py-12 border-t border-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
+                <div>
+                    <a href="#" class="font-serif text-2xl font-bold text-white tracking-tighter">ASTRA.</a>
+                    <p class="text-gray-500 text-sm mt-2 font-mono">Est. 2025 • India </p>
+                </div>
+                <div class="flex space-x-6 mt-6 md:mt-0">
+                    <a href="https://www.instagram.com/arushshetty__/" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-instagram-logo text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-twitter-logo text-xl"></i></a>
+                    <a href="https://www.linkedin.com/in/arush-shetty-2a39ba377/" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-linkedin-logo text-xl"></i></a>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 border-t border-gray-900 pt-8">
+                <div>
+                    <h4 class="text-white font-mono text-xs uppercase tracking-widest mb-4">Sections</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="https://www.google.com/search?q=world+news&ie=UTF-8" class="hover:text-accent transition-colors">World News</a></li>
+                        <li><a href="https://www.google.com/search?q=technology+news&sxsrf=AE3TifP1uCmWxOwO8SMCw_9lhMeUhL3pxQ%3A1763598846061" class="hover:text-accent transition-colors">Technology</a></li>
+                        <li><a href="https://www.google.com/search?q=design&sxsrf=AE3TifM0-_CYHnCbw7t9aB0X5YhixHwWEA%3A1763598862435" class="hover:text-accent transition-colors">Design</a></li>
+                        <li><a href="home2.html" class="hover:text-accent transition-colors">Premium</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-mono text-xs uppercase tracking-widest mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="https://github.com/arushinind" class="hover:text-accent transition-colors">About Us</a></li>
+                        <li><a href="https://github.com/arushinind" class="hover:text-accent transition-colors">Careers</a></li>
+                        <li><a href="https://github.com/arushinind" class="hover:text-accent transition-colors">Advertise</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-mono text-xs uppercase tracking-widest mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="https://github.com/arushinind" class="hover:text-accent transition-colors">Privacy Policy</a></li>
+                        <li><a href="https://github.com/arushinind" class="hover:text-accent transition-colors">Terms of Service</a></li>
+                        <li><a href="https://github.com/arushinind" class="hover:text-accent transition-colors">Cookie Settings</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-mono text-xs uppercase tracking-widest mb-4">Contact</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li>arushnitro@gmail.com</li>
+                        <li>https://github.com/arushinind</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center text-xs text-gray-700 font-mono">
+                &copy; 2025 ASTRA NEWS AND TECHNOLOGY. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data
+        const articles = [
+            {
+                id: 1,
+                category: 'politics',
+                title: 'INDI ALLIANCE',
+                excerpt: 'INDI Alliance over. Top sources say the Indian National Congress, led by the Gandhis, have decided to END the alliance. ',
+                author: 'Arush Shetty',
+                date: '2 hrs ago',
+                image: 'https://www.aljazeera.com/wp-content/uploads/2023/07/AP23199419571303-1689681056.jpg?resize=1920%2C1440',
+                featured: true
+            },
+            {
+                id: 2,
+                category: 'Politics',
+                title: 'Nitish Kumar Takes Oath as Bihar Chief Minister for Record 10th Time',
+                excerpt: 'Following the NDA landslide victory in the Bihar Assembly elections  chief Nitish Kumar is being sworn in today at Patna Gandhi Maidan. Prime Minister Narendra Modi and Home Minister Amit Shah are in attendance.',
+                author: 'Abhiram Aithal',
+                date: '4 hrs ago',
+                image: 'https://th-i.thgim.com/public/incoming/27sqxg/article70290072.ece/alternates/LANDSCAPE_1200/PTI11_17_2025_000142B.jpg',
+                featured: false
+            },
+            {
+                id: 3,
+                category: 'politics',
+                title: 'BJP Demands Arrest of DMK Functionary Over Alleged Threat to PM Modi',
+                excerpt: 'Tensions have spiked in Tamil Nadu after a DMK leader allegedly made threatening remarks against Prime Minister Modi ahead of his visit. The BJP has filed a formal complaint demanding immediate arrest, calling it a breakdown of law and order.',
+                author: 'Devang Shetty',
+                date: '5 hrs ago',
+        
+                image: 'https://akm-img-a-in.tosshub.com/indiatoday/images/story/202502/stalin-annamalai-065212183-16x9_0.png?VersionId=SsG15iSJIdSSSDvDb0fjKDg1lYezY1Bz&size=690:388',
+                featured: false
+            },
+            {
+                id: 4,
+                category: 'art',
+                title: 'Digital Sculptures in Augmented Reality',
+                excerpt: 'Museums in Paris are replacing physical exhibits with high-fidelity AR installations visitors can take home.',
+                author: 'Arush Shetty',
+                date: '8 hrs ago',
+                image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop',
+                featured: false
+            },
+            {
+                id: 5,
+                category: 'technology',
+                title: 'Neuralink Interfaces for Creatives',
+                excerpt: 'How direct brain-to-canvas technology is enabling paralyzed artists to paint masterpieces again.',
+                author: 'Arush Shetty',
+                date: '12 hrs ago',
+                image: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2070&auto=format&fit=crop',
+                featured: false
+            },
+            {
+                id: 6,
+                category: 'design',
+                title: 'Sustainable Typography',
+                excerpt: 'Eco-branding is the new standard. How ink-saving typefaces are saving millions in printing costs.',
+                author: 'Arush Shetty',
+                date: '1 day ago',
+                image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2000&auto=format&fit=crop',
+                featured: false
+            }
+        ];
+
+        const tickerItems = [
+            "BREAKING: Omar Abdullah Criticizes Blanket Suspicion After Red Fort Blast",
+            "MARKETS: Asia stocks dither as tech remains fragile before Nvidia earnings",
+            "WEATHER: Good Weather in Kundapura",
+            "TECH: Apple announces finalists for the 2025 App Store Awards",
+            "CULTURE: Bareilly to celebrate ‘cultural renaissance’ with first-ever Nath Nagri Mahotsav "
+        ];
+
+        // Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDate();
+            renderTicker();
+            renderArticles(articles);
+            setupFilters();
+            setupScrollEffect();
+        });
+
+        // Render Date
+        function renderDate() {
+            const dateElement = document.getElementById('current-date');
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateElement.textContent = new Date().toLocaleDateString('en-US', options).toUpperCase();
+        }
+
+        // Render Ticker
+        function renderTicker() {
+            const tickerContent = document.getElementById('ticker-content');
+            // Duplicate items to ensure smooth loop
+            const items = [...tickerItems, ...tickerItems, ...tickerItems].map(item => 
+                `<span class="mx-8 inline-block"><span class="text-accent font-bold mr-2">///</span> ${item}</span>`
+            ).join('');
+            tickerContent.innerHTML = items;
+        }
+
+        // Render Articles
+        function renderArticles(data) {
+            const grid = document.getElementById('news-grid');
+            grid.innerHTML = '';
+
+            data.forEach((article, index) => {
+                // Stagger animation delay based on index
+                const delay = index * 100;
+                
+                const card = document.createElement('div');
+                card.className = `group flex flex-col bg-transparent border border-gray-800 hover:border-gray-600 transition-all duration-300 animate-slide-up overflow-hidden`;
+                card.style.animationDelay = `${delay}ms`;
+                
+                card.innerHTML = `
+                    <div class="relative h-64 w-full overflow-hidden">
+                        <div class="absolute top-4 left-4 z-10">
+                             <span class="bg-black/60 backdrop-blur-md text-white text-[10px] font-mono uppercase tracking-widest px-2 py-1 border border-white/10">
+                                ${article.category}
+                            </span>
+                        </div>
+                        <img src="${article.image}" alt="${article.title}" class="w-full h-full object-cover img-zoom">
+                        <div class="absolute inset-0 bg-gradient-to-t from-card-bg to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-card-bg/50 backdrop-blur-sm">
+                        <div class="flex items-center text-xs text-gray-500 font-mono mb-3">
+                            <span class="text-accent mr-2">●</span> ${article.date}
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-white mb-3 leading-tight group-hover:text-accent transition-colors">
+                            ${article.title}
+                        </h3>
+                        <p class="text-gray-400 text-sm leading-relaxed mb-6 flex-grow font-light line-clamp-3">
+                            ${article.excerpt}
+                        </p>
+                        <div class="flex items-center justify-between pt-4 border-t border-gray-800">
+                            <span class="text-xs font-mono text-gray-300 uppercase tracking-wide">${article.author}</span>
+                            <button class="text-gray-500 hover:text-white transition-colors">
+                                <i class="ph ph-arrow-right text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Setup Filters
+        function setupFilters() {
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove active class from all
+                    buttons.forEach(b => {
+                        b.classList.remove('text-accent', 'border-accent');
+                        b.classList.add('text-gray-500', 'border-transparent');
+                    });
+                    
+                    // Add active class to clicked
+                    btn.classList.remove('text-gray-500', 'border-transparent');
+                    btn.classList.add('text-accent', 'border-accent');
+                    
+                    const category = btn.getAttribute('data-category');
+                    
+                    // Filter Data
+                    if (category === 'all') {
+                        renderArticles(articles);
+                    } else {
+                        const filtered = articles.filter(a => a.category === category);
+                        renderArticles(filtered);
+                    }
+                });
+            });
+        }
+
+        // Scroll Effect for Navbar
+        function setupScrollEffect() {
+            const nav = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    nav.classList.add('shadow-lg');
+                    nav.classList.add('bg-black/90');
+                } else {
+                    nav.classList.remove('shadow-lg');
+                    nav.classList.remove('bg-black/90');
+                }
+            });
+        }
+
+        // Load More Logic
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        loadMoreBtn.addEventListener('click', () => {
+            loadMoreBtn.innerHTML = '<div class="loader w-4 h-4 rounded-full border-2 border-gray-600"></div>';
+            
+            setTimeout(() => {
+                // Add duplicate articles to simulate loading more
+                const newArticles = articles.map(a => ({...a, id: a.id + 100}));
+                renderArticles([...articles, ...newArticles]);
+                loadMoreBtn.innerHTML = 'NO MORE STORIES';
+                loadMoreBtn.disabled = true;
+                loadMoreBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }, 1000);
+        });
+
+    </script>
+</body>
+</html>
