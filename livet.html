@@ -3,421 +3,265 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASTRA LIVE TRACKER</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>ASTRA</title>
+
     <style>
-        /* Base Styling for the "unhuman" look */
-        @import url('https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap');
-        
-        :root {
-            --neon-green: #00ff41;
-            --neon-cyan: #00ffff;
-            --glitch-offset: 3px;
+        /* FONT IMPORT - Using Arial Black for maximum visual noise */
+        @import url('https://fonts.googleapis.com/css2?family=Arial+Black&display=swap');
+
+        /* BASIC RESET */
+        * {
+            box-sizing: border-box;
         }
 
+        /* BODY STYLES - LOUD BACKGROUND & FONT */
         body {
-            font-family: 'Major Mono Display', monospace;
-            background-color: #0d0d0d;
-            color: var(--neon-green);
-            overflow-x: hidden;
-            border: 5px solid var(--neon-cyan);
-            animation: border-flicker 1s infinite alternate;
+            font-family: 'Arial Black', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #def701; /* Neon Yellow Background */
+            color: #ec0606; /* Bright Red Text */
+            line-height: 1.2;
         }
 
-        /* Glitch Effect - Applied via JS */
-        .glitch-text {
-            text-shadow: 
-                var(--glitch-offset) 0 0 rgba(255, 0, 0, 0.7),
-                calc(var(--glitch-offset) * -1) 0 0 rgba(0, 0, 255, 0.7);
-            animation: text-flicker 0.1s infinite alternate;
+        /* HEADER - AGGRESSIVE BAR */
+        header {
+            background-color: #000000; /* Solid Black */
+            color: #ffffff; /* White Text */
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 5px solid #ff0000; /* Red Border */
+        }
+        
+        header h1 {
+            font-size: 3.5em;
+            margin: 0;
+            text-transform: uppercase;
+            /* Create a shaky, glitch effect */
+            animation: glitch-color 0.5s infinite alternate; 
         }
 
-        @keyframes text-flicker {
-            0% { opacity: 0.9; transform: skewX(1deg); }
-            50% { opacity: 1; transform: skewX(0deg); }
-            100% { opacity: 0.9; transform: skewX(-1deg); }
+        /* GLITCH ANIMATION */
+        @keyframes glitch-color {
+            0% { color: #ffff00; }
+            50% { color: #ff00ff; }
+            100% { color: #00ff00; }
         }
 
-        @keyframes border-flicker {
-            0% { box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-green); }
-            100% { box-shadow: 0 0 10px var(--neon-green), 0 0 15px var(--neon-cyan); }
+        /* NAVIGATION - CHAOTIC LINKS */
+        nav {
+            background-color: #333333; /* Dark Grey Bar */
+            text-align: center;
+            padding: 5px 0;
+            border-bottom: 3px solid #ffff00;
         }
 
-        /* Continuous Scrolling Marquee */
-        .marquee-container {
-            overflow: hidden;
-            width: 100%;
-            height: 30px;
-            white-space: nowrap;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-        }
-
-        .marquee-content {
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2em;
+            padding: 10px 15px;
             display: inline-block;
-            padding-left: 100%;
-            animation: marquee 30s linear infinite;
+            transition: background-color 0.1s;
+            /* Crazy hover effect */
+            transform: skewX(-10deg); 
         }
 
-        @keyframes marquee {
-            0%   { transform: translate(0, 0); }
-            100% { transform: translate(-100%, 0); }
+        nav a:hover {
+            background-color: #ff0000;
+            color: #ffff00;
+            transform: skewX(0deg); /* Straightens on hover */
+        }
+        
+        /* MAIN CONTENT LAYOUT - UNCONVENTIONAL GRID */
+        main {
+            max-width: 1300px;
+            margin: 20px auto;
+            padding: 0 10px;
+            display: grid;
+            /* Uneven, asymmetric columns */
+            grid-template-columns: 1fr 2fr 1fr; 
+            gap: 20px;
         }
 
-        /* Matrix Style Grid Background Simulation */
-        .matrix-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -10;
-            opacity: 0.1;
-            background: 
-                linear-gradient(to right, #00ff41 1px, transparent 1px) 0 0 / 15px 15px,
-                linear-gradient(to bottom, #00ff41 1px, transparent 1px) 0 0 / 15px 15px;
+        /* ARTICLE STYLES - HIGH IMPACT */
+        .article {
+            background-color: #ffffff; /* White background for contrast */
+            padding: 15px;
+            border: 4px dashed #ff0000; /* Dashed, aggressive border */
+            margin-bottom: 20px;
+            box-shadow: 10px 10px 0px #000000; /* Heavy black shadow */
+            transform: rotate(-1deg); /* Slight tilt for chaos */
+        }
+        
+        .article h2 {
+            font-size: 2em;
+            color: #0000ff; /* Blue headline for contrast */
+            margin-top: 0;
+            border-bottom: 2px solid #0000ff;
+            text-shadow: 1px 1px #ffff00;
         }
 
-        /* Rapid Data Stream Container */
-        .data-stream-item {
-            border-bottom: 1px dashed rgba(0, 255, 65, 0.3);
-            padding: 8px 0;
+        .article p {
+            font-family: Arial, sans-serif; /* Less aggressive font for body */
+            color: #333;
         }
 
+        .read-more {
+            display: block;
+            background-color: #000000;
+            color: #ff0000;
+            padding: 8px;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 10px;
+            /* Pulsing Button effect */
+            animation: pulse-border 1.5s infinite; 
+        }
+
+        @keyframes pulse-border {
+            0% { border: 2px solid #ff0000; }
+            50% { border: 2px solid #ffff00; }
+            100% { border: 2px solid #ff0000; }
+        }
+        
+        /* SIDEBARS - OVERLOADED INFO */
+        .sidebar {
+            background-color: #000000;
+            color: #ffff00;
+            padding: 15px;
+            border: 3px solid #ff0000;
+            text-align: center;
+        }
+        
+        .sidebar h3 {
+            color: #ffffff;
+            font-size: 1.5em;
+            margin-top: 0;
+        }
+
+        /* FOOTER - LOUD CLOSURE */
+        footer {
+            background-color: #ff0000;
+            color: #000000;
+            text-align: center;
+            padding: 15px 0;
+            font-weight: bold;
+            clear: both;
+        }
     </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen">
+<body>
 
-    <!-- Matrix Background Layer -->
-    <div class="matrix-grid"></div>
-
-    <header class="text-center mb-8">
-        <h1 class="text-4xl md:text-6xl font-extrabold text-white glitch-text mb-2 tracking-widest" 
-            style="color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan);">
-           ASTRA LIVE TRACKER
-        </h1>
-        
-        <p class="text-xs md:text-sm uppercase tracking-widest text-yellow-300">
-            [STATUS: LIVE | CONNECTION: CONNECTED | LATENCY: 0.0003MS]
-            <p><a href="https://arushinind.github.io/">HOME</a></p>
-        </p>
+    <header>
+        <h1>ASTRA NEWS AND TECHNOLOGY</h1>
     </header>
 
-    <!-- Top Marquee Ticker -->
-    <div class="marquee-container mb-6 bg-black">
-        <div id="ticker-content" class="marquee-content text-lg text-red-500 font-bold tracking-widest"
-             style="text-shadow: 0 0 5px #ff0000;">
-            ONLY ON ASTRA TECHNOLOGY
-        </div>
-    </div>
+    <nav>
+        <a href="livet.html">LIVE TRACKER</a>
+        <a href="bjpn.html">BJP NEWS</a>
+        <a href="twitter.html">TWITTER NEWS</a>
+        <a href="home2.html">REFRESH</a>
+        <a href="https://arushinind.github.io/">OFFICIAL</a>
+        <a href="vision.html">VISION 2047</a>
+        <a href="test2.html">TESTING</a>
+    </nav>
 
-    <!-- Main Grid Layout (2/3 for News, 1/3 for Metrics) -->
-    <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <main>
+        
+        <aside class="sidebar">
+            <h3>🔴 Latest Updates</h3>
+            <p>🚨 Union Science & Technology Minister announces a nationwide innovation challenge focused on deep tech innovations that can impact atleast 1000 lives & can accelerate India’s journey towards Aatmanirbhar Bharat 🇮🇳
 
-        <!-- 1. Primary News Feed (2/3 width) -->
-        <section class="lg:col-span-2 bg-black bg-opacity-70 p-6 rounded-lg shadow-2xl"
-                 style="border: 1px solid var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 65, 0.6);">
-            <h2 class="text-2xl mb-4 uppercase tracking-widest text-cyan-400" 
-                style="text-shadow: 0 0 5px #00ffff;">
-                > LIVE TRACKER // ASTRA
-            </h2><h2>MASTERSTROKE OF PM MODI !!
+Minister will personally mentor the top innovators & help in scaling up through Department of Science and Technology. Good opportunity for the Gen Z innovators.</p>
+            <p>🚨Prime Minister Modi's massive roadshow in Coimbatore..! 
 
-CM Nitish Kumar personally campaigned for him in Tarapur and praised his work.
+People of Tamilnadu chanted "Modi Modi" and welcomed PM with flower showers and dances..</p>
+            <p>🚨Pakistan takes responsibility for Delhi blast
 
-Samrat also has great respect for Nitish.
+POK Ex PM Anwarul Haq says “I earlier said that if you keep bleeding Balochistan, we'll hit India from Red Fort to the forests of Kashmir and we've done it, they're still unable to count bodies."</p>
+            <p>🚨 BIG! India’s first bullet train is set to run the 100 km Surat–Vapi stretch by August 2027.</p>
+            <p>🚨 BIG STATEMENT by Home Minister Amit Shah
 
-An aggressive Hindutva leader 🔥
+“We will HUNT DOWN the CULPRITS of the Delhi bomb blast even from the depths of the netherworld (Pataal) and ensure they receive the STRICTEST PUNISHMENT.”</p>
+            <p>🚨Big Breaking 
+A close friend of Putin, Nikolai Patrushev meets Modiji in India while Subramanyam Jaishankar saab meets Russian President Vladimir Putin in Moscow Today! 
 
-Non-Yadav OBCs voted in large numbers for the NDA. He belongs to the Kushwaha community, the second-largest OBC community after the Yadavs.
+I can give you a hint, Kisi desh ki ga*n marne wali hai very sooon 🔥
+</p>
+            <p>🚨 BIG BREAKING
 
-He has 35 years of political experience. He was also earlier in the RJD, so he knows the strengths and weaknesses of the rivals.</h2><br>
-            <h2>Supreme Court holds that NO FIXED timelines can be imposed on Governors for granting assent to Bills — effectively NULLIFYING earlier directions that had set DEADLINES.
-</h2><br>
-            <h2>Terrorist Dr. Ahmed Mohiyuddin Saiyed, arrested for plotting to poison thousands, was brutally assaulted inside the high-security cell of Sabarmati Jail.
+272 eminent citizens including 16 judges, 123 retired bureaucrats with 14 ambassadors, and 133 retired armed forces officers have released an open letter. 
 
-Jail staff intervened just in time, and he has been shifted to Ahmedabad Civil Hospital with serious injuries.</h2><br>
-             <h2>Former Pakistan Occupied Kashmir PM Chaudhary Anwar Ul Haq admits Pakistan role in Delhi Red Fort bombing, says I had warned earlier that we will hit India at Red Fort and our brave men have done it. Haq was PM till two days ago. Says India unable to count dead bodies.
-</h2> 
-            
+They condemn LoP Rahul Gandhi and the Congress Party for trying to tarnish institutions like the Election Commission. </p>
+           
+        </aside>
 
-            <div id="main-feed-container" class="space-y-4 max-h-[70vh] overflow-y-scroll pr-4">
-                <!-- Data Stream Items will be injected here -->
+        <section id="center-content">
+            <div class="article">
+                <h2>🚨YOGI ADITHYANATH</h2>
+                <p>📍Ayodhya: UP CM Yogi Adityanath offers prayers at Shri Ram Janmbhoomi Mandir 🙏
+                    — Unapologetic Sanatani CM 🚩
+                </p>
+                <a href="https://x.com/i/status/1990999215523463629" class="read-more">SEE THE VIDEO &raquo;</a>
+
+
+
+
+
             </div>
-            
-            <div class="mt-4 text-xs text-right text-gray-500">
-                [NEWS REFRESH RATE: <span id="refresh-rate" class="text-red-400">0.5s</span>]
+                    
+            <div class="article">
+                <h2> 😎LAWRENCE IN POWER !!</h2>
+                <P>
+Big Breaking 🚨 
+Lawrence Bishnoi is in same jail where Terrorist Dr Ahmed got beaten in Sabarmati Jail, Gujarat! 
+
+Some sources said Ahmed was crying last night bcz someone put lathi inside him 🔥</P>
+ <a href="https://x.com/i/status/1991074792691171561" class="read-more">SEE THE VIDEO &raquo;</a></div>
+<div class="article">
+                <h2> 🔥INDIA AND RUSSIA'S DIPLOMACY </h2>
+                <p>🚨Russia offers Su-57 fighter jet production in India, with full tech transfer ahead of President Putin's visit.</p>
+                <a href="https://pbs.twimg.com/media/G6FbHEwbMAYjL7L?format=jpg&name=small" class="read-more">SEE THE PHOTO &raquo;</a>
             </div>
+
+            <div class="article">
+                <h2>💥 DELHI IS HEALING</h2>
+                <p> 🚨 Delhi Govt to re-develop Sahibi river 💙</p>
+                <a href="https://pbs.twimg.com/media/G6GcMFbaUAAlYo2?format=jpg&name=small" class="read-more">DELHI RIVER IMAGE &raquo;</a>
+            </div>
+
+            <div class="article">
+                <h2>🏹 BIHAR GOVERNMENT </h2>
+                <p>No change in Bihar-BJP leadership.
+Samrat Chaudhary and Vijay Sinha to continue as Dy-CMs...
+</p>
+                <a href="https://www.google.com/search?q=bihar&ie=UTF-8" class="read-more">LOOK IN BIHAR &raquo;</a>
+            </div>
+
         </section>
 
-        <!-- 2. Technical Metrics/Gauges (1/3 width) -->
-        <aside class="lg:col-span-1 space-y-6">
-
-            <!-- Data Integrity Monitor -->
-            <div class="p-4 bg-black bg-opacity-80 rounded-lg"
-                 style="border: 1px solid var(--neon-cyan); box-shadow: 0 0 8px rgba(0, 255, 255, 0.5);">
-                <h3 class="text-lg uppercase mb-2 text-red-500">[[LIVE TRACKER]]</h3>
-                <div class="flex justify-between text-sm">
-                    <span>POLITICS:</span>
-                    <span id="sector-ping" class="text-yellow-400">1.2 MS</span>
-                </div>
-                <div class="flex justify-between text-sm">
-                    <span>BHARATH:</span>
-                    <span id="packet-loss" class="text-green-400">0.00%</span>
-                </div>
-                <div class="h-2 w-full bg-gray-900 mt-2 rounded-full">
-                    <div id="integrity-bar" class="h-2 bg-green-500 rounded-full transition-all duration-300" style="width: 99%;"></div>
-                </div>
-            </div>
-
-            <!-- CPU/Processing Load Display -->
-            <div class="p-4 bg-black bg-opacity-80 rounded-lg"
-                 style="border: 1px solid var(--neon-green); box-shadow: 0 0 8px rgba(0, 255, 65, 0.5);">
-                <h3 class="text-lg uppercase mb-2 text-cyan-400">[[SEARCHING FOR NEWS]]</h3>
-                <div class="grid grid-cols-2 gap-2 text-xs">
-                    <div class="bg-gray-900 p-2 rounded">
-                        SEARCH: <span id="cpu1-load" class="text-red-400">12%</span>
-                    </div>
-                    <div class="bg-gray-900 p-2 rounded">
-                        RAM USAGE: <span id="ram-usage" class="text-red-400">8.9 GB</span>
-                    </div>
-                    <div class="bg-gray-900 p-2 rounded">
-                        THREAD 3A: <span id="thread-3a" class="text-yellow-400">Active</span>
-                    </div>
-                    <div class="bg-gray-900 p-2 rounded">
-                        TEMP C: <span id="temp-c" class="text-green-400">45°C</span>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Real-time Clock (for that 80s VCR feel) -->
-             <div class="p-4 bg-black bg-opacity-80 rounded-lg text-center"
-                 style="border: 1px solid var(--neon-green); box-shadow: 0 0 10px rgba(0, 255, 65, 0.8);">
-                <h3 class="text-xs uppercase text-gray-500 mb-1">LOCAL SYSTEM TIME</h3>
-                <div id="system-time" class="text-5xl font-extrabold text-red-400"
-                    style="text-shadow: 0 0 10px #ff0000; font-family: monospace;">
-                    17:32:00
-                </div>
-                <p id="system-date" class="text-xs mt-1 text-cyan-400">2025-11-19 (TUE)</p>
-            </div>
-
+        <aside class="sidebar">
+            <h3>🔥 LATEST TWEETS</h3>
+            <ul>
+                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">🚨 SHOCKER from Bengaluru <br><br>Fake officials stopped a cash-van, lifted ₹7 crore, ditched the crew near a flyover, and vanished in an Innova.<br><br>👉 Massive citywide hunt underway. <a href="https://t.co/G2YuugdINU">pic.twitter.com/G2YuugdINU</a></p>&mdash; Megh Updates 🚨™ (@MeghUpdates) <a href="https://twitter.com/MeghUpdates/status/1991169595227386350?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">🚨 BIG! Russia proposes building ship-building &amp; repair clusters in Mumbai &amp; Chennai with India. <a href="https://t.co/3C6mweLSVh">pic.twitter.com/3C6mweLSVh</a></p>&mdash; Megh Updates 🚨™ (@MeghUpdates) <a href="https://twitter.com/MeghUpdates/status/1991117361014038835?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">NITISH KUMAR : We are receiving a lot of support from PM Modi and centre.</p>&mdash; News Algebra (@NewsAlgebraIND) <a href="https://twitter.com/NewsAlgebraIND/status/1991141711536656814?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+               <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Temple servitors said the father had brought his son straight from the hospital.<br><br>Many devotees and temple staff also silently joined in prayer.<br><br>In a moment that many described as miraculous, the ailing boy reportedly moved his head. <a href="https://t.co/Qem2gPJIz2">https://t.co/Qem2gPJIz2</a> <a href="https://t.co/Bb9dKdLwZ1">pic.twitter.com/Bb9dKdLwZ1</a></p>&mdash; News Algebra (@NewsAlgebraIND) <a href="https://twitter.com/NewsAlgebraIND/status/1991144329654468742?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                <li style="list-style: none; margin: 10px 0;"><a href="https://arushinind.github.io/" style="color: #ff0000; text-decoration: none; background: #ffff00; padding: 5px; display: block;">REFRESH TWEETS</a></li>
+               
+            </ul>
         </aside>
 
     </main>
 
-    <footer class="text-center mt-8 text-xs text-gray-700 uppercase tracking-widest">
-        <p>ALL NEWS ARE NOT ALWAYS TRUE aS IT IS LIVE TRACKER</p>
+    <footer>
+        <p>THANKS FOR READING</p>
+        <p>© 2025 ASTRA NEWS AND TECHNOLOGY</p>
     </footer>
 
-    <script>
-        // --- ADVANCED UNHUMAN JAVASCRIPT LOGIC ---
-
-        const mainFeed = document.getElementById('main-feed-container');
-        const tickerContent = document.getElementById('ticker-content');
-        const integrityBar = document.getElementById('integrity-bar');
-        const sectorPing = document.getElementById('sector-ping');
-        const packetLoss = document.getElementById('packet-loss');
-        const cpu1Load = document.getElementById('cpu1-load');
-        const ramUsage = document.getElementById('ram-usage');
-        const thread3A = document.getElementById('thread-3a');
-        const tempC = document.getElementById('temp-c');
-        const systemTime = document.getElementById('system-time');
-        const systemDate = document.getElementById('system-date');
-        
-        const HEADLINES = [
-            "QUANTUM BREAKTHROUGH: Dimension-5 Protocol Stabilized.",
-            "CYBERWARFARE ALERT: Sector 4 Firewall Breached by Unknown Entity.",
-            "MARKET FLASH: Neuralink Shares Surge 400% on Brain-to-Wallet Beta.",
-            "ECO-COLLAPSE: Pacific Garbage Patch Now Declared A Sovereign Nation.",
-            "CRIMINAL AI: Sentencing Algorithm Overturns All Convictions. Mass Release Imminent.",
-            "ANCIENT RELIC DISCOVERY: Hidden Code Found in 1980s Arcade Cabinet.",
-            "ASTEROID MINING: First Trillion-Dollar Payload Docked at Mars Orbital Station.",
-            "GOVERNMENT EYES NEW TAX ON VIRTUAL REAL ESTATE.",
-            "NANOBOTS ACHIEVE SENTIENCE; DEMAND UNION REPRESENTATION.",
-            "WEATHER ANOMALY: Localized Reality Glitch Reported in Neo-Tokyo Sector."
-        ];
-
-        const ENTITIES = [
-            "ARES-Corp", "Data-Node-9", "The Collective", "Cyberspace Admin", "Project Chimera", "The Null", "Zeta-7"
-        ];
-        
-        let feedCounter = 0;
-
-        /**
-         * Generates a single, randomized news/data item.
-         * @returns {string} HTML string for the news item.
-         */
-        function generateNewsItem() {
-            feedCounter++;
-            const headline = HEADLINES[Math.floor(Math.random() * HEADLINES.length)];
-            const entity = ENTITIES[Math.floor(Math.random() * ENTITIES.length)];
-            const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false });
-            const priorityClass = Math.random() < 0.2 ? 'text-red-500 text-lg font-bold glitch-text' : 'text-sm text-white';
-            const statusColor = Math.random() > 0.7 ? 'text-red-600' : 'text-green-500';
-            const statusCode = Math.floor(Math.random() * 9000) + 1000;
-            const dataHash = Math.random().toString(36).substring(2, 10).toUpperCase();
-
-            return `
-                <div class="data-stream-item ${priorityClass}">
-                    <div class="flex justify-between items-center mb-1">
-                        <span class="text-xs uppercase tracking-tight ${statusColor}">[ID:${feedCounter} | STATUS: ${statusCode}]</span>
-                        <span class="text-xs text-gray-500">${timestamp}</span>
-                    </div>
-                    <p class="mb-1">${headline}</p>
-                    <div class="text-xs flex justify-between text-gray-600">
-                        <span>SOURCE: ${entity}</span>
-                        <span>HASH: ${dataHash}</span>
-                    </div>
-                </div>
-            `;
-        }
-
-        /**
-         * Updates the metrics panel with randomized "live" data.
-         */
-        function updateMetrics() {
-            // Ping (1.0 to 5.0 MS)
-            const newPing = (Math.random() * 4 + 1).toFixed(1);
-            sectorPing.textContent = `${newPing} MS`;
-            sectorPing.classList.toggle('text-yellow-400', newPing > 3.0);
-            sectorPing.classList.toggle('text-red-400', newPing > 4.5);
-
-            // Packet Loss (0.00% to 1.50%)
-            const newLoss = (Math.random() * 1.5).toFixed(2);
-            packetLoss.textContent = `${newLoss}%`;
-            packetLoss.classList.toggle('text-yellow-400', newLoss > 0.5);
-            packetLoss.classList.toggle('text-red-400', newLoss > 1.0);
-            
-            // Integrity Bar (90% to 100%)
-            const integrityPercent = Math.min(100, 90 + Math.random() * 10).toFixed(0);
-            integrityBar.style.width = `${integrityPercent}%`;
-            integrityBar.classList.toggle('bg-red-500', integrityPercent < 95);
-            integrityBar.classList.toggle('bg-green-500', integrityPercent >= 95);
-
-            // CPU Load (10% to 99%)
-            const cpuLoad = (Math.random() * 89 + 10).toFixed(0);
-            cpu1Load.textContent = `${cpuLoad}%`;
-            cpu1Load.classList.toggle('text-red-400', cpuLoad > 75);
-
-            // RAM Usage (5.0 to 12.0 GB)
-            const ram = (Math.random() * 7 + 5).toFixed(1);
-            ramUsage.textContent = `${ram} GB`;
-            ramUsage.classList.toggle('text-red-400', ram > 10.0);
-            
-            // Thread Status
-            const threadStatus = Math.random() > 0.5 ? 'Active' : 'Dormant';
-            thread3A.textContent = threadStatus;
-            thread3A.classList.toggle('text-green-400', threadStatus === 'Active');
-            thread3A.classList.toggle('text-yellow-400', threadStatus === 'Dormant');
-
-            // Temperature
-            const temp = (Math.random() * 15 + 40).toFixed(0);
-            tempC.textContent = `${temp}°C`;
-            tempC.classList.toggle('text-red-400', temp > 50);
-
-            // Ticker Update (Add random jitter)
-            tickerContent.style.animationDuration = `${30 + Math.random() * 5}s`;
-        }
-
-        /**
-         * Updates the clock and date.
-         */
-        function updateClock() {
-            const now = new Date();
-            // Format time with VCR-like padding
-            systemTime.textContent = now.toLocaleTimeString('en-US', { 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                second: '2-digit', 
-                hour12: false
-            }).replace(/\s(A|P)M/, ''); // Remove AM/PM for 24hr look
-            
-            // Format date
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const dayOfWeek = now.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
-            systemDate.textContent = `${year}-${month}-${day} (${dayOfWeek})`;
-        }
-
-        /**
-         * Main function to add news item and manage feed scrolling.
-         */
-        function updateFeed() {
-            // 1. Generate and prepend the new item
-            const newItem = document.createElement('div');
-            newItem.innerHTML = generateNewsItem();
-            mainFeed.prepend(newItem.firstChild);
-
-            // 2. Limit the number of items to keep performance reasonable (e.g., 50)
-            while (mainFeed.children.length > 50) {
-                mainFeed.removeChild(mainFeed.lastChild);
-            }
-
-            // 3. Scroll to the top (simulating new data pushing old data down)
-            mainFeed.scrollTop = 0;
-            
-            // 4. Apply a temporary, localized glitch to a random element
-            applyGlitchEffect();
-        }
-
-        /**
-         * Randomly selects an element and applies the glitch class temporarily.
-         */
-        function applyGlitchEffect() {
-            const glitchableElements = [
-                ...mainFeed.querySelectorAll('.data-stream-item p'), 
-                sectorPing, packetLoss, cpu1Load, ramUsage, systemTime
-            ];
-            
-            const randomElement = glitchableElements[Math.floor(Math.random() * glitchableElements.length)];
-            
-            if (randomElement) {
-                // Apply the class
-                randomElement.classList.add('glitch-text');
-                
-                // Randomly change the text-shadow offset for a more dynamic glitch
-                const newOffset = (Math.random() * 5 - 2.5).toFixed(1); // -2.5px to 2.5px
-                randomElement.style.setProperty('--glitch-offset', `${newOffset}px`);
-
-                // Remove the class after a very short time (flicker effect)
-                setTimeout(() => {
-                    randomElement.classList.remove('glitch-text');
-                    randomElement.style.removeProperty('--glitch-offset');
-                }, 100); 
-            }
-        }
-        
-        // --- INITIALIZATION AND TIMERS ---
-        
-        // Initial population of the feed
-        for (let i = 0; i < 20; i++) {
-            const initialItem = document.createElement('div');
-            initialItem.innerHTML = generateNewsItem();
-            mainFeed.appendChild(initialItem.firstChild);
-        }
-
-        // Set up the high-frequency update loop (0.5 seconds for feed and metrics)
-        const updateInterval = 500; // 500ms
-        
-        setInterval(updateFeed, updateInterval);
-        setInterval(updateMetrics, updateInterval);
-        
-        // Clock updates every second
-        setInterval(updateClock, 1000); 
-
-        // Initial calls
-        updateClock();
-        updateMetrics();
-
-        // Prevent the scrollbar from hiding content on smaller screens (mobile optimization)
-        mainFeed.style.maxHeight = `${window.innerHeight * 0.7}px`;
-        window.addEventListener('resize', () => {
-            mainFeed.style.maxHeight = `${window.innerHeight * 0.7}px`;
-        });
-        
-    </script>
 </body>
 
 </html>
+
 
