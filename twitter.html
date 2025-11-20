@@ -3,149 +3,328 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASTRA </title>
-    <!-- Load Tailwind CSS -->
+    <title>The Tweet Vortex | Ultimate Embedder</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
     <style>
-        /* Custom crazy styles */
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f0c29; }
+        ::-webkit-scrollbar-thumb { background: #ff00cc; border-radius: 4px; }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0d0d0d; /* Deep Dark Background */
-            color: #E0E0E0; /* Light Gray Text */
-            overflow-x: hidden; /* Prevent horizontal scroll from embeds */
-        }
-        .vortex-border {
-            /* Intentional overlapping neon border effect */
-            border: 4px solid #FF00FF; /* Hot Pink */
-            box-shadow: 0 0 10px #39FF14, 0 0 20px #FF00FF, inset 0 0 10px #39FF14; /* Neon green/pink glow */
-            animation: pulse-glow 3s infinite alternate;
-        }
-        @keyframes pulse-glow {
-            from {
-                box-shadow: 0 0 5px #39FF14, 0 0 10px #FF00FF;
-            }
-            to {
-                box-shadow: 0 0 15px #39FF14, 0 0 30px #FF00FF;
-            }
-        }
-        .twitter-column {
-            /* Ensure the Twitter widget script has a defined height to prevent CLS */
-            min-height: 800px;
-        }
-        .text-glitch {
-            /* Simple text glitch effect for the title */
-            color: #FF00FF;
-            text-shadow: 2px 2px #39FF14, -2px -2px #FF00FF;
-            font-weight: 900;
+            font-family: 'Orbitron', sans-serif;
+            background: #000;
+            overflow-x: hidden;
+            color: white;
         }
 
-        /* Override Tailwind's default dark mode for the widgets to be truly dark */
-        .twitter-timeline {
-            border: 1px dashed #39FF14 !important;
-            border-radius: 8px;
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Particles */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            animation: float 10s infinite linear;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Glassmorphism UI */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        /* Crazy Titles */
+        .glitch-text {
+            position: relative;
+            animation: shake 3s infinite;
+        }
+        
+        @keyframes shake {
+            0% { transform: skewX(-10deg); }
+            5% { transform: skewX(10deg); }
+            10% { transform: skewX(-10deg); }
+            15% { transform: skewX(10deg); }
+            20% { transform: skewX(0deg); }
+            100% { transform: skewX(0deg); }
+        }
+
+        /* Tweet Containers */
+        .tweet-card {
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            animation: popIn 0.6s forwards;
+        }
+
+        .tweet-card:hover {
+            transform: scale(1.05) rotate(2deg) !important;
+            z-index: 50;
+            box-shadow: 0 0 30px rgba(255, 0, 204, 0.6);
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.5) translateY(50px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Input Glow */
+        .neon-input:focus {
+            outline: none;
+            box-shadow: 0 0 20px #00f3ff, inset 0 0 10px #00f3ff;
+            border-color: #00f3ff;
+        }
+
+        .neon-btn:hover {
+            box-shadow: 0 0 30px #ff00cc;
+            text-shadow: 0 0 10px white;
+        }
+
+        /* Chaos Mode Classes */
+        .chaos-mode .tweet-card {
+            position: absolute !important;
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col items-center pb-20">
 
-    <div class="container mx-auto p-4 md:p-8">
-
-        <!-- HEADER: INTENSE AND BRUTALIST -->
-        <header class="text-center py-8 mb-10 vortex-border bg-gray-900 rounded-xl">
-            <h1 class="text-5xl md:text-7xl uppercase text-glitch font-mono">
-               ASTRA LIVE
-            </h1>
-            <h2><a href="https://arushinind.github.io/">HOME</a></h2>
-            <p class="text-xl md:text-2xl text-yellow-400 mt-2 font-mono tracking-wider">
-              ASTRA LTD <span class="text-red-600 ml-4">[[ VIEW TWEETS DIRECTLY  FROM ASTRA ]]</p>
-            <p class="mt-4 text-sm text-gray-400">
-                WEBSITE DEVELOPED BY ASTRA TECHNOLOGY
-            </p>
-            
-        </header>
-
-        <!-- MAIN CONTENT GRID: CROWDED TWITTER FEEDS -->
-        <div id="timeline-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            <!-- COLUMN 1: BREAKING NEWS -->
-            <div class="twitter-column p-2 bg-gray-900 rounded-lg vortex-border">
-                <h2 class="text-xl text-center text-yellow-400 font-bold mb-3 border-b border-gray-700 pb-2">VIDEOS</h2>
-                <!-- Embed 1: Associated Press (Serious Breaking News) -->
-                <a class="twitter-timeline" 
-                   data-lang="en" 
-                   data-theme="dark" 
-                   data-height="750" 
-                   data-width="100%" 
-                   data-chrome="nofooter noborders transparent"
-                   href="https://x.com/MrSinha_/status/1991119843643601001?s=20">
-                    
-                </a>
-                <blockquote class="twitter-tweet" data-media-max-width="560"><p lang="en" dir="ltr">When we takeover Karachi, it will be renamed to Vikrant in tribute to INS Vikrant 🔥 <a href="https://t.co/n2fgY27I4p">pic.twitter.com/n2fgY27I4p</a></p>&mdash; Frontalforce 🇮🇳 (@FrontalForce) <a href="https://twitter.com/FrontalForce/status/1991029030683095469?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <blockquote class="twitter-tweet" data-media-max-width="560"><p lang="qme" dir="ltr">🔥🔥🔥<br> <a href="https://t.co/2i39ezTiFZ">pic.twitter.com/2i39ezTiFZ</a></p>&mdash; Gems of Politics (@GemsOf_Politics) <a href="https://twitter.com/GemsOf_Politics/status/1990635885315174906?ref_src=twsrc%5Etfw">November 18, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-            </div>
-
-            <!-- COLUMN 2: CONTROVERSY / TECH GURU -->
-            <div class="twitter-column p-2 bg-gray-900 rounded-lg vortex-border">
-                <h2 class="text-xl text-center text-red-400 font-bold mb-3 border-b border-gray-700 pb-2">TWEETS</h2>
-                <!-- Embed 2: Elon Musk (High Volume, Chaotic) -->
-                <a class="twitter-timeline" 
-                   data-lang="en" 
-                   data-theme="dark" 
-                   data-height="750" 
-                   data-width="100%" 
-                   data-chrome="nofooter noborders transparent"
-                   href="https://twitter.com/elonmusk?ref_src=twsrc%5Etfw">
-                    
-                </a>
-                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">No, they&#39;re not against movies showing violence....<br><br>They&#39;re against movies showing Pakistan in a bad light, the real face of terrorism and promoting patriotism among Youths....</p>&mdash; Mr Sinha (@MrSinha_) <a href="https://twitter.com/MrSinha_/status/1991119843643601001?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-            </div>
-
-            <!-- COLUMN 3: SATIRE / ABSURDITY -->
-            <div class="twitter-column p-2 bg-gray-900 rounded-lg vortex-border">
-                <h2 class="text-xl text-center text-green-400 font-bold mb-3 border-b border-gray-700 pb-2">NEWS</h2>
-                <!-- Embed 3: The Onion (Satirical News) -->
-                <a class="twitter-timeline" 
-                   data-lang="en" 
-                   data-theme="dark" 
-                   data-height="750" 
-                   data-width="100%" 
-                   data-chrome="nofooter noborders transparent"
-                   href="https://twitter.com/TheOnion?ref_src=twsrc%5Etfw">
-                  
-                </a>
-                <blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/BREAKING?src=hash&amp;ref_src=twsrc%5Etfw">#BREAKING</a>: Meta has removed all videos of Delhi Suicide Bomber Umar from its platforms Instagram and Facebook. Meta says video goes against user guidelines. The video had gone viral since yesterday morning.</p>&mdash; Aditya Raj Kaul (@AdityaRajKaul) <a href="https://twitter.com/AdityaRajKaul/status/1991118451981885628?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-            </div>
-
-            <!-- COLUMN 4: RANDOM TRENDS / CULTURE SHOCK -->
-            <div class="twitter-column p-2 bg-gray-900 rounded-lg vortex-border">
-                <h2 class="text-xl text-center text-indigo-400 font-bold mb-3 border-b border-gray-700 pb-2">LIVE UPDATES</h2>
-                <!-- Embed 4: A trending hashtag or a culture focused account like NBC News -->
-                <a class="twitter-timeline" 
-                   data-lang="en" 
-                   data-theme="dark" 
-                   data-height="750" 
-                   data-width="100%" 
-                   data-chrome="nofooter noborders transparent"
-                   href="https://twitter.com/NBCNews?ref_src=twsrc%5Etfw">
-                   <blockquote class="twitter-tweet"><p lang="en" dir="ltr">🚨 BIG! Meta has REMOVED all videos of Delhi suicide bomber Umar from Instagram and Facebook, stating that the content violates their community guidelines. <br><br>👉 The clips had gone viral since yesterday morning.</p>&mdash; Megh Updates 🚨™ (@MeghUpdates) <a href="https://twitter.com/MeghUpdates/status/1991126286614278446?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                    
-                </a>
-                
-            </div>
-
-        </div>
-        
-        <!-- FOOTER: FOR LACK OF CLOSURE -->
-        <footer class="text-center py-6 mt-10 text-xs text-gray-500 font-mono">
-            <p>ASTRA IS A PRIVATE OWNED NEWS AGENCY @ ASTRA 2025</p>
-        </footer>
-    </div>
-
-    <!-- THE CRITICAL TWITTER WIDGETS SCRIPT -->
+    <!-- Twitter Widget Script -->
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
+    <!-- Background -->
+    <div class="bg-animation" id="bg"></div>
+    <div id="particles"></div>
+
+    <!-- Header -->
+    <header class="w-full p-6 text-center z-10">
+        <h1 class="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 glitch-text mb-2 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
+            THE TWEET VORTEX
+        </h1>
+        <p class="text-cyan-200 tracking-widest text-sm md:text-xl font-light font-[Orbitron]">EMBED. CHAOS. BEAUTY.</p>
+    </header>
+
+    <!-- Input Section -->
+    <div class="w-11/12 md:w-2/3 lg:w-1/2 glass-panel rounded-2xl p-6 md:p-8 z-20 mb-10 transform hover:scale-[1.01] transition-transform duration-300">
+        <div class="flex flex-col md:flex-row gap-4">
+            <input type="text" id="tweetUrl" placeholder="Paste Tweet URL here (e.g. https://x.com/nasa/status/...)" 
+                class="flex-1 bg-gray-900/50 border-2 border-purple-500/50 text-white px-6 py-4 rounded-xl text-lg neon-input placeholder-gray-500 font-mono">
+            <button onclick="addTweet()" 
+                class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-4 rounded-xl font-bold text-xl neon-btn transform active:scale-95 transition-all uppercase">
+                <i class="fa-brands fa-twitter mr-2"></i> Inject
+            </button>
+        </div>
+        
+        <!-- Controls -->
+        <div class="flex justify-between items-center mt-6 text-sm text-gray-300">
+            <div class="flex gap-4">
+                <label class="flex items-center cursor-pointer space-x-2 hover:text-white">
+                    <input type="checkbox" id="chaosToggle" class="form-checkbox h-5 w-5 text-pink-500 rounded bg-transparent border-2 border-pink-500 focus:ring-0 focus:ring-offset-0" onchange="toggleChaos()">
+                    <span class="font-bold text-pink-400">CHAOS MODE</span>
+                </label>
+            </div>
+            <button onclick="clearTweets()" class="text-red-400 hover:text-red-200 underline">Nuke All</button>
+        </div>
+    </div>
+
+    <!-- Tweets Container -->
+    <!-- Normal Grid Mode -->
+    <div id="gridContainer" class="w-full max-w-7xl px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 z-10 transition-all duration-500 relative min-h-[500px]">
+        <!-- Tweets will appear here -->
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-10 right-10 bg-red-600 text-white px-6 py-4 rounded-lg shadow-2xl transform translate-y-40 transition-transform duration-300 z-50 border-2 border-red-400 font-bold">
+        <i class="fa-solid fa-circle-exclamation mr-2"></i> <span id="toastMsg">Error</span>
+    </div>
+
+    <script>
+        // --- Particle System ---
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                
+                // Random properties
+                const size = Math.random() * 10 + 2;
+                p.style.width = `${size}px`;
+                p.style.height = `${size}px`;
+                p.style.left = `${Math.random() * 100}vw`;
+                p.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+                p.style.boxShadow = `0 0 ${size * 2}px ${p.style.background}`;
+                p.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                p.style.animationDelay = `-${Math.random() * 10}s`;
+                
+                container.appendChild(p);
+            }
+        }
+        createParticles();
+
+        // --- Tweet Logic ---
+        const input = document.getElementById('tweetUrl');
+        const grid = document.getElementById('gridContainer');
+        let isChaos = false;
+
+        // Handle Enter Key
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') addTweet();
+        });
+
+        function extractTweetID(url) {
+            // Regex to match x.com or twitter.com status URLs
+            const match = url.match(/(?:twitter|x)\.com\/\w+\/status\/(\d+)/);
+            return match ? match[1] : null;
+        }
+
+        function showToast(msg, isError = true) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            
+            toast.className = isError 
+                ? "fixed bottom-10 right-10 bg-red-600/90 backdrop-blur text-white px-6 py-4 rounded-xl shadow-2xl transform transition-transform duration-300 z-50 border border-red-400 font-bold glass-panel"
+                : "fixed bottom-10 right-10 bg-green-600/90 backdrop-blur text-white px-6 py-4 rounded-xl shadow-2xl transform transition-transform duration-300 z-50 border border-green-400 font-bold glass-panel";
+
+            toastMsg.innerText = msg;
+            toast.style.transform = "translateY(0)";
+            
+            setTimeout(() => {
+                toast.style.transform = "translateY(200%)";
+            }, 3000);
+        }
+
+        function addTweet() {
+            const url = input.value.trim();
+            
+            if (!url) {
+                showToast("Feed the Vortex! Paste a URL first.");
+                return;
+            }
+
+            const tweetId = extractTweetID(url);
+
+            if (!tweetId) {
+                showToast("Invalid URL! Must be a tweet link.");
+                return;
+            }
+
+            // Clear input
+            input.value = '';
+
+            // Create Container for new tweet
+            const wrapper = document.createElement('div');
+            wrapper.className = 'tweet-card flex justify-center items-start p-2 rounded-xl relative';
+            
+            // Add neon border effect to wrapper
+            wrapper.style.background = 'rgba(0,0,0,0.3)';
+            wrapper.style.border = '1px solid rgba(255,255,255,0.1)';
+            
+            // If Chaos mode is already on, position randomly immediately
+            if(isChaos) {
+                applyChaosStyle(wrapper);
+            }
+
+            grid.prepend(wrapper); // Add to top
+
+            // Embed via Twitter Widget
+            if (window.twttr) {
+                window.twttr.widgets.createTweet(
+                    tweetId,
+                    wrapper,
+                    {
+                        theme: 'dark',
+                        align: 'center'
+                    }
+                ).then(function (el) {
+                    if(!el) {
+                        wrapper.remove();
+                        showToast("Tweet deleted or private.", true);
+                    } else {
+                        showToast("Tweet Materialized!", false);
+                    }
+                });
+            } else {
+                showToast("Twitter Brain Loading... Try again in a second.");
+            }
+        }
+
+        function clearTweets() {
+            grid.innerHTML = '';
+            showToast("Vortex Cleared.", false);
+        }
+
+        // --- Chaos Logic ---
+        function toggleChaos() {
+            isChaos = document.getElementById('chaosToggle').checked;
+            const cards = document.querySelectorAll('.tweet-card');
+            const containerWidth = grid.offsetWidth;
+            const containerHeight = Math.max(window.innerHeight, grid.offsetHeight);
+
+            if (isChaos) {
+                grid.classList.remove('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'gap-8');
+                grid.classList.add('relative', 'h-screen');
+                
+                cards.forEach(card => {
+                    applyChaosStyle(card, containerWidth, containerHeight);
+                });
+            } else {
+                grid.classList.add('grid', 'grid-cols-1', 'md:grid-cols-2', 'lg:grid-cols-3', 'gap-8');
+                grid.classList.remove('relative', 'h-screen');
+                
+                // Reset styles
+                cards.forEach(card => {
+                    card.style.position = 'static';
+                    card.style.transform = 'rotate(0deg)';
+                    card.style.top = 'auto';
+                    card.style.left = 'auto';
+                });
+            }
+        }
+
+        function applyChaosStyle(element, w = window.innerWidth, h = window.innerHeight) {
+            // Random Rotation
+            const rot = (Math.random() * 40) - 20; // -20 to 20 deg
+            // Random Position
+            const top = Math.random() * 60 + 10; // 10% to 70% down
+            const left = Math.random() * 70 + 5; // 5% to 75% across
+            
+            element.style.position = 'absolute';
+            element.style.top = `${top}%`;
+            element.style.left = `${left}%`;
+            element.style.transform = `rotate(${rot}deg) scale(${Math.random() * 0.2 + 0.9})`;
+            element.style.zIndex = Math.floor(Math.random() * 10);
+        }
+
+    </script>
 </body>
-
 </html>
-
-
