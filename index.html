@@ -299,18 +299,39 @@
     <script>
         // Data
         const articles = [
-         {
+          {
                 id: 1,
+                category: 'technology',
+                title: 'AI Agents are Coming',
+                excerpt: 'Google CEO Sundar Pichai predicts that within 12 months, AI will evolve from simple chatbots to independent "agents" capable of performing complex tasks on a users behalf.',
+                author: 'Arush Shetty',
+                date: '1 min ago',
+                image: 'https://c.files.bbci.co.uk/11CB0/production/_84808827_gettyimages-464948948.jpg',
+                featured: true
+            },
+        {
+                id: 2,
+                category: 'politics',
+                title: 'Nitish Kumar’s "Perfect 10"',
+                excerpt: 'Eco-branding is the new standard. How ink-saving typefaces are saving millions in printing costs.',
+                author: 'Arush Shetty',
+                date: '5 min ago',
+                image: 'https://c.ndtvimg.com/2025-11/qoc1cem_nitish-kumar-pti_625x300_20_November_25.jpeg?downsize=390:292',
+                featured: false
+            },
+        
+        {
+                id: 6,
                 category: 'politics',
                 title: 'Aishwarya Rai Bachchan at Sri Sathya Sai Centenary Celebrations',
                 excerpt: 'Aishwarya Rai Bachchan joins PM Narendra Modi, Sachin Tendulkar at centenary celebrations of Sri Sathya ',
                 author: 'Arush Shetty',
-                date: '1 min ago',
+                date: '10 min ago',
                 image: 'https://akm-img-a-in.tosshub.com/indiatoday/images/story/202511/aishwarya-rai-touches-pm-modis-feet-at-event--speaks-on-love-and-religion-191038111-16x9_0.jpg?VersionId=7hiodayG06c_Ygw8BETFTGOQOoMICEmy&size=690:388',
                 featured: true
             },
             {
-                id: 2,
+                id: 5,
                 category: 'politics',
                 title: 'INDI ALLIANCE',
                 excerpt: 'INDI Alliance over. Top sources say the Indian National Congress, led by the Gandhis, have decided to END the alliance. ',
@@ -320,7 +341,7 @@
                 featured: true
             },
             {
-                id: 3,
+                id: 4,
                 category: 'Politics',
                 title: 'Nitish Kumar Takes Oath as Bihar Chief Minister for Record 10th Time',
                 excerpt: 'Following the NDA landslide victory in the Bihar Assembly elections  chief Nitish Kumar is being sworn in today at Patna Gandhi Maidan. Prime Minister Narendra Modi and Home Minister Amit Shah are in attendance.',
@@ -330,7 +351,7 @@
                 featured: false
             },
             {
-                id: 4,
+                id: 3,
                 category: 'politics',
                 title: 'BJP Demands Arrest of DMK Functionary Over Alleged Threat to PM Modi',
                 excerpt: 'Tensions have spiked in Tamil Nadu after a DMK leader allegedly made threatening remarks against Prime Minister Modi ahead of his visit. The BJP has filed a formal complaint demanding immediate arrest, calling it a breakdown of law and order.',
@@ -341,7 +362,7 @@
                 featured: false
             },
             {
-                id: 5,
+                id: 7,
                 category: 'art',
                 title: 'Digital Sculptures in Augmented Reality',
                 excerpt: 'Museums in Paris are replacing physical exhibits with high-fidelity AR installations visitors can take home.',
@@ -361,7 +382,7 @@
                 featured: false
             },
             {
-                id: 7,
+                id: 5,
                 category: 'design',
                 title: 'Sustainable Typography',
                 excerpt: 'Eco-branding is the new standard. How ink-saving typefaces are saving millions in printing costs.',
@@ -369,27 +390,9 @@
                 date: '1 day ago',
                 image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2000&auto=format&fit=crop',
                 featured: false
-            },
-             {
-                id: 1,
-                category: 'politics',
-                title: 'Nitish Kumar’s "Perfect 10"',
-                excerpt: 'Eco-branding is the new standard. How ink-saving typefaces are saving millions in printing costs.',
-                author: 'Arush Shetty',
-                date: '5 min ago',
-                image: 'https://c.ndtvimg.com/2025-11/qoc1cem_nitish-kumar-pti_625x300_20_November_25.jpeg?downsize=390:292',
-                featured: false
-            },
-             {
-                id: 1,
-                category: 'technology',
-                title: 'AI Agents are Coming',
-                excerpt: 'Google CEO Sundar Pichai predicts that within 12 months, AI will evolve from simple chatbots to independent "agents" capable of performing complex tasks on a users behalf.',
-                author: 'Arush Shetty',
-                date: '1 day ago',
-                image: 'https://c.files.bbci.co.uk/11CB0/production/_84808827_gettyimages-464948948.jpg',
-                featured: false
             }
+             
+            
         ];
 
         const tickerItems = [
