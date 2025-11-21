@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <link rel="icon" type="image/x-icon" href="astralogoverified.png">
+    <link rel="icon" type="image/png" href="astralogoverified.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ruler of the South: Immadi Pulakeshi </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['Space Grotesk', 'monospace'],
+                    },
+                    colors: {
+                        'accent': '#fbbf24', // Amber-400 for a "Golden Era" feel
+                        'dark-bg': '#0a0a0a',
+                        'card-bg': '#171717',
+                        'glass': 'rgba(255, 255, 255, 0.05)',
+                    },
+                    animation: {
+                        'ticker': 'ticker 30s linear infinite',
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        ticker: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        /* Text Selection */
+        ::selection { background: #fbbf24; color: #000; }
+
+        /* Progress Bar */
+        #progress-bar { width: 0%; height: 4px; background: #fbbf24; position: fixed; top: 0; left: 0; z-index: 100; transition: width 0.1s; }
+
+        /* Glass Blur */
+        .glass-panel {
+            background: rgba(23, 23, 23, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Typography Overrides for Article */
+        .article-content p { margin-bottom: 1.5rem; line-height: 1.8; color: #d1d5db; font-weight: 300; }
+        .article-content h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: white; margin-top: 3rem; margin-bottom: 1rem; font-weight: 700; }
+        .article-content h3 { font-family: 'Space Grotesk', monospace; font-size: 1.25rem; color: #fbbf24; margin-top: 2rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .article-content ul { margin-bottom: 1.5rem; list-style-type: none; padding-left: 1rem; }
+        .article-content li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; color: #9ca3af; }
+        .article-content li::before { content: "⚔"; position: absolute; left: 0; color: #fbbf24; font-size: 0.8em; }
+        .drop-cap::first-letter { float: left; font-size: 4.5rem; line-height: 0.8; font-family: 'Playfair Display', serif; font-weight: 700; margin-right: 0.75rem; margin-top: 0.25rem; color: #fbbf24; }
+    </style>
+</head>
+<body class="bg-dark-bg text-gray-200 antialiased overflow-x-hidden">
+
+    <!-- Reading Progress Bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel transition-all duration-300 top-0" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Back Button (Mobile) -->
+                <div class="flex items-center md:hidden">
+                    <a href="javascript:history.back()" class="text-gray-300 hover:text-white p-2 transition-colors">
+                        <i class="ph ph-arrow-left text-2xl"></i>
+                    </a>
+                </div>
+
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="https://arushinind.github.io/" class="font-serif text-3xl font-bold tracking-tighter text-white hover:text-accent transition-colors duration-300">
+                        ASTRA.
+                    </a>
+                </div>
+
+                <!-- Desktop Links -->
+                <div class="hidden md:flex space-x-12">
+                    <a href="https://arushinind.github.io/livet.html" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">LIVE TRACKER</a>
+                    <a href="https://arushinind.github.io/bjpn.html" class="text-sm font-mono uppercase tracking-widest text-accent transition-colors">POLITICS</a>
+                    <a href="https://arushinind.github.io/" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">HOME</a>
+                    <a href="https://arushinind.github.io/karnatak.html" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">REFRESH</a>
+                </div>
+
+                <!-- Right Icons -->
+                <div class="flex items-center space-x-6">
+                    <button class="text-gray-300 hover:text-accent transition-colors" onclick="window.print()">
+                        <i class="ph ph-printer text-xl"></i>
+                    </button>
+                    <button class="text-gray-300 hover:text-accent transition-colors">
+                        <i class="ph ph-share-network text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pb-20">
+
+        <!-- Article Hero -->
+        <section class="relative w-full h-[75vh] flex items-end pb-20 justify-center overflow-hidden">
+            <div class="absolute inset-0">
+                <!-- Historical Imagery: Badami Caves/Temple -->
+                <img src="https://miro.medium.com/0*7XuEkWDRqF77tLlI.jpg" 
+                     alt="Badami Chalukya Architecture" 
+                     class="w-full h-full object-cover opacity-60 fixed-bg brightness-75">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-bg via-dark-bg/90 to-transparent"></div>
+            
+            <div class="relative z-10 max-w-4xl mx-auto px-4 text-center w-full animate-slide-up">
+                <div class="flex items-center justify-center space-x-3 mb-6">
+                    <span class="px-3 py-1 border border-accent text-accent text-[10px] font-mono uppercase tracking-widest">Indian History</span>
+                    <span class="text-gray-500 font-mono text-xs uppercase tracking-widest">• 8 Min Read</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white leading-tight mb-6">
+                    The Lord of the South: Immadi Pulakeshi
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 font-light max-w-2xl mx-auto italic">
+                    "The Emperor who drew a line in the sand that the North could not cross."
+                </p>
+            </div>
+        </section>
+
+        <!-- Article Body -->
+        <article class="max-w-3xl mx-auto px-4 -mt-10 relative z-20">
+            <!-- Author Meta -->
+            <div class="bg-card-bg p-6 border-l-4 border-accent mb-12 flex items-center justify-between shadow-2xl">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-gray-700 mr-4 overflow-hidden border border-gray-600">
+                         <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Arush&backgroundColor=b6e3f4" alt="Author" class="w-full h-full">
+                    </div>
+                    <div>
+                        <p class="text-white font-mono text-sm uppercase tracking-wide">By Arush Shetty</p>
+                        <p class="text-gray-500 text-xs">History Desk • Astra Intelligence</p>
+                    </div>
+                </div>
+                <div class="text-gray-500 text-xs font-mono" id="article-date"></div>
+            </div>
+
+            <!-- Content -->
+            <div class="article-content text-lg">
+                <p class="drop-cap">
+                    In the annals of Indian history, few names resonate with the martial brilliance of <strong>Immadi Pulakeshi</strong> (Pulakeshin II). Ruling from the rock-cut capital of Vatapi (modern-day Badami) between 610 and 642 CE, he was the zenith of the Chalukya dynasty.
+                </p>
+
+                <p>
+                    While emperors rose and fell, Pulakeshi is immortalized for a single, civilization-defining moment: he was the immovable wall against which the unstoppable force of the North, Emperor Harshavardhana, finally broke.
+                </p>
+
+                <div class="my-12 border-y border-gray-800 py-8">
+                    <blockquote class="text-2xl md:text-3xl font-serif italic text-center text-white leading-relaxed">
+                        "Harsha (Joy) was no longer Harsha."
+                        <span class="block text-sm font-mono text-accent mt-4 not-italic uppercase tracking-widest">— Aihole Inscription, Ravikirti</span>
+                    </blockquote>
+                </div>
+
+                <h2>1. The Rise of the Chalukya Tiger</h2>
+                <p>
+                    Pulakeshin II did not inherit a peaceful kingdom. His path to the throne was forged in civil war against his uncle, Mangalesha, who sought to deny him his birthright. After securing his capital, Pulakeshin embarked on a series of military campaigns that expanded the Chalukyan empire from the Arabian Sea to the Bay of Bengal.
+                </p>
+                <p>
+                    He subjugated the Kadambas of Banavasi, the Gangas of Talakad, and forced the Pallava king Mahendravarman I to retreat behind the walls of Kanchipuram. By 615 CE, he was the undisputed master of the Deccan.
+                </p>
+
+                <h2>2. The Great Clash: Battle of Narmada</h2>
+                <p>
+                    While Pulakeshin was consolidating the South, <strong>Harshavardhana</strong> of Kannauj had conquered the entire North. Harsha was the <em>Sakalauttarapathanatha</em> (Lord of the Entire North). His ambition naturally turned southward, aiming to unite the entire subcontinent under one umbrella.
+                </p>
+                <p>
+                    Around 618-619 CE, Harsha marched with a massive army—historians describe a force teeming with cavalry and infantry—toward the Deccan. The two titans met on the banks of the river <strong>Narmada</strong>.
+                </p>
+                
+                <h3>Tactical Brilliance</h3>
+                <p>
+                    Pulakeshin knew he could not match Harsha’s sheer numbers in open combat. Instead, he used the terrain to his advantage.
+                </p>
+                <ul>
+                    <li><strong>The Elephant Corps:</strong> Pulakeshin’s army guarded the fords of the Narmada with a formidable elephant corps. These beasts were intoxicated with wine before battle, making them fearless and terrifying to the enemy cavalry.</li>
+                    <li><strong>Defensive Attrition:</strong> The Chalukyan army prevented Harsha’s forces from crossing the river, turning the Narmada into a natural moat.</li>
+                    <li><strong>Psychological Warfare:</strong> Pulakeshin’s spies and the formidable reputation of his feudatories demoralized the Northern army, which was exhausted from long marches.</li>
+                </ul>
+
+                <p>
+                    The result was decisive. Harsha, who had never known defeat, was forced to retreat. The Aihole inscription poignantly notes that the "joy" (Harsha) of the Northern emperor melted away in fear.
+                </p>
+
+                <h2>3. Consequences: The North-South Divide</h2>
+                <p>
+                    The Battle of Narmada was geopolitically significant. It established the Narmada River as the de facto border between the Northern Empire of Harsha and the Southern Empire of the Chalukyas.
+                </p>
+                <p>
+                    Following this victory, Pulakeshin II assumed the title <strong>Parameshwara</strong> (Supreme Lord) and <strong>Dakshinapathapati</strong> (Lord of the South). For the first time, a Southern power was recognized as an equal, if not superior, rival to the dominant Northern power.
+                </p>
+
+                <div class="bg-accent/10 border border-accent/20 p-6 my-8 rounded-lg">
+                    <h4 class="text-accent font-mono uppercase tracking-widest text-sm mb-2">International Legacy</h4>
+                    <p class="text-white text-sm mb-0">
+                        Pulakeshin II was not just a regional warlord; he was a global player. Persian historian Al-Tabari records that Pulakeshin exchanged embassies with the Persian Emperor <strong>Khusrau II</strong>. A painting in the Ajanta Caves (Cave 1) is believed to depict the Persian delegation presenting credentials to Pulakeshin.
+                    </p>
+                </div>
+
+                <h2>4. The Legacy of Badami</h2>
+                <p>
+                    Though his life ended in tragedy during a later war with the Pallavas, Immadi Pulakeshi established the template for the Deccan empires that followed—the Rashtrakutas and the Vijayanagara Empire. He proved that the Vindhyas were not just a geographical barrier, but a political one, guarded by the tigers of the South.
+                </p>
+                <p>
+                   His exploits are etched in stone at the Meguti Jain Temple in Aihole, composed by his court poet Ravikirti, ensuring that as long as the stone stands, the name of the Emperor who stopped the North will remain.
+                </p>
+            </div>
+
+            <!-- Tags -->
+            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-gray-800 text-gray-400 text-xs font-mono uppercase hover:text-white transition-colors cursor-pointer">#Chalukya</span>
+                <span class="px-3 py-1 bg-gray-800 text-gray-400 text-xs font-mono uppercase hover:text-white transition-colors cursor-pointer">#IndianHistory</span>
+                <span class="px-3 py-1 bg-gray-800 text-gray-400 text-xs font-mono uppercase hover:text-white transition-colors cursor-pointer">#Warfare</span>
+                <span class="px-3 py-1 bg-gray-800 text-gray-400 text-xs font-mono uppercase hover:text-white transition-colors cursor-pointer">#Karnataka</span>
+            </div>
+
+            <!-- Share Section -->
+            <div class="mt-12 flex justify-center">
+                <div class="inline-flex items-center space-x-4 bg-white/5 px-6 py-3 rounded-full border border-white/10 backdrop-blur-md">
+                    <span class="text-xs font-mono uppercase tracking-widest text-gray-400">Share History</span>
+                    <div class="h-4 w-px bg-gray-600"></div>
+                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="ph ph-twitter-logo text-lg"></i></a>
+                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="ph ph-facebook-logo text-lg"></i></a>
+                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="ph ph-whatsapp-logo text-lg"></i></a>
+                </div>
+            </div>
+        </article>
+
+        <!-- Recommended Stories -->
+        <section class="max-w-7xl mx-auto px-4 mt-24">
+            <h3 class="text-2xl font-serif font-bold text-white mb-8 border-b border-gray-800 pb-4">More from the Archives</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="group cursor-pointer">
+                    <div class="overflow-hidden h-48 w-full mb-4">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2NKgeZN88u20oIZ4iIMdWtM-TN0Hi_gA6Sw&s" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                    </div>
+                    <span class="text-accent text-xs font-mono uppercase tracking-widest">Chola Dynasty</span>
+                    <h4 class="text-lg font-serif text-white mt-2 group-hover:text-accent transition-colors">The Naval Power of Rajendra Chola</h4>
+                </div>
+                <!-- Card 2 -->
+                <div class="group cursor-pointer">
+                    <div class="overflow-hidden h-48 w-full mb-4">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsMrrn-P1xDLKIOFDfNwWQOl4jw3gMzQ3kJw&s" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                    </div>
+                    <span class="text-accent text-xs font-mono uppercase tracking-widest">Vijayanagara</span>
+                    <h4 class="text-lg font-serif text-white mt-2 group-hover:text-accent transition-colors">Hampi: The Forgotten Empire</h4>
+                </div>
+                <!-- Card 3 -->
+                <div class="group cursor-pointer">
+                    <div class="overflow-hidden h-48 w-full mb-4">
+                        <img src="https://news.artnet.com/app/news-upload/2025/01/ancient-indus-script-1-1-scaled.jpg" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                    </div>
+                    <span class="text-accent text-xs font-mono uppercase tracking-widest">Artifacts</span>
+                    <h4 class="text-lg font-serif text-white mt-2 group-hover:text-accent transition-colors">Deciphering the Indus Script</h4>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black py-12 border-t border-gray-900 mt-20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
+                <div>
+                    <a href="#" class="font-serif text-2xl font-bold text-white tracking-tighter">ASTRA.</a>
+                    <p class="text-gray-500 text-sm mt-2 font-mono">Est. 2025 • India </p>
+                </div>
+                <div class="flex space-x-6 mt-6 md:mt-0">
+                    <a href="https://www.instagram.com/arushshetty__/" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-instagram-logo text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-twitter-logo text-xl"></i></a>
+                    <a href="https://www.linkedin.com/in/arush-shetty-2a39ba377/" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-linkedin-logo text-xl"></i></a>
+                </div>
+            </div>
+            <div class="mt-12 text-center text-xs text-gray-700 font-mono">
+                &copy; 2025 ASTRA NEWS AND TECHNOLOGY. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Set Current Date in Article
+        const dateElement = document.getElementById('article-date');
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        dateElement.textContent = new Date().toLocaleDateString('en-US', options).toUpperCase();
+
+        // Scroll Progress Bar Logic
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+
+            // Navbar Glass Effect
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+                nav.classList.add('bg-black/90');
+            } else {
+                nav.classList.remove('shadow-lg');
+                nav.classList.remove('bg-black/90');
+            }
+        };
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+
+    <meta property="og:image" content="https://miro.medium.com/0*7XuEkWDRqF77tLlI.jpg">
+
+    <!-- 4. Image dimensions (Optional but helps WhatsApp render faster) -->
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="1920">
+
+    <!-- 5. The canonical URL of the page -->
+    <meta property="og:url" content="https://arushinind.github.io/karnatak.html">
+
+    <!-- 6. The type of content (usually 'website' or 'article') -->
+    <meta property="og:type" content="website">
+
+   
+  
+</head>
+
+</html>
