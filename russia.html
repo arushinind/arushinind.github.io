@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <link rel="icon" type="image/x-icon" href="astralogoverified.png">
+    <link rel="icon" type="image/png" href="astralogoverified.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Russia Ready to Supply Any Weapon to India - ASTRA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['Space Grotesk', 'monospace'],
+                    },
+                    colors: {
+                        'accent': '#22d3ee', // Cyan-400
+                        'dark-bg': '#0a0a0a',
+                        'card-bg': '#171717',
+                        'glass': 'rgba(255, 255, 255, 0.05)',
+                    },
+                    animation: {
+                        'ticker': 'ticker 30s linear infinite',
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.6s ease-out forwards',
+                    },
+                    keyframes: {
+                        ticker: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        /* Text Selection */
+        ::selection { background: #22d3ee; color: #000; }
+
+        /* Progress Bar */
+        #progress-bar { width: 0%; height: 4px; background: #22d3ee; position: fixed; top: 0; left: 0; z-index: 100; transition: width 0.1s; }
+
+        /* Glass Blur */
+        .glass-panel {
+            background: rgba(23, 23, 23, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        /* Typography Overrides for Article */
+        .article-content p { margin-bottom: 1.5rem; line-height: 1.8; color: #d1d5db; font-weight: 300; }
+        .article-content h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: white; margin-top: 3rem; margin-bottom: 1rem; font-weight: 700; }
+        .article-content h3 { font-family: 'Space Grotesk', monospace; font-size: 1.25rem; color: #22d3ee; margin-top: 2rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .article-content ul { margin-bottom: 1.5rem; list-style-type: none; padding-left: 1rem; }
+        .article-content li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; color: #9ca3af; }
+        .article-content li::before { content: "→"; position: absolute; left: 0; color: #22d3ee; }
+        .drop-cap::first-letter { float: left; font-size: 4.5rem; line-height: 0.8; font-family: 'Playfair Display', serif; font-weight: 700; margin-right: 0.75rem; margin-top: 0.25rem; color: #22d3ee; }
+    </style>
+</head>
+<body class="bg-dark-bg text-gray-200 antialiased overflow-x-hidden">
+
+    <!-- Reading Progress Bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass-panel transition-all duration-300 top-0" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Back Button (Mobile) -->
+                <div class="flex items-center md:hidden">
+                    <a href="javascript:history.back()" class="text-gray-300 hover:text-white p-2 transition-colors">
+                        <i class="ph ph-arrow-left text-2xl"></i>
+                    </a>
+                </div>
+
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="https://arushinind.github.io/" class="font-serif text-3xl font-bold tracking-tighter text-white hover:text-accent transition-colors duration-300">
+                        ASTRA.
+                    </a>
+                </div>
+
+                <!-- Desktop Links -->
+                <div class="hidden md:flex space-x-12">
+                    <a href="https://arushinind.github.io/livet.html" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">LIVE TRACKER</a>
+                    <a href="https://arushinind.github.io/bjpn.html" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">POLITICS</a>
+                    <a href="https://arushinind.github.io/twitter.html" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">TWEETS</a>
+                    <a href="home2.html" class="text-sm font-mono uppercase tracking-widest hover:text-accent transition-colors">ASTRA PREMIUM</a>
+                </div>
+
+                <!-- Right Icons -->
+                <div class="flex items-center space-x-6">
+                    <button class="text-gray-300 hover:text-accent transition-colors" onclick="window.print()">
+                        <i class="ph ph-printer text-xl"></i>
+                    </button>
+                    <button class="text-gray-300 hover:text-accent transition-colors">
+                        <i class="ph ph-share-network text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pb-20">
+
+        <!-- Article Hero -->
+        <section class="relative w-full h-[70vh] flex items-end pb-20 justify-center overflow-hidden">
+            <div class="absolute inset-0">
+                <!-- Rostec Image -->
+                <img src="https://pbs.twimg.com/media/G6M5wIfacAMNwjj?format=jpg&name=small" 
+                     alt="Rostec CEO Sergei Chemezov" 
+                     class="w-full h-full object-cover opacity-60 fixed-bg"
+                     onerror="this.src='https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2029&auto=format&fit=crop'">
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-dark-bg via-dark-bg/80 to-transparent"></div>
+            
+            <div class="relative z-10 max-w-4xl mx-auto px-4 text-center w-full animate-slide-up">
+                <div class="flex items-center justify-center space-x-3 mb-6">
+                    <span class="px-3 py-1 border border-accent text-accent text-[10px] font-mono uppercase tracking-widest">Defense</span>
+                    <span class="text-gray-500 font-mono text-xs uppercase tracking-widest">• 2 Min Read</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white leading-tight mb-6">
+                    Any Weapon India Needs Russia Pledges Full Support
+                </h1>
+                <p class="text-lg md:text-xl text-gray-300 font-light max-w-2xl mx-auto italic">
+                    Moscow reaffirms its commitment to New Delhi's national security amid shifting global alliances.
+                </p>
+            </div>
+        </section>
+
+        <!-- Article Body -->
+        <article class="max-w-3xl mx-auto px-4 -mt-10 relative z-20">
+            <!-- Author Meta -->
+            <div class="bg-card-bg p-6 border-l-4 border-accent mb-12 flex items-center justify-between shadow-2xl">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-gray-700 mr-4 overflow-hidden">
+                         <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Arush" alt="Author" class="w-full h-full">
+                    </div>
+                    <div>
+                        <p class="text-white font-mono text-sm uppercase tracking-wide">By Arush Shetty</p>
+                        <p class="text-gray-500 text-xs">Founder & Editor-in-Chief • ASTRA</p>
+                    </div>
+                </div>
+                <div class="text-gray-500 text-xs font-mono" id="article-date"></div>
+            </div>
+
+            <!-- Content -->
+            <div class="article-content text-lg">
+                <p class="drop-cap">
+                    In a categorical statement underscoring the resilience of the Moscow-New Delhi strategic partnership, Rostec CEO Sergei Chemezov has declared that Russia is prepared to supply "any weapons" India requires to ensure its national security.
+                </p>
+
+                <p>
+                    The announcement comes at a crucial juncture in global geopolitics, reaffirming Russia's position as a steadfast defense partner despite external pressures. Chemezov emphasized that the cooperation is not merely transactional but foundational to maintaining the balance of power in the region.
+                </p>
+
+                <div class="my-12 border-y border-gray-800 py-8">
+                    <blockquote class="text-2xl md:text-3xl font-serif italic text-center text-white leading-relaxed">
+                        "We are ready to supply any weapons India needs for its security."
+                    </blockquote>
+                </div>
+
+                <h2>A Partnership of Trust</h2>
+                <p>
+                    This assurance from the head of Russia's state-owned defense conglomerate highlights the deep technological integration between the two nations. Unlike standard buyer-seller relationships, the Russia-India defense tie is increasingly defined by joint ventures, technology transfers, and co-production initiatives like the BrahMos missile system.
+                </p>
+                <p>
+                    Chemezov's comments serve as a direct signal that despite sanctions and a complex international environment, Russia remains committed to prioritizing India's defense capabilities without restrictions.
+                </p>
+
+            </div>
+
+            <!-- Tags -->
+            <div class="mt-12 pt-8 border-t border-gray-800 flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-gray-800 text-gray-400 text-xs font-mono uppercase hover:text-white transition-colors cursor-pointer">#Defense</span>
+                <span class="px-3 py-1 bg-gray-800 text-gray-400 text-xs font-mono uppercase hover:text-white transition-colors cursor-pointer">#IndiaRussia</span>
+                <span class="px-3 py-1 bg-gray-800 text-gray-400 text-xs font-mono uppercase hover:text-white transition-colors cursor-pointer">#Rostec</span>
+                <span class="px-3 py-1 bg-gray-800 text-gray-400 text-xs font-mono uppercase hover:text-white transition-colors cursor-pointer">#Geopolitics</span>
+            </div>
+
+            <!-- Share Section -->
+            <div class="mt-12 flex justify-center">
+                <div class="inline-flex items-center space-x-4 bg-white/5 px-6 py-3 rounded-full border border-white/10 backdrop-blur-md">
+                    <span class="text-xs font-mono uppercase tracking-widest text-gray-400">Share Briefing</span>
+                    <div class="h-4 w-px bg-gray-600"></div>
+                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="ph ph-twitter-logo text-lg"></i></a>
+                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="ph ph-facebook-logo text-lg"></i></a>
+                    <a href="#" class="text-white hover:text-accent transition-colors"><i class="ph ph-whatsapp-logo text-lg"></i></a>
+                </div>
+            </div>
+        </article>
+
+        <!-- Recommended Stories -->
+        <section class="max-w-7xl mx-auto px-4 mt-24">
+            <h3 class="text-2xl font-serif font-bold text-white mb-8 border-b border-gray-800 pb-4">Related Intelligence</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="group cursor-pointer">
+                    <div class="overflow-hidden h-48 w-full mb-4">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvUxcRVOYpTK1wKYIMbsUtaWaYPeLlWR578w&s" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                    </div>
+                    <span class="text-accent text-xs font-mono uppercase tracking-widest">Economy</span>
+                    <h4 class="text-lg font-serif text-white mt-2 group-hover:text-accent transition-colors">Global Markets: Defense Stocks Rally</h4>
+                </div>
+                <!-- Card 2 -->
+                <div class="group cursor-pointer">
+                    <div class="overflow-hidden h-48 w-full mb-4">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                    </div>
+                    <span class="text-accent text-xs font-mono uppercase tracking-widest">Technology</span>
+                    <h4 class="text-lg font-serif text-white mt-2 group-hover:text-accent transition-colors">The Future of Autonomous Warfare</h4>
+                </div>
+                <!-- Card 3 -->
+                <div class="group cursor-pointer">
+                    <div class="overflow-hidden h-48 w-full mb-4">
+                        <img src="https://bpac.in/wp-content/uploads/2020/07/BPAC_Main.png" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100">
+                    </div>
+                    <span class="text-accent text-xs font-mono uppercase tracking-widest">Strategy</span>
+                    <h4 class="text-lg font-serif text-white mt-2 group-hover:text-accent transition-colors">Indo-Pacific: A New Security Architecture</h4>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer (Same as Main) -->
+    <footer class="bg-black py-12 border-t border-gray-900 mt-20">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
+                <div>
+                    <a href="#" class="font-serif text-2xl font-bold text-white tracking-tighter">ASTRA.</a>
+                    <p class="text-gray-500 text-sm mt-2 font-mono">Est. 2025 • India </p>
+                </div>
+                <div class="flex space-x-6 mt-6 md:mt-0">
+                    <a href="https://www.instagram.com/arushshetty__/" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-instagram-logo text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-twitter-logo text-xl"></i></a>
+                    <a href="https://www.linkedin.com/in/arush-shetty-2a39ba377/" class="text-gray-400 hover:text-white transition-colors"><i class="ph ph-linkedin-logo text-xl"></i></a>
+                </div>
+            </div>
+            <div class="mt-12 text-center text-xs text-gray-700 font-mono">
+                &copy; 2025 ASTRA NEWS AND TECHNOLOGY. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Set Current Date in Article
+        const dateElement = document.getElementById('article-date');
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        dateElement.textContent = new Date().toLocaleDateString('en-US', options).toUpperCase();
+
+        // Scroll Progress Bar Logic
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+
+            // Navbar Glass Effect
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg');
+                nav.classList.add('bg-black/90');
+            } else {
+                nav.classList.remove('shadow-lg');
+                nav.classList.remove('bg-black/90');
+            }
+        };
+    </script>
+</body>
+</html>
