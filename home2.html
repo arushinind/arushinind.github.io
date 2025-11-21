@@ -1,271 +1,559 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><head>
-    <link rel="icon" type="image/x-icon" href="astralogoverified.png">
-    
-    <link rel="icon" type="image/png" href="astralogoverified.png">
-</head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASTRA</title>
+    <title>ASTRA | Next-Gen News Network</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
 
     <style>
-        /* FONT IMPORT - Using Arial Black for maximum visual noise */
-        @import url('https://fonts.googleapis.com/css2?family=Arial+Black&display=swap');
-
-        /* BASIC RESET */
-        * {
-            box-sizing: border-box;
+        /* --- VARIABLES & THEME --- */
+        :root {
+            --bg-dark: #050507;
+            --bg-panel: #0f0f13;
+            --accent-red: #ff2a2a;
+            --accent-cyan: #00f3ff;
+            --accent-gold: #ffcc00;
+            --text-main: #e0e0e0;
+            --text-muted: #858595;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --glass: rgba(20, 20, 25, 0.7);
+            --font-display: 'Oswald', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
         }
 
-        /* BODY STYLES - LOUD BACKGROUND & FONT */
+        /* --- RESET & BASE --- */
+        * { box-sizing: border-box; outline: none; }
+        
         body {
-            font-family: 'Arial Black', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #def701; /* Neon Yellow Background */
-            color: #ec0606; /* Bright Red Text */
-            line-height: 1.2;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 0%, #1a1a2e 0%, transparent 70%),
+                linear-gradient(0deg, rgba(0,0,0,0.2) 0px, transparent 1px);
+            background-size: 100% 100%, 100% 4px;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* HEADER - AGGRESSIVE BAR */
-        header {
-            background-color: #000000; /* Solid Black */
-            color: #ffffff; /* White Text */
-            padding: 20px 0;
-            text-align: center;
-            border-bottom: 5px solid #ff0000; /* Red Border */
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; padding: 0; margin: 0; }
+
+        /* --- UTILITIES --- */
+        .glitch-text {
+            position: relative;
+            animation: glitch-skew 3s infinite;
+        }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+        }
+        .glitch-text::before {
+            left: 2px; text-shadow: -1px 0 var(--accent-red);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 5s infinite linear alternate-reverse;
+        }
+        .glitch-text::after {
+            left: -2px; text-shadow: -1px 0 var(--accent-cyan);
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 5s infinite linear alternate-reverse;
         }
         
-        header h1 {
-            font-size: 3.5em;
-            margin: 0;
+        @keyframes glitch-anim {
+            0% { clip: rect(36px, 9999px, 9px, 0); }
+            50% { clip: rect(68px, 9999px, 97px, 0); }
+            100% { clip: rect(11px, 9999px, 59px, 0); }
+        }
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 94px, 0); }
+            50% { clip: rect(3px, 9999px, 15px, 0); }
+            100% { clip: rect(94px, 9999px, 39px, 0); }
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 2px;
+            font-family: var(--font-code);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            /* Create a shaky, glitch effect */
-            animation: glitch-color 0.5s infinite alternate; 
+        }
+        .badge.live {
+            background: rgba(255, 42, 42, 0.1);
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+        }
+        .badge.live span {
+            width: 6px; height: 6px;
+            background: var(--accent-red);
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+
+        /* --- LAYOUT --- */
+        .app-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            gap: 20px;
+            min-height: 100vh;
         }
 
-        /* GLITCH ANIMATION */
-        @keyframes glitch-color {
-            0% { color: #ffff00; }
-            50% { color: #ff00ff; }
-            100% { color: #00ff00; }
-        }
-
-        /* NAVIGATION - CHAOTIC LINKS */
-        nav {
-            background-color: #333333; /* Dark Grey Bar */
-            text-align: center;
-            padding: 5px 0;
-            border-bottom: 3px solid #ffff00;
-        }
-
-        nav a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1.2em;
-            padding: 10px 15px;
-            display: inline-block;
-            transition: background-color 0.1s;
-            /* Crazy hover effect */
-            transform: skewX(-10deg); 
-        }
-
-        nav a:hover {
-            background-color: #ff0000;
-            color: #ffff00;
-            transform: skewX(0deg); /* Straightens on hover */
+        /* --- HEADER & NAV --- */
+        .header-bar {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
         }
         
-        /* MAIN CONTENT LAYOUT - UNCONVENTIONAL GRID */
-        main {
-            max-width: 1300px;
-            margin: 20px auto;
-            padding: 0 10px;
+        .brand {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .brand span { color: var(--accent-red); }
+
+        .main-nav {
+            display: flex;
+            gap: 5px;
+            background: var(--bg-panel);
+            padding: 5px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .nav-item {
+            padding: 8px 16px;
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            border-radius: 4px;
+            color: var(--text-muted);
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--accent-cyan);
+        }
+        .nav-item.active::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: var(--accent-cyan);
+        }
+
+        .sys-time {
+            font-family: var(--font-code);
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+        }
+
+        /* --- TICKER --- */
+        .ticker-wrap {
+            grid-column: 1 / -1;
+            background: rgba(255, 42, 42, 0.1);
+            border-left: 4px solid var(--accent-red);
+            color: #fff;
+            padding: 10px;
+            overflow: hidden;
+            white-space: nowrap;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+        }
+        .ticker-label {
+            background: var(--accent-red);
+            color: black;
+            padding: 2px 8px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        .ticker-content {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+        }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* --- SIDEBARS (Common) --- */
+        .panel {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: fit-content;
+        }
+        .panel-header {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .panel-header i { color: var(--accent-cyan); }
+
+        /* Left Sidebar Specifics */
+        .update-list { display: flex; flex-direction: column; gap: 15px; }
+        .update-item {
+            border-left: 2px solid var(--border-color);
+            padding-left: 12px;
+            transition: 0.2s;
+        }
+        .update-item:hover { border-left-color: var(--accent-gold); }
+        .update-meta { font-family: var(--font-code); font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; }
+        .update-text { font-size: 0.9rem; line-height: 1.4; color: #ccc; }
+
+        /* Right Sidebar Specifics (Tweets) */
+        .tweet-card {
+            background: rgba(255,255,255,0.03);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid transparent;
+        }
+        .tweet-card:hover { border-color: var(--border-color); background: rgba(255,255,255,0.05); }
+        .tweet-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .tweet-avatar { width: 32px; height: 32px; background: #333; border-radius: 50%; display: grid; place-items: center; font-size: 0.8rem; }
+        .tweet-handle { font-size: 0.85rem; font-weight: bold; color: #fff; }
+        .tweet-body { font-size: 0.85rem; line-height: 1.4; color: #bbb; }
+
+        /* --- MAIN FEED --- */
+        .news-grid {
             display: grid;
-            /* Uneven, asymmetric columns */
-            grid-template-columns: 1fr 2fr 1fr; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
         }
-
-        /* ARTICLE STYLES - HIGH IMPACT */
-        .article {
-            background-color: #ffffff; /* White background for contrast */
-            padding: 15px;
-            border: 4px dashed #ff0000; /* Dashed, aggressive border */
-            margin-bottom: 20px;
-            box-shadow: 10px 10px 0px #000000; /* Heavy black shadow */
-            transform: rotate(-1deg); /* Slight tilt for chaos */
-        }
         
-        .article h2 {
-            font-size: 2em;
-            color: #0000ff; /* Blue headline for contrast */
-            margin-top: 0;
-            border-bottom: 2px solid #0000ff;
-            text-shadow: 1px 1px #ffff00;
+        .article-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0, 243, 255, 0.15);
+            border-color: var(--accent-cyan);
         }
 
-        .article p {
-            font-family: Arial, sans-serif; /* Less aggressive font for body */
-            color: #333;
+        .card-media {
+            height: 200px;
+            background: #222;
+            position: relative;
+            overflow: hidden;
         }
-
-        .read-more {
-            display: block;
-            background-color: #000000;
-            color: #ff0000;
-            padding: 8px;
-            text-align: center;
-            text-decoration: none;
-            margin-top: 10px;
-            /* Pulsing Button effect */
-            animation: pulse-border 1.5s infinite; 
+        .card-media img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: 0.5s;
+            filter: grayscale(40%);
         }
-
-        @keyframes pulse-border {
-            0% { border: 2px solid #ff0000; }
-            50% { border: 2px solid #ffff00; }
-            100% { border: 2px solid #ff0000; }
-        }
+        .article-card:hover .card-media img { transform: scale(1.05); filter: grayscale(0%); }
         
-        /* SIDEBARS - OVERLOADED INFO */
-        .sidebar {
-            background-color: #000000;
-            color: #ffff00;
-            padding: 15px;
-            border: 3px solid #ff0000;
-            text-align: center;
+        .card-content { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-tag { color: var(--accent-cyan); font-family: var(--font-code); font-size: 0.7rem; margin-bottom: 8px; }
+        .card-title {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            margin: 0 0 10px 0;
+            line-height: 1.1;
         }
+        .card-excerpt { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; flex-grow: 1; }
         
-        .sidebar h3 {
-            color: #ffffff;
-            font-size: 1.5em;
-            margin-top: 0;
+        .btn-read {
+            margin-top: auto;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-read:hover {
+            background: var(--accent-cyan);
+            color: #000;
+            border-color: var(--accent-cyan);
         }
 
-        /* FOOTER - LOUD CLOSURE */
-        footer {
-            background-color: #ff0000;
-            color: #000000;
+        /* --- FOOTER --- */
+        .footer {
+            grid-column: 1 / -1;
+            border-top: 1px solid var(--border-color);
+            padding-top: 30px;
+            margin-top: 20px;
             text-align: center;
-            padding: 15px 0;
-            font-weight: bold;
-            clear: both;
+            font-family: var(--font-code);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .app-container { grid-template-columns: 1fr; }
+            .header-bar { flex-direction: column; gap: 15px; }
+            .main-nav { flex-wrap: wrap; justify-content: center; }
+            .panel { order: 2; }
+            .main-feed { order: 1; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>ASTRA NEWS AND TECHNOLOGY</h1>
+<div class="app-container">
+    
+    <!-- Header -->
+    <header class="header-bar">
+        <div class="brand">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ff2a2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            <div class="glitch-text" data-text="ASTRA">ASTRA</div>
+        </div>
+        
+        <nav class="main-nav">
+            <a href="#" class="nav-item active">HOME</a>
+            <a href="livet.html" class="nav-item">LIVE TRACKER</a>
+            <a href="bjpn.html" class="nav-item">POLITICS</a>
+            <a href="vision.html" class="nav-item">VISION 2047</a>
+            <a href="astratech.html" class="nav-item">TECH</a>
+        </nav>
+
+        <div class="sys-time" id="clock">00:00:00 IST</div>
     </header>
 
-    <nav>
-        <a href="livet.html">LIVE TRACKER</a>
-        <a href="bjpn.html">BJP NEWS</a>
-        <a href="twitter.html">TWITTER NEWS</a>
-        <a href="home2.html">REFRESH</a>
-        <a href="https://arushinind.github.io/">OFFICIAL</a>
-        <a href="vision.html">VISION 2047</a>
-        <a href="astratech.html">ABOUT</a>
-    </nav>
+    <!-- Ticker -->
+    <div class="ticker-wrap">
+        <span class="ticker-label">BREAKING</span>
+        <div class="ticker-content">
+            PK TERRORIST ATTACK: DELHI BLAST SUSPECT IDENTIFIED ++ RUSSIA CONFIRMS SU-57 TECH TRANSFER ++ BULLET TRAIN SURAT-VAPI TRIALS STARTING SOON ++ INNOVATION CHALLENGE ANNOUNCED FOR GEN Z
+        </div>
+    </div>
 
-    <main>
+    <!-- Left Sidebar: Updates -->
+    <aside class="panel">
+        <div class="panel-header">
+            <span>INTELLIGENCE FEED</span>
+            <div class="badge live"><span></span>LIVE</div>
+        </div>
+        <div class="update-list">
+            <div class="update-item">
+                <div class="update-meta">T-MINUS 10M</div>
+                <div class="update-text">Union Science & Tech Minister announces nationwide deep-tech challenge. 1000 lives target. Aatmanirbhar Bharat acceleration confirmed.</div>
+            </div>
+            <div class="update-item">
+                <div class="update-meta">COIMBATORE, TN</div>
+                <div class="update-text">PM Modi's roadshow concludes. Massive reception reported. Flowers showers and traditional dances marked the event.</div>
+            </div>
+            <div class="update-item">
+                <div class="update-meta">SECURITY ALERT</div>
+                <div class="update-text" style="color: var(--accent-red);">Pakistan-based group claims Delhi Blast. Home Minister Shah: "We will hunt them down."</div>
+            </div>
+            <div class="update-item">
+                <div class="update-meta">INFRASTRUCTURE</div>
+                <div class="update-text">India's first bullet train set for Surat-Vapi stretch. Operational target: Aug 2027.</div>
+            </div>
+            <div class="update-item">
+                <div class="update-meta">JUDICIARY</div>
+                <div class="update-text">272 eminent citizens release open letter condemning opposition attacks on Election Commission.</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Center: Main Feed -->
+    <main class="main-feed news-grid">
         
-        <aside class="sidebar">
-            <h3>🔴 Latest Updates</h3>
-            <p>🚨 Union Science & Technology Minister announces a nationwide innovation challenge focused on deep tech innovations that can impact atleast 1000 lives & can accelerate India’s journey towards Aatmanirbhar Bharat 🇮🇳
-
-Minister will personally mentor the top innovators & help in scaling up through Department of Science and Technology. Good opportunity for the Gen Z innovators.</p>
-            <p>🚨Prime Minister Modi's massive roadshow in Coimbatore..! 
-
-People of Tamilnadu chanted "Modi Modi" and welcomed PM with flower showers and dances..</p>
-            <p>🚨Pakistan takes responsibility for Delhi blast
-
-POK Ex PM Anwarul Haq says “I earlier said that if you keep bleeding Balochistan, we'll hit India from Red Fort to the forests of Kashmir and we've done it, they're still unable to count bodies."</p>
-            <p>🚨 BIG! India’s first bullet train is set to run the 100 km Surat–Vapi stretch by August 2027.</p>
-            <p>🚨 BIG STATEMENT by Home Minister Amit Shah
-
-“We will HUNT DOWN the CULPRITS of the Delhi bomb blast even from the depths of the netherworld (Pataal) and ensure they receive the STRICTEST PUNISHMENT.”</p>
-            <p>🚨Big Breaking 
-A close friend of Putin, Nikolai Patrushev meets Modiji in India while Subramanyam Jaishankar saab meets Russian President Vladimir Putin in Moscow Today! 
-
-I can give you a hint, Kisi desh ki ga*n marne wali hai very sooon 🔥
-</p>
-            <p>🚨 BIG BREAKING
-
-        272 eminent citizens including 16 judges, 123 retired bureaucrats with 14 ambassadors, and 133 retired armed forces officers have released an open letter. 
-
-        They condemn LoP Rahul Gandhi and the Congress Party for trying to tarnish institutions like the Election Commission. </p>
-           
-        </aside>
-
-        <section id="center-content">
-            <div class="article">
-                <h2>🚨YOGI ADITHYANATH</h2>
-                <p>📍Ayodhya: UP CM Yogi Adityanath offers prayers at Shri Ram Janmbhoomi Mandir 🙏
-                    — Unapologetic Sanatani CM 🚩
-                </p>
-                <a href="https://x.com/i/status/1990999215523463629" class="read-more">SEE THE VIDEO &raquo;</a>
-
-
-
-
-
+        <!-- Article 1 -->
+        <article class="article-card">
+            <div class="card-media">
+                <!-- Placeholder for specific imagery -->
+                <img src="https://images.unsplash.com/photo-1566006877222-90a55887310b?auto=format&fit=crop&q=80&w=800" alt="Ayodhya Temple" onerror="this.src='https://via.placeholder.com/400x200/111/fff?text=ASTRA+IMG'">
             </div>
-                    
-            <div class="article">
-                <h2> 😎LAWRENCE IN POWER !!</h2>
-                <P>
-Big Breaking 🚨 
-Lawrence Bishnoi is in same jail where Terrorist Dr Ahmed got beaten in Sabarmati Jail, Gujarat! 
-
-Some sources said Ahmed was crying last night bcz someone put lathi inside him 🔥</P>
- <a href="https://x.com/i/status/1991074792691171561" class="read-more">SEE THE VIDEO &raquo;</a></div>
-<div class="article">
-                <h2> 🔥INDIA AND RUSSIA'S DIPLOMACY </h2>
-                <p>🚨Russia offers Su-57 fighter jet production in India, with full tech transfer ahead of President Putin's visit.</p>
-                <a href="https://pbs.twimg.com/media/G6FbHEwbMAYjL7L?format=jpg&name=small" class="read-more">SEE THE PHOTO &raquo;</a>
+            <div class="card-content">
+                <div class="card-tag">CULTURE & POLITICS</div>
+                <h2 class="card-title">CM Yogi at Ram Mandir</h2>
+                <p class="card-excerpt">Uttar Pradesh CM Yogi Adityanath offers prayers at Shri Ram Janmbhoomi Mandir in Ayodhya. "Unapologetic Sanatani," sources claim.</p>
+                <a href="https://x.com/i/status/1990999215523463629" class="btn-read">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                    Watch Footage
+                </a>
             </div>
+        </article>
 
-            <div class="article">
-                <h2>💥 DELHI IS HEALING</h2>
-                <p> 🚨 Delhi Govt to re-develop Sahibi river 💙</p>
-                <a href="https://pbs.twimg.com/media/G6GcMFbaUAAlYo2?format=jpg&name=small" class="read-more">DELHI RIVER IMAGE &raquo;</a>
+        <!-- Article 2 -->
+        <article class="article-card" style="border-color: var(--accent-red);">
+            <div class="card-media">
+                <img src="https://images.unsplash.com/photo-1555436169-20e93ea9a7ff?auto=format&fit=crop&q=80&w=800" alt="Prison High Security">
             </div>
-
-            <div class="article">
-                <h2>🏹 BIHAR GOVERNMENT </h2>
-                <p>No change in Bihar-BJP leadership.
-Samrat Chaudhary and Vijay Sinha to continue as Dy-CMs...
-</p>
-                <a href="https://www.google.com/search?q=bihar&ie=UTF-8" class="read-more">LOOK IN BIHAR &raquo;</a>
+            <div class="card-content">
+                <div class="card-tag" style="color: var(--accent-red);">CRIME WATCH</div>
+                <h2 class="card-title">Lawrence in Sabarmati</h2>
+                <p class="card-excerpt">Gangster Lawrence Bishnoi transferred to high-security Sabarmati Jail. Reports of internal conflicts and heightened security protocols.</p>
+                <a href="https://x.com/i/status/1991074792691171561" class="btn-read">View Report</a>
             </div>
+        </article>
 
-        </section>
+        <!-- Article 3 -->
+        <article class="article-card">
+            <div class="card-media">
+                <img src="https://images.unsplash.com/photo-1569834391150-8e6560b97444?auto=format&fit=crop&q=80&w=800" alt="Fighter Jet">
+            </div>
+            <div class="card-content">
+                <div class="card-tag">DEFENSE</div>
+                <h2 class="card-title">Su-57 Tech Transfer</h2>
+                <p class="card-excerpt">Major breakthrough: Russia offers full technology transfer for Su-57 fighter jet production in India ahead of Presidential visit.</p>
+                <a href="#" class="btn-read">Read Analysis</a>
+            </div>
+        </article>
 
-        <aside class="sidebar">
-            <h3>🔥 LATEST TWEETS</h3>
-            <ul>
-                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">🚨 SHOCKER from Bengaluru <br><br>Fake officials stopped a cash-van, lifted ₹7 crore, ditched the crew near a flyover, and vanished in an Innova.<br><br>👉 Massive citywide hunt underway. <a href="https://t.co/G2YuugdINU">pic.twitter.com/G2YuugdINU</a></p>&mdash; Megh Updates 🚨™ (@MeghUpdates) <a href="https://twitter.com/MeghUpdates/status/1991169595227386350?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">🚨 BIG! Russia proposes building ship-building &amp; repair clusters in Mumbai &amp; Chennai with India. <a href="https://t.co/3C6mweLSVh">pic.twitter.com/3C6mweLSVh</a></p>&mdash; Megh Updates 🚨™ (@MeghUpdates) <a href="https://twitter.com/MeghUpdates/status/1991117361014038835?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <blockquote class="twitter-tweet"><p lang="en" dir="ltr">NITISH KUMAR : We are receiving a lot of support from PM Modi and centre.</p>&mdash; News Algebra (@NewsAlgebraIND) <a href="https://twitter.com/NewsAlgebraIND/status/1991141711536656814?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-               <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Temple servitors said the father had brought his son straight from the hospital.<br><br>Many devotees and temple staff also silently joined in prayer.<br><br>In a moment that many described as miraculous, the ailing boy reportedly moved his head. <a href="https://t.co/Qem2gPJIz2">https://t.co/Qem2gPJIz2</a> <a href="https://t.co/Bb9dKdLwZ1">pic.twitter.com/Bb9dKdLwZ1</a></p>&mdash; News Algebra (@NewsAlgebraIND) <a href="https://twitter.com/NewsAlgebraIND/status/1991144329654468742?ref_src=twsrc%5Etfw">November 19, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                <li style="list-style: none; margin: 10px 0;"><a href="https://arushinind.github.io/" style="color: #ff0000; text-decoration: none; background: #ffff00; padding: 5px; display: block;">REFRESH TWEETS</a></li>
-               
-            </ul>
-        </aside>
+        <!-- Article 4 -->
+        <article class="article-card">
+            <div class="card-media">
+                <img src="https://images.unsplash.com/photo-1678900847100-22e98b91c426?auto=format&fit=crop&q=80&w=800" alt="River Restoration">
+            </div>
+            <div class="card-content">
+                <div class="card-tag">URBAN DEVELOPMENT</div>
+                <h2 class="card-title">Delhi River Project</h2>
+                <p class="card-excerpt">Delhi Government greenlights the Sahibi river redevelopment project. Aiming to restore ecological balance by 2026.</p>
+                <a href="#" class="btn-read">Project Details</a>
+            </div>
+        </article>
+
+        <!-- Article 5 -->
+        <article class="article-card">
+            <div class="card-media">
+                <img src="https://images.unsplash.com/photo-1532375810709-75b1da00537c?auto=format&fit=crop&q=80&w=800" alt="Bihar Politics">
+            </div>
+            <div class="card-content">
+                <div class="card-tag">STATE POLITICS</div>
+                <h2 class="card-title">Bihar Leadership</h2>
+                <p class="card-excerpt">Status Quo maintained. Samrat Chaudhary and Vijay Sinha to continue as Deputy CMs. No leadership change expected.</p>
+                <a href="#" class="btn-read">Full Report</a>
+            </div>
+        </article>
 
     </main>
 
-    <footer>
-        <p>THANKS FOR READING</p>
-        <p>© 2025 ASTRA NEWS AND TECHNOLOGY</p>
+    <!-- Right Sidebar: Social -->
+    <aside class="panel">
+        <div class="panel-header">
+            <span>COMMS CHATTER</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+        </div>
+        
+        <div class="tweet-card">
+            <div class="tweet-header">
+                <div class="tweet-avatar">MU</div>
+                <span class="tweet-handle">@MeghUpdates</span>
+            </div>
+            <div class="tweet-body">
+                🚨 SHOCKER from Bengaluru. Fake officials stopped a cash-van, lifted ₹7 crore. Massive citywide hunt underway. Innova tracked near flyover.
+            </div>
+        </div>
+
+        <div class="tweet-card">
+            <div class="tweet-header">
+                <div class="tweet-avatar">MU</div>
+                <span class="tweet-handle">@MeghUpdates</span>
+            </div>
+            <div class="tweet-body">
+                🚨 BIG! Russia proposes building ship-building & repair clusters in Mumbai & Chennai with India. Strategic partnership deepening.
+            </div>
+        </div>
+
+        <div class="tweet-card">
+            <div class="tweet-header">
+                <div class="tweet-avatar">NA</div>
+                <span class="tweet-handle">@NewsAlgebra</span>
+            </div>
+            <div class="tweet-body">
+                NITISH KUMAR: "We are receiving a lot of support from PM Modi and the centre." Alliance remains strong.
+            </div>
+        </div>
+
+        <a href="#" class="btn-read" style="width:100%; margin-top:10px;">Refresh Feed</a>
+    </aside>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>ASTRA NEWS AND TECHNOLOGY © 2025</p>
+        <p style="font-size: 0.7rem; margin-top: 5px; color: #555;">SECURE CONNECTION ESTABLISHED | VER: 4.2.0 | <a href="#">PRIVACY</a></p>
     </footer>
 
+</div>
+
+<script>
+    // Simple clock script
+    function updateClock() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-US', { 
+            hour12: false, 
+            hour: '2-digit', 
+            minute: '2-digit', 
+            second: '2-digit',
+            timeZone: 'Asia/Kolkata'
+        });
+        document.getElementById('clock').textContent = timeString + ' IST';
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Subtle scroll reveal effect
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    });
+
+    document.querySelectorAll('.article-card').forEach((card) => {
+        card.style.opacity = 0;
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+        observer.observe(card);
+    });
+</script>
+
 </body>
-
 </html>
-
-
