@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosmic Darshan: Ayodhya to Infinity</title>
+    <style>
+        :root {
+            --saffron: #ff9933;
+            --gold: #ffd700;
+            --space-black: #050505;
+            --earth-blue: #2e86de;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--space-black);
+            overflow: hidden; /* We handle scroll via JS */
+            font-family: 'Cinzel', 'Trajan Pro', serif;
+            color: white;
+        }
+
+        /* Loading Screen */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 1s ease;
+        }
+        .loader-text {
+            color: var(--saffron);
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            animation: pulse 2s infinite;
+        }
+
+        /* The Viewport Container */
+        #viewport {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            opacity: 0; /* Hidden until loaded */
+            transition: opacity 1s ease;
+        }
+
+        /* Background Canvas (Stars) */
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        /* The World Container - Moves on Z axis */
+        #world {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        /* General Stage Styling */
+        .stage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateZ(var(--z-pos));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            pointer-events: none; /* Let clicks pass through */
+        }
+
+        /* --- STAGE 1: RAM MANDIR --- */
+        .mandir-container {
+            width: 600px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .mandir-svg {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 0 20px rgba(255, 153, 51, 0.6));
+            animation: holyGlow 4s infinite alternate;
+        }
+
+        .title-text {
+            font-size: 3rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            margin-top: 20px;
+            text-shadow: 0 0 10px var(--saffron);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeUp 2s 1s forwards;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            letter-spacing: 5px;
+            color: #fff;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+
+        /* --- STAGE 2: EARTH --- */
+        .earth-visual {
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #4facfe, #00f2fe, #002, #000);
+            box-shadow: 
+                inset -20px -20px 50px rgba(0,0,0,0.9),
+                0 0 50px rgba(79, 172, 254, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        /* Pseudo-clouds */
+        .earth-visual::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%25" height="100%25" filter="url(%23noise)" opacity="0.4"/></svg>');
+            border-radius: 50%;
+            mix-blend-mode: overlay;
+            animation: rotateEarth 60s linear infinite;
+        }
+
+        /* --- STAGE 3: GALAXY --- */
+        .galaxy-visual {
+            width: 1000px;
+            height: 1000px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #000, #2a0845, #6441a5, #000, #2a0845, #000);
+            position: relative;
+            filter: blur(2px);
+            animation: spinGalaxy 40s linear infinite;
+            box-shadow: 0 0 100px rgba(100, 65, 165, 0.3);
+        }
+        /* Spiral Arms effect using pseudo elements */
+        .galaxy-visual::before {
+            content: '';
+            position: absolute;
+            top: 10%; left: 10%; right: 10%; bottom: 10%;
+            border-radius: 50%;
+            border: 2px dashed rgba(255,255,255,0.1);
+            transform: rotate(45deg);
+        }
+
+        /* --- STAGE 4: COSMIC OM --- */
+        .om-symbol {
+            font-size: 20rem;
+            color: white;
+            text-shadow: 0 0 50px white, 0 0 100px var(--gold);
+            animation: pulse 3s infinite;
+        }
+
+        /* UI Overlay */
+        #ui-layer {
+            position: fixed;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+        .scroll-hint {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--saffron);
+            width: 0%;
+            z-index: 101;
+            box-shadow: 0 0 10px var(--saffron);
+        }
+
+        /* Animations */
+        @keyframes holyGlow {
+            from { filter: drop-shadow(0 0 15px rgba(255, 153, 51, 0.4)); }
+            to { filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.8)); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes rotateEarth {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        @keyframes spinGalaxy {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Typography Helpers */
+        .label {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px black;
+        }
+        .desc {
+            font-size: 1rem;
+            max-width: 600px;
+            line-height: 1.6;
+            color: #ddd;
+            background: rgba(0,0,0,0.5);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+    </style>
+    <!-- Google Fonts for majestic look -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="loader">
+        <div class="loader-text">Constructing the Universe...</div>
+    </div>
+
+    <div id="progress-bar"></div>
+
+    <canvas id="starfield"></canvas>
+
+    <div id="viewport">
+        <div id="world">
+            
+            <!-- STAGE 1: RAM MANDIR (Start: Z = 0) -->
+            <div class="stage" style="--z-pos: 0px;">
+                <div class="mandir-container">
+                    <!-- Stylized SVG Representation of Ram Mandir -->
+                    <svg class="mandir-svg" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#ff9933;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff5e62;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Base -->
+                        <rect x="50" y="300" width="400" height="50" fill="url(#grad1)" rx="5" />
+                        <!-- Pillars -->
+                        <rect x="80" y="200" width="20" height="100" fill="#ffd700" opacity="0.8"/>
+                        <rect x="150" y="200" width="20" height="100" fill="#ffd700" opacity="0.8"/>
+                        <rect x="330" y="200" width="20" height="100" fill="#ffd700" opacity="0.8"/>
+                        <rect x="400" y="200" width="20" height="100" fill="#ffd700" opacity="0.8"/>
+                        <!-- Main Dome Structure -->
+                        <path d="M 100 200 L 100 150 L 150 100 L 200 150 L 200 200 Z" fill="url(#grad1)" />
+                        <path d="M 300 200 L 300 150 L 350 100 L 400 150 L 400 200 Z" fill="url(#grad1)" />
+                        <!-- Central Shikhara -->
+                        <path d="M 180 200 L 180 120 L 250 20 L 320 120 L 320 200 Z" fill="url(#grad1)" stroke="#ffd700" stroke-width="2"/>
+                        <!-- Flag -->
+                        <path d="M 250 20 L 250 -20 L 300 0 L 250 20" fill="orange" />
+                    </svg>
+                    <div class="title-text">Ram Janmabhoomi</div>
+                    <div class="subtitle">Ayodhya, India</div>
+                </div>
+            </div>
+
+            <!-- STAGE 2: CLOUDS / ATMOSPHERE (Z = 1500) -->
+            <div class="stage" style="--z-pos: 2000px;">
+                <div class="label" style="font-size: 5rem; opacity: 0.5;">Ascension</div>
+            </div>
+
+            <!-- STAGE 3: EARTH (Z = 4000) -->
+            <div class="stage" style="--z-pos: 4000px;">
+                <div class="earth-visual"></div>
+                <h2 class="label" style="margin-top: 50px;">Matrubhumi</h2>
+                <p class="desc">A pale blue dot suspended in a sunbeam. From here, boundaries vanish, leaving only the unity of existence.</p>
+            </div>
+
+            <!-- STAGE 4: SOLAR SYSTEM PASSBY (Z = 8000) -->
+            <div class="stage" style="--z-pos: 8000px;">
+                 <!-- Abstract Solar representation -->
+                 <div style="width: 200px; height: 200px; background: white; border-radius: 50%; box-shadow: 0 0 100px white, 0 0 200px yellow;"></div>
+                 <h2 class="label" style="margin-top: 50px;">Surya Mandala</h2>
+            </div>
+
+            <!-- STAGE 5: GALAXY (Z = 14000) -->
+            <div class="stage" style="--z-pos: 14000px;">
+                <div class="galaxy-visual"></div>
+                <h2 class="label" style="margin-top: 50px;">The Cosmic Dance</h2>
+                <p class="desc">Billions of stars, billions of worlds. The scale of the universe expands beyond comprehension.</p>
+            </div>
+
+            <!-- STAGE 6: THE SOURCE (Z = 20000) -->
+            <div class="stage" style="--z-pos: 20000px;">
+                <div class="om-symbol">🕉</div>
+                <h2 class="label">The Eternal Truth</h2>
+                <p class="desc">The journey outward is the journey inward. Everything returns to the source.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="ui-layer">
+        <div class="scroll-hint">Scroll to Ascend</div>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const MAX_Z = 22000; // The end of the tunnel
+        const SPEED_FACTOR = 4; // How fast we scroll
+        const RETURN_THRESHOLD = 21000; // Point of no return
+        
+        // --- STATE ---
+        let targetZ = 0;
+        let currentZ = 0;
+        let starSpeed = 0;
+
+        // --- DOM ELEMENTS ---
+        const world = document.getElementById('world');
+        const progressBar = document.getElementById('progress-bar');
+        const loader = document.getElementById('loader');
+        const viewport = document.getElementById('viewport');
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+
+        // --- STARFIELD SYSTEM ---
+        let stars = [];
+        let width, height;
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            initStars();
+        }
+
+        function initStars() {
+            stars = [];
+            const numStars = 1000;
+            for(let i=0; i<numStars; i++) {
+                stars.push({
+                    x: Math.random() * width - width/2,
+                    y: Math.random() * height - height/2,
+                    z: Math.random() * 2000, // Depth
+                    size: Math.random() * 2
+                });
+            }
+        }
+
+        function drawStars() {
+            // Clear background with semi-transparent black for trail effect (optional, strictly black here for perf)
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0, 0, width, height);
+            
+            ctx.fillStyle = "#fff";
+            
+            // Move stars based on scroll speed interaction
+            const movementSpeed = (targetZ - currentZ) * 0.1;
+
+            stars.forEach(star => {
+                // Move star towards screen
+                star.z -= movementSpeed + 0.5; // Base speed + scroll speed
+
+                // Reset star if it passes camera
+                if(star.z <= 0) {
+                    star.z = 2000;
+                    star.x = Math.random() * width - width/2;
+                    star.y = Math.random() * height - height/2;
+                }
+                
+                // Project 3D to 2D
+                const k = 128.0 / star.z;
+                const px = star.x * k + width/2;
+                const py = star.y * k + height/2;
+                
+                // Opacity based on depth
+                const alpha = (1 - star.z / 2000);
+                
+                if(px >= 0 && px <= width && py >= 0 && py <= height) {
+                    const size = (1 - star.z / 2000) * 3;
+                    ctx.globalAlpha = alpha;
+                    ctx.beginPath();
+                    ctx.arc(px, py, size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+            ctx.globalAlpha = 1.0;
+            requestAnimationFrame(drawStars);
+        }
+
+        // --- SCROLL LOGIC ---
+
+        function initScroll() {
+            // Wheel event for desktop
+            window.addEventListener('wheel', (e) => {
+                targetZ += e.deltaY * SPEED_FACTOR;
+                handleLimits();
+            });
+
+            // Touch events for mobile
+            let touchStartY = 0;
+            window.addEventListener('touchstart', e => touchStartY = e.touches[0].clientY);
+            window.addEventListener('touchmove', e => {
+                const touchY = e.touches[0].clientY;
+                const delta = touchStartY - touchY;
+                targetZ += delta * SPEED_FACTOR;
+                touchStartY = touchY;
+                handleLimits();
+            });
+        }
+
+        function handleLimits() {
+            // Prevent scrolling backwards past 0
+            if (targetZ < 0) targetZ = 0;
+        }
+
+        function animate() {
+            // Linear Interpolation (Lerp) for smooth camera movement
+            currentZ += (targetZ - currentZ) * 0.05;
+
+            // Update DOM Transform
+            // We move the world towards the camera (positive Z translates world negative)
+            // But CSS 3D: moving camera 'in' means moving world 'out' (towards negative Z)
+            world.style.transform = `translateZ(${-currentZ}px)`;
+
+            // Opacity Logic for Stages (Fade out as we pass them)
+            const stages = document.querySelectorAll('.stage');
+            stages.forEach(stage => {
+                const stageZ = parseInt(stage.style.getPropertyValue('--z-pos'));
+                const distance = stageZ - currentZ;
+                
+                // Calculate opacity
+                // Visible when in front (distance > 0)
+                // Fades out quickly when getting very close (distance < 500)
+                // Fades out when too far away (distance > 3000)
+                
+                let opacity = 0;
+                
+                if (distance > -500 && distance < 4000) {
+                    if (distance < 500) {
+                        // Fading out as we pass
+                        opacity = (distance + 500) / 1000;
+                    } else if (distance > 2000) {
+                        // Fading in from distance
+                        opacity = 1 - ((distance - 2000) / 2000);
+                    } else {
+                        opacity = 1;
+                    }
+                }
+                stage.style.opacity = opacity;
+                
+                // Scale effect for immersion
+                if(distance < 2000 && distance > -1000) {
+                    // Slight scale up as we get close
+                    // const scale = 1 + (2000 - distance) / 4000;
+                    // stage.style.transform = `translate(-50%, -50%) translateZ(${stageZ}px) scale(${scale})`;
+                }
+            });
+
+            // Progress Bar
+            const progress = Math.min((currentZ / MAX_Z) * 100, 100);
+            progressBar.style.width = `${progress}%`;
+
+            // Loop Logic (The Return)
+            if (currentZ > RETURN_THRESHOLD) {
+                // Whiteout effect
+                document.body.style.backgroundColor = `rgba(255, 255, 255, ${(currentZ - RETURN_THRESHOLD) / 1000})`;
+                
+                if (currentZ > MAX_Z) {
+                    // Reset
+                    targetZ = 0;
+                    currentZ = 0;
+                    document.body.style.backgroundColor = "var(--space-black)";
+                }
+            } else {
+                document.body.style.backgroundColor = "var(--space-black)";
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        // --- INITIALIZATION ---
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                viewport.style.opacity = '1';
+                setTimeout(() => loader.remove(), 1000);
+            }, 1000);
+
+            resize();
+            window.addEventListener('resize', resize);
+            drawStars();
+            initScroll();
+            animate();
+        });
+
+    </script>
+</body>
+</html>
