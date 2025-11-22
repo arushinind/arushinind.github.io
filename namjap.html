@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Naam Jap </title>
+    <title>Naam Jap</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
@@ -134,7 +134,6 @@
     </style>
     <head>
     <link rel="icon" type="image/x-icon" href="astralogoverified.png">
-    
     <link rel="icon" type="image/png" href="astralogoverified.png">
 </head>
 </head>
@@ -180,12 +179,13 @@
         <!-- Header -->
         <header class="flex justify-between items-center mb-4 holo-panel rounded-lg px-4 py-3">
             <a href="https://discord.com/invite/hz7ZvZ2f" class="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
-    <div class="w-2 h-2 bg-cyan-500 rounded-full shadow-[0_0_10px_#00f3ff] animate-pulse"></div>
-    <span class="font-display font-bold text-white tracking-wider">SANATANI SENA</span>
-</a>
+                <div class="w-2 h-2 bg-cyan-500 rounded-full shadow-[0_0_10px_#00f3ff] animate-pulse"></div>
+                <span class="font-display font-bold text-white tracking-wider">SANATANI SENA</span>
+            </a>
             <div class="flex gap-3">
-                <button onclick="toggleSound()" id="soundBtn" class="w-10 h-10 rounded border border-cyan-500/20 flex items-center justify-center text-cyan-400">
-                    <i class="fa-solid fa-volume-high"></i>
+                <!-- Sound Button: Icon initialized in JS -->
+                <button onclick="toggleSound()" id="soundBtn" class="w-10 h-10 rounded border border-gray-500/20 flex items-center justify-center text-gray-500">
+                    <i class="fa-solid fa-volume-xmark"></i>
                 </button>
                 <button onclick="resetCounter()" class="w-10 h-10 rounded border border-red-500/20 flex items-center justify-center text-red-400">
                     <i class="fa-solid fa-rotate-right"></i>
@@ -262,7 +262,7 @@
             mantra: "Om",
             rounds: 0,
             startTime: null,
-            soundEnabled: true,
+            soundEnabled: false, // DEFAULT MUTED
             audioBuffer: null, // Pre-rendered sound
             audioCtx: null,
             lastClickTime: 0
@@ -283,33 +283,45 @@
         const radius = dom.ringProgress.r.baseVal.value;
         const circumference = radius * 2 * Math.PI;
 
-        // --- OPTIMIZED AUDIO ENGINE ---
-        // Fix: Instead of creating oscillators every click, we generate a buffer ONCE 
-        // and just play the recording. This removes the audio lag.
+        // --- OPTIMIZED AUDIO ENGINE (HEALING SOUND) ---
+        // Replaced standard ping with 432Hz "Universal Healing" soft tone
         
         async function initAudioEngine() {
             const AudioContext = window.AudioContext || window.webkitAudioContext;
             state.audioCtx = new AudioContext();
             
             // Create an OfflineContext to render the sound into a buffer instantly
-            const offlineCtx = new OfflineAudioContext(2, 44100 * 0.5, 44100);
+            // Longer buffer (0.8s) for the tail of the healing sound
+            const offlineCtx = new OfflineAudioContext(2, 44100 * 0.8, 44100);
             
-            const osc = offlineCtx.createOscillator();
+            // Osc 1: 432 Hz (The "Healing Frequency")
+            const osc1 = offlineCtx.createOscillator();
+            osc1.type = 'sine';
+            osc1.frequency.setValueAtTime(432, 0); 
+
+            // Osc 2: 434 Hz (Creates a 2Hz gentle binaural beat/shimmer)
+            const osc2 = offlineCtx.createOscillator();
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(434, 0); 
+            
             const gain = offlineCtx.createGain();
             
-            // High crystalline ping
-            osc.type = 'sine'; 
-            osc.frequency.setValueAtTime(880, 0); // A5
-            osc.frequency.exponentialRampToValueAtTime(440, 0.5);
-            
-            // Sharp attack, quick decay
+            // Soft Envelope (Bell/Singing Bowl-like)
+            // Start at 0
             gain.gain.setValueAtTime(0, 0);
-            gain.gain.linearRampToValueAtTime(0.1, 0.01);
-            gain.gain.exponentialRampToValueAtTime(0.001, 0.4);
+            // Fast soft attack
+            gain.gain.linearRampToValueAtTime(0.2, 0.02);
+            // Long smooth exponential decay
+            gain.gain.exponentialRampToValueAtTime(0.001, 0.6);
             
-            osc.connect(gain);
+            // Connect
+            osc1.connect(gain);
+            osc2.connect(gain); // Mix both
             gain.connect(offlineCtx.destination);
-            osc.start(0);
+            
+            // Start
+            osc1.start(0);
+            osc2.start(0);
             
             // Render audio to buffer
             state.audioBuffer = await offlineCtx.startRendering();
@@ -345,6 +357,9 @@
             try {
                 await initAudioEngine();
             } catch(e) { console.log("Audio Init Fail", e); }
+
+            // Update UI for default muted state
+            updateSoundButtonUI();
 
             document.getElementById('setupScreen').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
@@ -425,12 +440,28 @@
             }, 2000);
         }
 
+        function updateSoundButtonUI() {
+            const btn = document.getElementById('soundBtn');
+            // If enabled: Cyan + High Volume. If disabled: Gray + X Mark.
+            if (state.soundEnabled) {
+                btn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+                btn.classList.add('text-cyan-400', 'border-cyan-500/20');
+                btn.classList.remove('text-gray-500', 'border-gray-500/20');
+            } else {
+                btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+                btn.classList.add('text-gray-500', 'border-gray-500/20');
+                btn.classList.remove('text-cyan-400', 'border-cyan-500/20');
+            }
+        }
+
         function toggleSound() {
             state.soundEnabled = !state.soundEnabled;
-            const btn = document.getElementById('soundBtn');
-            btn.innerHTML = state.soundEnabled ? '<i class="fa-solid fa-volume-high"></i>' : '<i class="fa-solid fa-volume-xmark"></i>';
-            btn.classList.toggle('text-cyan-400');
-            btn.classList.toggle('text-gray-500');
+            updateSoundButtonUI();
+            
+            // If enabling for the first time, resume context just in case
+            if (state.soundEnabled && state.audioCtx && state.audioCtx.state === 'suspended') {
+                state.audioCtx.resume();
+            }
         }
 
         function resetCounter() {
