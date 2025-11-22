@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ethereal Jap Counter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(20, 20, 35, 0.4);
+            --glow-color: rgba(124, 58, 237, 0.6);
+            --gold: #ffd700;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0f0f1a;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            touch-action: manipulation; /* Prevents double tap zoom */
+        }
+
+        /* Background Animation */
+        #universe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism Utility */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5), 0 0 20px var(--glow-color);
+        }
+
+        .gold-glow {
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+        }
+
+        /* Main Button Styling */
+        .orb-container {
+            position: relative;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .orb-container::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent, var(--glow-color), transparent 60%);
+            animation: spin 4s linear infinite;
+            opacity: 0.5;
+        }
+
+        .orb-inner {
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(50, 50, 80, 0.8), rgba(10, 10, 20, 0.95));
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 0 20px rgba(124, 58, 237, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.1s ease;
+        }
+
+        .orb-inner:active {
+            transform: scale(0.97);
+        }
+
+        /* Progress Ring SVG */
+        .progress-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotate(-90deg);
+            pointer-events: none;
+            z-index: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s ease-out;
+            transform-origin: 50% 50%;
+            filter: drop-shadow(0 0 4px var(--glow-color));
+        }
+
+        /* Typography */
+        .counter-text {
+            font-family: 'Cinzel', serif;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Ripple Effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(0);
+            animation: ripple-anim 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-anim {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Input Styling */
+        .mantra-input {
+            background: transparent;
+            border: none;
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            font-family: 'Cinzel', serif;
+            width: 100%;
+            outline: none;
+            transition: color 0.3s;
+        }
+        .mantra-input:focus {
+            color: white;
+        }
+        .mantra-input::placeholder {
+            color: rgba(255,255,255,0.2);
+        }
+
+        /* Bead Animation Class */
+        .bead-slide {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+        @keyframes slideIn {
+            0% { transform: translateY(20px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Zen Mode Logic */
+        .zen-active .hide-in-zen {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+    </style>
+</head>
+<body class="antialiased h-screen w-screen flex items-center justify-center">
+
+    <!-- Background Canvas for Stars -->
+    <canvas id="universe"></canvas>
+
+    <!-- Ambient Glows -->
+    <div class="fixed top-[-20%] left-[-20%] w-[50vw] h-[50vw] bg-purple-900/30 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="fixed bottom-[-20%] right-[-20%] w-[50vw] h-[50vw] bg-blue-900/30 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <!-- Main Container -->
+    <div id="app-container" class="relative z-10 w-full max-w-md p-6 flex flex-col items-center justify-between h-[90vh] transition-all duration-500">
+        
+        <!-- Header Info -->
+        <div class="w-full flex justify-between items-center glass-panel rounded-2xl p-4 mb-6 hide-in-zen floating">
+            <div class="flex flex-col">
+                <span class="text-xs text-gray-400 uppercase tracking-widest">Total Malas</span>
+                <div class="flex items-baseline gap-1">
+                    <span id="mala-count" class="text-2xl font-bold text-yellow-400 gold-glow">0</span>
+                    <span class="text-xs text-gray-500">/ ∞</span>
+                </div>
+            </div>
+            <button onclick="toggleZenMode()" class="text-gray-400 hover:text-white transition-colors p-2" title="Zen Mode">
+                <i class="fas fa-eye"></i>
+            </button>
+        </div>
+
+        <!-- Center Stage -->
+        <div class="flex-1 flex flex-col items-center justify-center w-full relative">
+            
+            <!-- Mantra Text Input -->
+            <div class="mb-8 w-full text-center hide-in-zen z-20">
+                <input type="text" id="mantra-text" class="mantra-input text-2xl md:text-3xl font-bold tracking-wide" placeholder="Enter your Mantra" value="Om Namah Shivaya">
+            </div>
+
+            <!-- The Main Interaction Orb -->
+            <div class="orb-container" id="chant-btn">
+                <!-- SVG Progress Ring -->
+                <svg class="progress-ring" viewBox="0 0 260 260">
+                    <circle class="text-gray-800 opacity-30" stroke-width="4" fill="transparent" r="124" cx="130" cy="130"/>
+                    <circle id="progress-circle" class="progress-ring__circle text-purple-500" stroke="currentColor" stroke-width="6" stroke-linecap="round" fill="transparent" r="124" cx="130" cy="130" stroke-dasharray="779" stroke-dashoffset="779"/>
+                </svg>
+                
+                <!-- Inner Content -->
+                <div class="orb-inner">
+                    <span class="text-xs text-purple-300 uppercase tracking-[0.2em] mb-2 opacity-70">Count</span>
+                    <h1 id="main-count" class="counter-text text-7xl font-bold text-white text-glow">0</h1>
+                    <span class="text-[10px] text-gray-500 mt-2 tracking-widest">TARGET: 108</span>
+                </div>
+            </div>
+            
+            <!-- Helper text for new users -->
+            <p class="mt-8 text-sm text-gray-500 tracking-widest uppercase opacity-50 hide-in-zen animate-pulse">Tap circle to chant</p>
+        </div>
+
+        <!-- Controls -->
+        <div class="w-full glass-panel rounded-2xl p-4 mt-6 flex justify-around items-center hide-in-zen">
+            <button onclick="resetCount()" class="flex flex-col items-center group">
+                <div class="w-10 h-10 rounded-full bg-gray-800/50 flex items-center justify-center group-hover:bg-red-500/20 transition-colors border border-white/5">
+                    <i class="fas fa-rotate-right text-gray-400 group-hover:text-red-400 text-sm"></i>
+                </div>
+                <span class="text-[10px] mt-1 text-gray-500 uppercase tracking-wide">Reset</span>
+            </button>
+
+            <div class="h-8 w-[1px] bg-white/10"></div>
+
+            <button onclick="decrement()" class="flex flex-col items-center group">
+                <div class="w-10 h-10 rounded-full bg-gray-800/50 flex items-center justify-center group-hover:bg-blue-500/20 transition-colors border border-white/5">
+                    <i class="fas fa-minus text-gray-400 group-hover:text-blue-400 text-sm"></i>
+                </div>
+                <span class="text-[10px] mt-1 text-gray-500 uppercase tracking-wide">Undo</span>
+            </button>
+
+             <div class="h-8 w-[1px] bg-white/10"></div>
+
+             <button onclick="toggleSound()" id="sound-btn" class="flex flex-col items-center group">
+                <div class="w-10 h-10 rounded-full bg-gray-800/50 flex items-center justify-center group-hover:bg-green-500/20 transition-colors border border-white/5">
+                    <i id="sound-icon" class="fas fa-volume-xmark text-gray-400 group-hover:text-green-400 text-sm"></i>
+                </div>
+                <span class="text-[10px] mt-1 text-gray-500 uppercase tracking-wide">Sound</span>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Audio Context (Hidden) -->
+    <audio id="bead-sound" src="data:audio/wav;base64,UklGRjIAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAAABmYWN0BAAAAAAAAABkYXRhAAAAAA=="></audio>
+
+    <script>
+        // --- State Management ---
+        const TARGET = 108;
+        let count = 0;
+        let malaCount = 0;
+        let isZenMode = false;
+        let soundEnabled = false;
+
+        // --- DOM Elements ---
+        const mainCountEl = document.getElementById('main-count');
+        const malaCountEl = document.getElementById('mala-count');
+        const progressCircle = document.getElementById('progress-circle');
+        const container = document.getElementById('app-container');
+        const mantraInput = document.getElementById('mantra-text');
+        const chantBtn = document.getElementById('chant-btn');
+        const soundIcon = document.getElementById('sound-icon');
+
+        // --- Initialization ---
+        const circumference = 2 * Math.PI * 124;
+        progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+        progressCircle.style.strokeDashoffset = circumference;
+
+        // Load from LocalStorage
+        function loadState() {
+            const savedCount = localStorage.getItem('jap_count');
+            const savedMala = localStorage.getItem('jap_mala');
+            const savedMantra = localStorage.getItem('jap_mantra');
+
+            if (savedCount) count = parseInt(savedCount);
+            if (savedMala) malaCount = parseInt(savedMala);
+            if (savedMantra) mantraInput.value = savedMantra;
+
+            updateUI();
+        }
+
+        // Save to LocalStorage
+        function saveState() {
+            localStorage.setItem('jap_count', count);
+            localStorage.setItem('jap_mala', malaCount);
+            localStorage.setItem('jap_mantra', mantraInput.value);
+        }
+
+        // --- Core Logic ---
+
+        function updateUI() {
+            mainCountEl.innerText = count;
+            malaCountEl.innerText = malaCount;
+            
+            // Progress Ring Logic
+            const progress = count / TARGET;
+            const offset = circumference - (progress * circumference);
+            progressCircle.style.strokeDashoffset = offset;
+
+            // Special visual if cycle complete
+            if (count === TARGET) {
+                progressCircle.style.color = '#ffd700'; // Gold
+            } else {
+                progressCircle.style.color = '#8b5cf6'; // Purple
+            }
+        }
+
+        function increment(e) {
+            // Vibrate on mobile
+            if (navigator.vibrate) navigator.vibrate(15);
+
+            // Sound
+            if(soundEnabled) playSoftClick();
+
+            if (count >= TARGET) {
+                // Complete a Mala
+                malaCount++;
+                count = 1;
+                triggerMalaCompleteEffect();
+            } else {
+                count++;
+            }
+
+            saveState();
+            updateUI();
+            
+            // Visual Effects
+            createParticles(e);
+            triggerRipple(e);
+            
+            // Animation on text
+            mainCountEl.classList.remove('bead-slide');
+            void mainCountEl.offsetWidth; // Trigger reflow
+            mainCountEl.classList.add('bead-slide');
+        }
+
+        function decrement() {
+            if (count > 0) {
+                count--;
+                saveState();
+                updateUI();
+            }
+        }
+
+        function resetCount() {
+            if(confirm('Reset current mala count?')) {
+                count = 0;
+                saveState();
+                updateUI();
+            }
+        }
+
+        function toggleZenMode() {
+            isZenMode = !isZenMode;
+            if (isZenMode) {
+                container.classList.add('zen-active');
+            } else {
+                container.classList.remove('zen-active');
+            }
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            soundIcon.className = soundEnabled ? 'fas fa-volume-high text-green-400' : 'fas fa-volume-xmark text-gray-400';
+        }
+
+        // --- Visual Effects System ---
+
+        // Particle System using DOM for specific click interactions
+        function createParticles(e) {
+            // Get coordinates (touch or click)
+            let x, y;
+            if (e.type === 'touchstart') {
+                const touch = e.touches[0];
+                x = touch.clientX;
+                y = touch.clientY;
+            } else {
+                x = e.clientX;
+                y = e.clientY;
+            }
+            
+            // Create 8 particles
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.width = (Math.random() * 4 + 2) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = `hsl(${Math.random() * 60 + 240}, 100%, 70%)`; // Purple to Blue ranges
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '100';
+                
+                document.body.appendChild(particle);
+
+                // Animate
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 60 + 20;
+                
+                const destX = x + Math.cos(angle) * velocity;
+                const destY = y + Math.sin(angle) * velocity;
+
+                const animation = particle.animate([
+                    { transform: `translate(0, 0) scale(1)`, opacity: 1 },
+                    { transform: `translate(${destX - x}px, ${destY - y}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: 600,
+                    easing: 'cubic-bezier(0, .9, .57, 1)'
+                });
+
+                animation.onfinish = () => particle.remove();
+            }
+        }
+
+        function triggerRipple(e) {
+            const btn = chantBtn; // The target
+            const rect = btn.getBoundingClientRect();
+            
+            let x, y;
+             if (e.type === 'touchstart') {
+                x = e.touches[0].clientX - rect.left;
+                y = e.touches[0].clientY - rect.top;
+            } else {
+                x = e.clientX - rect.left;
+                y = e.clientY - rect.top;
+            }
+
+            const circle = document.createElement('span');
+            circle.classList.add('ripple');
+            circle.style.width = circle.style.height = `${rect.width}px`;
+            circle.style.left = `${x - rect.width/2}px`;
+            circle.style.top = `${y - rect.height/2}px`;
+            
+            btn.querySelector('.orb-inner').appendChild(circle); // Add to inner to clip
+
+            setTimeout(() => circle.remove(), 600);
+        }
+
+        function triggerMalaCompleteEffect() {
+            // Flash the screen gold
+            const flash = document.createElement('div');
+            flash.style.position = 'fixed';
+            flash.style.inset = '0';
+            flash.style.background = 'rgba(255, 215, 0, 0.2)';
+            flash.style.zIndex = '50';
+            flash.style.pointerEvents = 'none';
+            document.body.appendChild(flash);
+            
+            flash.animate([
+                { opacity: 0 },
+                { opacity: 1 },
+                { opacity: 0 }
+            ], { duration: 1000 }).onfinish = () => flash.remove();
+
+            if(navigator.vibrate) navigator.vibrate([50, 50, 50]);
+        }
+
+        // --- Audio Synthesis (No external files) ---
+        // Simple synthesized 'wood block' sound
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playSoftClick() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.1);
+            
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.1);
+        }
+
+        // --- Background Canvas Animation (Starfield) ---
+        const canvas = document.getElementById('universe');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5;
+                this.speedX = Math.random() * 0.2 - 0.1;
+                this.speedY = Math.random() * 0.2 - 0.1;
+                this.brightness = Math.random();
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.brightness += (Math.random() - 0.5) * 0.05;
+                
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(Math.sin(Date.now() * 0.001 + this.x)) * 0.8})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initStars() {
+            stars = [];
+            const starCount = window.innerWidth < 600 ? 50 : 150;
+            for (let i = 0; i < starCount; i++) {
+                stars.push(new Star());
+            }
+        }
+
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            requestAnimationFrame(animateStars);
+        }
+
+        // --- Event Listeners ---
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            initStars();
+        });
+
+        mantraInput.addEventListener('input', saveState);
+
+        // Use standard click for desktop, touchstart for better mobile response
+        chantBtn.addEventListener('click', (e) => {
+             // Fallback for desktop
+            if (e.detail !== 0) increment(e); // detail 0 comes from keyboard enter usually
+        });
+
+        // Prevent default zoom on double tap
+        chantBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // prevent mouse emulation
+            increment(e);
+        }, { passive: false });
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space' || e.code === 'Enter') {
+                if (document.activeElement !== mantraInput) {
+                    // Create a fake event for coordinates
+                    const rect = chantBtn.getBoundingClientRect();
+                    const fakeE = { 
+                        clientX: rect.left + rect.width/2, 
+                        clientY: rect.top + rect.height/2, 
+                        type: 'click' 
+                    };
+                    increment(fakeE);
+                }
+            }
+        });
+
+        // Boot
+        resizeCanvas();
+        initStars();
+        animateStars();
+        loadState();
+
+    </script>
+</body>
+</html>
