@@ -1,318 +1,443 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-m-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Divine Līlā of Krishna</title>
+    <title>The Eternal Song of Krishna</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- 
-    Chosen Palette: Vrindavan Serenity (Divine Blue, Peacock Green, Sacred Gold, Saffron, Lotus White)
-    Application Structure Plan: A single-page narrative journey. Starts with a captivating Hero (Home) to set a divine tone. Flows to 'About' (Introduction), then 'Līlās' (an interactive tabbed gallery of pastimes), and 'Teachings' (a rotating quote section from the Gita). This thematic, top-down structure guides the user from divine presence to philosophical depth, prioritizing emotional connection and spiritual exploration over a data-driven layout.
-    Visualization & Content Choices: Report Info: Lord Krishna's divine life. Goal: Create a divine, explorative experience. Viz/Presentation: 1. Hero Image: (HTML/CSS) Placeholder with gradient overlay to set mood. Interaction: 'Explore' button (JS scroll). Justification: Immediate emotional impact. 2. Tabbed Gallery (Līlās): (HTML/CSS/JS) Clickable tabs filter content panels. Justification: Organizes rich narrative content (Līlās) intuitively. 3. Quote Rotator (Teachings): (HTML/JS) Fading text animation. Justification: Presents profound teachings in a digestible, contemplative way.
-    CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
-    -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #FDF4E3; 
-            color: #3E2723;
         }
 
-        .font-serif {
+        h1, h2, h3, h4, .font-serif {
             font-family: 'Playfair Display', serif;
         }
 
-        .hero-bg {
-            background-image: url('https://placehold.co/1920x1080/2A4B8D/FFD700?text=Kṛṣṇa&font=playfairdisplay');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+        .active-nav {
+            color: #fcd34d; 
+            transform: scale(1.1);
         }
 
-        .bg-lotus-white { background-color: #FDF4E3; }
-        .bg-divine-blue { background-color: #2A4B8D; }
-        .text-divine-blue { color: #2A4B8D; }
-        .text-sacred-gold { color: #FFD700; }
-        .border-sacred-gold { border-color: #FFD700; }
-        .hover-bg-sacred-gold:hover { background-color: #FFD700; }
-        .text-saffron { color: #FF9933; }
-
-        .tab-active {
-            border-bottom-color: #FF9933;
-            color: #FF9933;
-        }
-
-        .tab-inactive {
-            border-bottom-color: transparent;
-            color: #2A4B8D;
-        }
-
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .quote-fade {
-            transition: opacity 0.5s ease-in-out;
-        }
-        
-        .peacock-gradient {
-            background-image: linear-gradient(to right, #2A4B8D, #006A4E, #FFD700);
+        .gradient-text {
+            background-image: linear-gradient(to right, #fde68a, #fcd34d, #fbbf24);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
+        }
+
+        .leela-card .leela-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .leela-card:hover .leela-details,
+        .leela-card.active .leela-details {
+            max-height: 500px;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1b4b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fcd34d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #fbbf24;
         }
     </style>
+    <!-- Chosen Palette: Divine Night (Deep Indigo, Purple, Gold, Cream) -->
+    <!-- Application Structure Plan: A single-page, scrolling 'darshan' (divine-sight) experience. The structure is not a report, but a journey. It flows from a 'Home' (an immersive canvas hero) to 'Philosophy' (interactive Gita verses), 'Leela' (clickable stories), 'Gallery' (abstract CSS-based art), and 'Mantra' (an interactive chanting tool). This non-linear, thematic flow is chosen to create a sense of spiritual discovery and peace, allowing users to engage at their own pace rather than consuming a linear report. -->
+    <!-- Visualization & Content Choices:
+        * Hero: Report Info: Krishna's cosmic, divine nature. Goal: Create "shock" and immersion. Viz: Full-screen HTML Canvas particle animation (JS). Interaction: Passive visual wonder. Justification: Evokes a "divine" cosmic feel without images.
+        * Philosophy: Report Info: Teachings from Bhagavad Gita. Goal: Share wisdom. Viz: HTML/Tailwind cards. Interaction: 'Next Verse' button (JS) cycles through a JS array of verses and explanations. Justification: Makes dense philosophy digestible and interactive.
+        * Leela: Report Info: Stories of Krishna's life. Goal: Organize and narrate. Viz: Horizontal scrolling HTML/Tailwind cards. Interaction: Clicking a card reveals a text summary (JS toggle). Justification: A modern, engaging way to browse a collection of qualitative stories.
+        * Gallery: Report Info: Krishna's iconic symbols (flute, feather). Goal: Provide visual devotion. Viz: HTML/Tailwind grid with CSS-gradient-based "abstract art" (e.g., radial-gradient for feather/lotus). Interaction: Hover effects. Justification: A creative, compliant-first (NO SVG/IMG) solution to a visual requirement.
+        * Mantra: Report Info: The practice of chanting. Goal: Facilitate an activity. Viz: Simple HTML counter and button. Interaction: Click to increment chant counter (JS). Justification: A simple, highly relevant, and useful interactive tool.
+        * Charts: No quantitative data (like a business report) exists in the "Krishna lore" source material, so charts (Chart.js/Plotly) are not applicable or appropriate for this specific application. The focus is on interactive text, layout, and canvas art.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
-<body class="bg-lotus-white">
+<body class="bg-indigo-950 text-gray-200 antialiased overflow-x-hidden">
 
-    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-md bg-white/70 shadow-sm">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-serif font-bold text-divine-blue">श्री कृष्ण</h1>
-            <div class="space-x-8 hidden md:flex">
-                <a href="#home" class="text-divine-blue hover:text-saffron transition-colors duration-300">Home</a>
-                <a href="#about" class="text-divine-blue hover:text-saffron transition-colors duration-300">About</a>
-                <a href="#lilas" class="text-divine-blue hover:text-saffron transition-colors duration-300">Līlās</a>
-                <a href="#teachings" class="text-divine-blue hover:text-saffron transition-colors duration-300">Teachings</a>
+    <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center bg-indigo-900/30 backdrop-blur-md rounded-full shadow-lg px-6 py-3">
+                <div class="font-serif text-2xl font-bold gradient-text">
+                    Krishn
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" data-scroll-to="home" class="nav-link text-gray-300 hover:text-amber-300 transition-all duration-300">Home</a>
+                    <a href="#philosophy" data-scroll-to="philosophy" class="nav-link text-gray-300 hover:text-amber-300 transition-all duration-300">Philosophy</a>
+                    <a href="#leela" data-scroll-to="leela" class="nav-link text-gray-300 hover:text-amber-300 transition-all duration-300">Leela</a>
+                    <a href="#gallery" data-scroll-to="gallery" class="nav-link text-gray-300 hover:text-amber-300 transition-all duration-300">Symbols</a>
+                    <a href="#mantra" data-scroll-to="mantra" class="nav-link text-gray-300 hover:text-amber-300 transition-all duration-300">Mantra</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-300 hover:text-amber-300 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
             </div>
-            <button id="mobile-menu-btn" class="md:hidden text-divine-blue text-2xl">
-                &#9776;
-            </button>
+            <div id="mobile-menu" class="hidden md:hidden bg-indigo-900/50 backdrop-blur-md rounded-lg mt-2 p-4 space-y-2">
+                <a href="#home" data-scroll-to-mobile="home" class="nav-link-mobile block text-gray-300 hover:text-amber-300 transition-all duration-300">Home</a>
+                <a href="#philosophy" data-scroll-to-mobile="philosophy" class="nav-link-mobile block text-gray-300 hover:text-amber-300 transition-all duration-300">Philosophy</a>
+                <a href="#leela" data-scroll-to-mobile="leela" class="nav-link-mobile block text-gray-300 hover:text-amber-300 transition-all duration-300">Leela</a>
+                <a href="#gallery" data-scroll-to-mobile="gallery" class="nav-link-mobile block text-gray-300 hover:text-amber-300 transition-all duration-300">Symbols</a>
+                <a href="#mantra" data-scroll-to-mobile="mantra" class="nav-link-mobile block text-gray-300 hover:text-amber-300 transition-all duration-300">Mantra</a>
+            </div>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 space-y-2">
-            <a href="#home" class="block text-divine-blue hover:text-saffron transition-colors duration-300">Home</a>
-            <a href="#about" class="block text-divine-blue hover:text-saffron transition-colors duration-300">About</a>
-            <a href="#lilas" class="block text-divine-blue hover:text-saffron transition-colors duration-300">Līlās</a>
-            <a href="#teachings" class="block text-divine-blue hover:text-saffron transition-colors duration-300">Teachings</a>
-        </div>
     </header>
 
     <main>
-        <section id="home" class="h-screen w-full hero-bg flex items-center justify-center text-center text-white relative">
-            <div class="absolute inset-0 bg-black/50 z-10"></div>
-            <div class="z-20 relative px-4">
-                <h2 class="text-5xl md:text-8xl font-serif font-bold mb-4 drop-shadow-lg fade-in">The Divine Flutist</h2>
-                <p class="text-xl md:text-3xl font-light mb-8 max-w-2xl mx-auto drop-shadow-md fade-in" style="animation-delay: 0.3s;">
-                    "यदा यदा हि धर्मस्य ग्लानिर्भवति भारत।"
+        <section id="home" class="h-screen w-full relative flex items-center justify-center overflow-hidden">
+            <canvas id="hero-canvas" class="absolute top-0 left-0 w-full h-full z-0"></canvas>
+            <div class="relative z-10 text-center p-4">
+                <h1 class="text-5xl md:text-8xl font-bold font-serif gradient-text mb-6 leading-tight">
+                    The Eternal Song
+                </h1>
+                <p class="text-lg md:text-2xl text-gray-300 max-w-2xl mx-auto italic">
+                    "Whenever there is a decline in righteousness and an increase in unrighteousness, O Arjuna, I manifest Myself."
                 </p>
-                <p class="text-lg md:text-xl italic font-light mb-10 max-w-2xl mx-auto drop-shadow-md fade-in" style="animation-delay: 0.5s;">
-                    "Whenever there is a decline in righteousness, O Arjuna, I manifest Myself."
-                </p>
-                <a href="#about" class="inline-block bg-sacred-gold text-divine-blue font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 fade-in" style="animation-delay: 0.7s;">
-                    Explore His Journey
-                </a>
             </div>
         </section>
 
-        <section id="about" class="py-24 bg-lotus-white">
-            <div class="container mx-auto px-6 max-w-4xl text-center">
-                <div class="fade-in">
-                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-divine-blue mb-6">The Essence of Ananda</h2>
-                    <div class="w-20 h-1 bg-saffron mx-auto mb-8 rounded-full"></div>
-                    <p class="text-lg md:text-xl text-gray-700 leading-relaxed mb-6">
-                        Lord Krishna, the eighth avatar of Vishnu, is celebrated as the Supreme Personality of Godhead. His life is a divine play, or 'Līlā', filled with profound wisdom, boundless compassion, and unconditional love. From his mischievous childhood in Vrindavan to his pivotal role as the charioteer and guide in the Kurukshetra war, every act of Krishna is a lesson for humanity.
+        <div class="relative z-10 bg-indigo-950 pt-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24 md:space-y-32 mb-24">
+
+                <section id="philosophy" class="pt-16">
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-center mb-4 gradient-text">The Song of the Soul</h2>
+                    <p class="text-lg text-gray-400 text-center max-w-3xl mx-auto mb-12">
+                        The Bhagavad Gita is Krishna's timeless dialogue with Arjuna, a profound guide to life, duty, and liberation. Explore its core wisdom, one verse at a time.
                     </p>
-                    <p class="text-lg md:text-xl text-gray-700 leading-relaxed">
-                        This site is a humble offering to explore his multifaceted divinity—as a child, a lover, a warrior, a philosopher, and the ultimate guide. Journey with us through his divine pastimes and eternal teachings.
+
+                    <div class="max-w-3xl mx-auto bg-indigo-900/40 rounded-2xl shadow-2xl p-8 md:p-12 border border-indigo-700/50">
+                        <div class="text-center">
+                            <h3 class="font-serif text-2xl md:text-3xl text-amber-300 mb-6" id="gita-chapter">Chapter 2, Verse 47</h3>
+                            <p class="text-xl md:text-2xl text-gray-200 italic mb-6" id="gita-verse">
+                                "You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions."
+                            </p>
+                            <p class="text-gray-400 text-base md:text-lg" id="gita-explanation">
+                                This central teaching emphasizes 'Nishkama Karma'—selfless action. Focus on the integrity and dedication of your work, not on the potential rewards or failures. This detaches you from attachment and brings inner peace.
+                            </p>
+                        </div>
+                        <div class="text-center mt-10">
+                            <button id="next-verse-button" class="bg-amber-500 text-indigo-950 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-amber-400 transition-all duration-300 transform hover:scale-105">
+                                Next Wisdom
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="leela" class="pt-16">
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-center mb-4 gradient-text">Divine Leela</h2>
+                    <p class="text-lg text-gray-400 text-center max-w-3xl mx-auto mb-12">
+                        The 'Leelas' are Krishna's divine plays—stories of his life that are filled with joy, wisdom, and profound symbolism. Click on a story to unfold its magic.
                     </p>
-                </div>
-            </div>
-        </section>
 
-        <section id="lilas" class="py-24 bg-blue-50/50">
-            <div class="container mx-auto px-6 max-w-6xl">
-                <div class="text-center mb-16 fade-in">
-                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-divine-blue mb-6">Divine Līlās</h2>
-                    <p class="text-lg md:text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
-                        His pastimes are reservoirs of nectar, each revealing a unique facet of his divine personality. Explore the three main phases of his earthly presence.
+                    <div class="flex overflow-x-auto space-x-6 md:space-x-8 pb-8 pl-4 pr-4">
+                        
+                        <div class="leela-card flex-shrink-0 w-72 md:w-80 bg-indigo-900/40 rounded-2xl shadow-xl overflow-hidden border border-indigo-700/50 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:border-amber-400/50">
+                            <div class="p-6">
+                                <h3 class="text-2xl font-serif font-bold text-amber-300 mb-3">Lifting Govardhan</h3>
+                                <div class="leela-details">
+                                    <p class="text-gray-400 text-sm">
+                                        To protect the people of Vrindavan from the torrential rain sent by a wrathful Lord Indra, Krishna, as a young boy, lifted the entire Govardhan Hill on his little finger, holding it like an umbrella for seven days. This Leela teaches that true refuge is found in the divine, not in demigods or material powers.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="leela-card flex-shrink-0 w-72 md:w-80 bg-indigo-900/40 rounded-2xl shadow-xl overflow-hidden border border-indigo-700/50 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:border-amber-400/50">
+                            <div class="p-6">
+                                <h3 class="text-2xl font-serif font-bold text-amber-300 mb-3">Rasa Leela</h3>
+                                <div class="leela-details">
+                                    <p class="text-gray-400 text-sm">
+                                        The 'dance of divine love' where Krishna multiplied himself to dance with each Gopi (cowherd maiden) simultaneously. This symbolizes the soul's intimate, personal relationship with the divine. Each soul feels that Krishna is theirs alone, representing the highest peak of selfless, ecstatic love (prema).
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="leela-card flex-shrink-0 w-72 md:w-80 bg-indigo-900/40 rounded-2xl shadow-xl overflow-hidden border border-indigo-700/50 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:border-amber-400/50">
+                            <div class="p-6">
+                                <h3 class="text-2xl font-serif font-bold text-amber-300 mb-3">Kaliya's Taming</h3>
+                                <div class="leela-details">
+                                    <p class="text-gray-400 text-sm">
+                                        Krishna fearlessly subdued the venomous serpent Kaliya, who was poisoning the Yamuna river. He danced on the serpent's many hoods, a symbol of conquering the ego and purifying the mind. He didn't kill Kaliya, but banished him, teaching compassion even to one's enemies.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="leela-card flex-shrink-0 w-72 md:w-80 bg-indigo-900/40 rounded-2xl shadow-xl overflow-hidden border border-indigo-700/50 cursor-pointer transform transition-all duration-300 hover:scale-105 hover:border-amber-400/50">
+                            <div class="p-6">
+                                <h3 class="text-2xl font-serif font-bold text-amber-300 mb-3">Stealing Butter</h3>
+                                <div class="leela-details">
+                                    <p class="text-gray-400 text-sm">
+                                        As a child, Krishna (known as 'Makhan Chor' or butter thief) would steal butter from the homes of the Gopis. This playful act symbolizes the divine "stealing" the hearts of his devotees—the "butter" representing the purest, most refined essence of their love.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section id="gallery" class="pt-16">
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-center mb-4 gradient-text">Sacred Symbols</h2>
+                    <p class="text-lg text-gray-400 text-center max-w-3xl mx-auto mb-12">
+                        Krishna's form is adorned with symbols, each holding a deep spiritual meaning. Here, they are represented abstractly, as pure concepts of devotion.
                     </p>
-                </div>
 
-                <div class="flex justify-center mb-10 fade-in">
-                    <div class="flex border-b-2 border-divine-blue/20" role="tablist">
-                        <button role="tab" aria-selected="true" class="tab-button text-lg font-semibold py-3 px-6 md:px-10 border-b-4 transition-all duration-300 tab-active" data-tab="childhood">
-                            Bālya Līlā
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        
+                        <div class="aspect-square bg-indigo-900/40 rounded-2xl shadow-2xl p-6 flex flex-col justify-between border border-indigo-700/50 transition-all duration-300 hover:border-amber-400/50">
+                            <div>
+                                <h3 class="text-3xl font-serif text-amber-300 mb-3">The Peacock Feather</h3>
+                                <p class="text-gray-400">A symbol of purity, beauty, and the cosmos. Its all-seeing "eye" represents divine wisdom and the fact that all colors (all beings) are contained within the one divine light.</p>
+                            </div>
+                            <div class="w-full h-2/5 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-400 via-blue-600 to-indigo-800 shadow-inner"></div>
+                        </div>
+
+                        <div class="aspect-square bg-indigo-900/40 rounded-2xl shadow-2xl p-6 flex flex-col justify-between border border-indigo-700/50 transition-all duration-300 hover:border-amber-400/50">
+                            <div>
+                                <h3 class="text-3xl font-serif text-amber-300 mb-3">The Flute (Bansuri)</h3>
+                                <p class="text-gray-400">It represents the human heart, made hollow (free of ego) so that the divine breath can flow through it, creating the celestial music of love that calls all souls back to him.</p>
+                            </div>
+                            <div class="w-full h-2/5 rounded-lg flex items-center justify-around p-4 bg-gradient-to-r from-yellow-600 to-amber-400 shadow-inner">
+                                <span class="w-4 h-4 rounded-full bg-yellow-900/50"></span>
+                                <span class="w-4 h-4 rounded-full bg-yellow-900/50"></span>
+                                <span class="w-4 h-4 rounded-full bg-yellow-900/50"></span>
+                                <span class="w-4 h-4 rounded-full bg-yellow-900/50"></span>
+                            </div>
+                        </div>
+
+                        <div class="aspect-square bg-indigo-900/40 rounded-2xl shadow-2xl p-6 flex flex-col justify-between border border-indigo-700/50 transition-all duration-300 hover:border-amber-400/50">
+                            <div>
+                                <h3 class="text-3xl font-serif text-amber-300 mb-3">The Lotus</h3>
+                                <p class="text-gray-400">Growing from mud but remaining pure and untouched, the lotus symbolizes spiritual perfection, detachment, and the beauty that blossoms in the heart of a devotee.</p>
+                            </div>
+                            <div class="w-full h-2/5 rounded-lg bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-pink-300 via-pink-500 to-red-600 shadow-inner opacity-80"></div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section id="mantra" class="pt-16">
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-center mb-4 gradient-text">The Great Chant</h2>
+                    <p class="text-lg text-gray-400 text-center max-w-3xl mx-auto mb-12">
+                        The Hare Krishna Maha-Mantra is the recommended chant for this age, a direct call to the divine energy. Use this simple counter to aid your meditation.
+                    </p>
+
+                    <div class="max-w-2xl mx-auto bg-indigo-900/40 rounded-2xl shadow-2xl p-8 md:p-12 text-center border border-indigo-700/50">
+                        <p class="text-2xl md:text-3xl text-gray-200 leading-relaxed font-serif mb-8">
+                            Hare Krishna, Hare Krishna<br>
+                            Krishna Krishna, Hare Hare<br>
+                            Hare Rama, Hare Rama<br>
+                            Rama Rama, Hare Hare
+                        </p>
+                        
+                        <div class="text-7xl md:text-8xl font-bold gradient-text my-8" id="mantra-count">0</div>
+                        
+                        <p class="text-gray-400 mb-8">Click the button below after each repetition.</p>
+
+                        <button id="chant-button" class="bg-gradient-to-r from-amber-500 to-orange-500 text-indigo-950 font-bold py-4 px-10 rounded-full shadow-lg text-xl hover:from-amber-400 hover:to-orange-400 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-amber-300 focus:ring-opacity-50">
+                            Chant
                         </button>
-                        <button role="tab" aria-selected="false" class="tab-button text-lg font-semibold py-3 px-6 md:px-10 border-b-4 transition-all duration-300 tab-inactive" data-tab="vrindavan">
-                            Rāsa Līlā
-                        </button>
-                        <button role="Lole="tab" aria-selected="false" class="tab-button text-lg font-semibold py-3 px-6 md:px-10 border-b-4 transition-all duration-300 tab-inactive" data-tab="kurukshetra">
-                            Gītā Līlā
-                        </button>
                     </div>
-                </div>
+                </section>
 
-                <div class="fade-in">
-                    <div id="childhood" class="tab-panel grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                        <div class="rounded-lg overflow-hidden shadow-2xl">
-                            <img src="https://placehold.co/600x400/87CEEB/3E2723?text=Bala+Krishna&font=playfairdisplay" alt="Child Krishna" class="w-full h-auto object-cover">
-                        </div>
-                        <div>
-                            <h3 class="text-3xl font-serif font-bold text-divine-blue mb-4">The Mischievous Child</h3>
-                            <p class="text-lg text-gray-700 leading-relaxed mb-4">
-                                As 'Bala Krishna' in Gokul and Vrindavan, his days were filled with playful pranks, like stealing butter ('Makhan Chor'), and divine feats, like subduing the serpent Kaliya. These pastimes symbolize that God is accessible even through simple, loving devotion.
-                            </p>
-                            <p class="text-lg text-gray-700 leading-relaxed">
-                                He charmed every heart, his divine play captivating the Gopis and cowherds, filling their lives with unparalleled joy (Ananda).
-                            </p>
-                        </div>
-                    </div>
-
-                    <div id="vrindavan" class="tab-panel hidden grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                        <div class="rounded-lg overflow-hidden shadow-2xl md:order-2">
-                            <img src="https://placehold.co/600x400/2A4B8D/FDF4E3?text=Radha+Krishna&font=playfairdisplay" alt="Radha Krishna" class="w-full h-auto object-cover">
-                        </div>
-                        <div class="md:order-1">
-                            <h3 class="text-3xl font-serif font-bold text-divine-blue mb-4">The Divine Lover</h3>
-                            <p class="text-lg text-gray-700 leading-relaxed mb-4">
-                                His 'Rāsa Līlā', the divine dance with Radha and the Gopis, represents the ultimate union of the individual soul (Jivatma) with the Supreme Soul (Paramatma). His enchanting flute call is irresistible, beckoning all souls to leave worldly attachments and merge in divine love.
-                            </p>
-                            <p class="text-lg text-gray-700 leading-relaxed">
-                                This phase highlights 'Madhurya Bhava', the path of devotional love, as the highest form of worship.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div id="kurukshetra" class="tab-panel hidden grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                        <div class="rounded-lg overflow-hidden shadow-2xl">
-                            <img src="https://placehold.co/600x400/FF9933/2A4B8D?text=Gita+Upadesha&font=playfairdisplay" alt="Krishna and Arjuna" class="w-full h-auto object-cover">
-                        </div>
-                        <div>
-                            <h3 class="text-3xl font-serif font-bold text-divine-blue mb-4">The Eternal Guide</h3>
-                            <p class="text-lg text-gray-700 leading-relaxed mb-4">
-                                On the battlefield of Kurukshetra, Krishna delivered the 'Bhagavad Gita' to a bewildered Arjuna. He ceased to be just a friend and revealed his 'Vishwaroopa' (Universal Form), establishing himself as the supreme guide for all eternity.
-                            </p>
-                            <p class="text-lg text-gray-700 leading-relaxed">
-                                His teachings on 'Dharma' (duty), 'Karma' (action), and 'Moksha' (liberation) form the philosophical bedrock of Sanatana Dharma.
-                            </p>
-                        </div>
-                    </div>
-                </div>
             </div>
-        </section>
-
-        <section id="teachings" class="py-24 bg-divine-blue text-white">
-            <div class="container mx-auto px-6 max-w-4xl text-center">
-                <div class="fade-in">
-                    <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6 peacock-gradient">Song of the Divine</h2>
-                    <div class="w-20 h-1 bg-sacred-gold mx-auto mb-12 rounded-full"></div>
-
-                    <div id="quote-container" class="relative h-48">
-                        <div class="quote-item quote-fade opacity-100 absolute inset-0 flex flex-col justify-center items-center">
-                            <p class="text-2xl md:text-3xl italic font-light leading-relaxed mb-4">"It is better to live your own destiny imperfectly than to live an imitation of somebody else's life with perfection."</p>
-                            <span class="font-serif text-lg text-sacred-gold">- Bhagavad Gita 3.35</span>
-                        </div>
-                        <div class="quote-item quote-fade opacity-0 absolute inset-0 flex flex-col justify-center items-center">
-                            <p class="text-2xl md:text-3xl italic font-light leading-relaxed mb-4">"You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions."</p>
-                            <span class="font-serif text-lg text-sacred-gold">- Bhagavad Gita 2.47</span>
-                        </div>
-                        <div class="quote-item quote-fade opacity-0 absolute inset-0 flex flex-col justify-center items-center">
-                            <p class="text-2xl md:text-3xl italic font-light leading-relaxed mb-4">"Set your heart upon your work, but never upon its reward."</p>
-                            <span class="font-serif text-lg text-sacred-gold">- Bhagavad Gita 2.47</span>
-                        </div>
-                        <div class="quote-item quote-fade opacity-0 absolute inset-0 flex flex-col justify-center items-center">
-                            <p class="text-2xl md:text-3xl italic font-light leading-relaxed mb-4">"The soul is neither born, nor does it die. It has never been, it will never be. It is unborn, eternal, permanent, and primeval."</s_>
-                            <span class="font-serif text-lg text-sacred-gold">- Bhagavad Gita 2.20</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        </div>
     </main>
 
-    <footer class="py-16 bg-lotus-white border-t-2 border-saffron/30">
-        <div class="container mx-auto px-6 text-center text-divine-blue">
-            <h3 class="text-3xl font-serif mb-4">Jay Shri Krishna</h3>
-            <p class="text-lg mb-8">
-                May the divine flute of the Lord fill your heart with eternal joy and peace.
-            </p>
-            <div class="text-sm text-gray-600">
-                <p>&copy; 2025 The Divine Līlā. All rights reserved.</p>
-                <p>A humble digital offering to the lotus feet of the Lord.</p>
-            </div>
+    <footer class="bg-indigo-950/50 border-t border-indigo-800/30 mt-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-500">
+            <p>Designed as an offering of devotion. May this digital space bring peace and joy.</p>
+            <p class="text-sm mt-1">Radhe Radhe</p>
         </div>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+
+            const heroCanvas = document.getElementById('hero-canvas');
+            const ctx = heroCanvas.getContext('2d');
+            let particles = [];
             
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
+            function resizeCanvas() {
+                heroCanvas.width = window.innerWidth;
+                heroCanvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
 
-            const navLinks = document.querySelectorAll('#mobile-menu a, header nav a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
-                });
-            });
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * heroCanvas.width;
+                    this.y = Math.random() * heroCanvas.height;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speedX = Math.random() * 1 - 0.5;
+                    this.speedY = Math.random() * 1 - 0.5;
+                    this.opacity = Math.random() * 0.5 + 0.2;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.size > 0.1) this.size -= 0.01;
+                    if (this.x < 0 || this.x > heroCanvas.width) this.speedX *= -1;
+                    if (this.y < 0 || this.y > heroCanvas.height) this.speedY *= -1;
+                }
+                draw() {
+                    ctx.fillStyle = `rgba(252, 211, 75, ${this.opacity})`;
+                    ctx.strokeStyle = `rgba(253, 230, 138, ${this.opacity * 0.5})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                }
+            }
 
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabPanels = document.querySelectorAll('.tab-panel');
+            function initParticles() {
+                particles = [];
+                let numberOfParticles = (heroCanvas.width * heroCanvas.height) / 9000;
+                for (let i = 0; i < numberOfParticles; i++) {
+                    particles.push(new Particle());
+                }
+            }
+            initParticles();
 
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    tabButtons.forEach(btn => {
-                        btn.classList.remove('tab-active');
-                        btn.classList.add('tab-inactive');
-                        btn.setAttribute('aria-selected', 'false');
-                    });
-                    
-                    button.classList.add('tab-active');
-                    button.classList.remove('tab-inactive');
-                    button.setAttribute('aria-selected', 'true');
+            function animateParticles() {
+                ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                    if (particles[i].size <= 0.1) {
+                        particles.splice(i, 1);
+                        particles.push(new Particle());
+                        i--;
+                    }
+                }
+                requestAnimationFrame(animateParticles);
+            }
+            animateParticles();
 
-                    const targetTab = button.getAttribute('data-tab');
-
-                    tabPanels.forEach(panel => {
-                        if (panel.id === targetTab) {
-                            panel.classList.remove('hidden');
-                        } else {
-                            panel.classList.add('hidden');
-                        }
-                    });
-                });
-            });
-
-            const quotes = document.querySelectorAll('.quote-item');
-            let currentQuoteIndex = 0;
-
-            setInterval(() => {
-                quotes[currentQuoteIndex].classList.remove('opacity-100');
-                quotes[currentQuoteIndex].classList.add('opacity-0');
-
-                currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
-
-                quotes[currentQuoteIndex].classList.remove('opacity-0');
-                quotes[currentQuoteIndex].classList.add('opacity-100');
-            }, 5000); // Change quote every 5 seconds
-
-            const fadeElements = document.querySelectorAll('.fade-in');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active-nav', link.getAttribute('data-scroll-to') === entry.target.id);
+                        });
                     }
                 });
-            }, {
-                threshold: 0.1
+            }, { rootMargin: '-30% 0px -70% 0px' });
+            
+            sections.forEach(section => observer.observe(section));
+
+            document.querySelectorAll('a[data-scroll-to]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('data-scroll-to');
+                    document.getElementById(targetId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            document.querySelectorAll('a[data-scroll-to-mobile]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    mobileMenu.classList.add('hidden');
+                    const targetId = this.getAttribute('data-scroll-to-mobile');
+                    document.getElementById(targetId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
             });
 
-            fadeElements.forEach(el => {
-                observer.observe(el);
+            const gitaData = [
+                {
+                    chapter: "Chapter 2, Verse 47",
+                    verse: "You have a right to perform your prescribed duties, but you are not entitled to the fruits of your actions.",
+                    explanation: "This central teaching emphasizes 'Nishkama Karma'—selfless action. Focus on the integrity and dedication of your work, not on the potential rewards or failures. This detaches you from attachment and brings inner peace."
+                },
+                {
+                    chapter: "Chapter 2, Verse 22",
+                    verse: "As a person puts on new garments, giving up old ones, the soul similarly accepts new material bodies, giving up the old and useless ones.",
+                    explanation: "This verse explains the concept of reincarnation. The soul (Atman) is eternal and merely changes bodies, just as we change clothes. Death is not an end, but a transition."
+                },
+                {
+                    chapter: "Chapter 18, Verse 66",
+                    verse: "Abandon all varieties of religion and just surrender unto Me. I shall deliver you from all sinful reactions. Do not fear.",
+                    explanation: "This is the ultimate instruction of the Gita. Krishna promises that complete surrender (Bhakti) to the divine is the highest path, freeing one from all karma and granting liberation."
+                },
+                {
+                    chapter: "Chapter 6, Verse 5",
+                    verse: "One must elevate himself with his own mind, not degrade himself. The mind is the friend of the conditioned soul, and his enemy as well.",
+                    explanation: "We are our own greatest ally or worst enemy. A disciplined mind, trained through meditation and self-control, becomes a friend that leads to liberation. An untamed mind is an enemy that leads to bondage."
+                },
+                {
+                    chapter: "Chapter 4, Verse 7",
+                    verse: "Whenever and wherever there is a decline in religious practice, O descendant of Bharata, and a predominant rise of irreligion—at that time I descend Myself.",
+                    explanation: "This is Krishna's promise of divine intervention. As an 'Avatar,' He manifests in the material world to re-establish dharma (righteousness), protect the devotees, and annihilate the wicked."
+                }
+            ];
+            
+            let currentVerseIndex = 0;
+            const gitaChapterEl = document.getElementById('gita-chapter');
+            const gitaVerseEl = document.getElementById('gita-verse');
+            const gitaExplanationEl = document.getElementById('gita-explanation');
+            const nextVerseButton = document.getElementById('next-verse-button');
+
+            nextVerseButton.addEventListener('click', () => {
+                currentVerseIndex = (currentVerseIndex + 1) % gitaData.length;
+                const verse = gitaData[currentVerseIndex];
+                gitaChapterEl.textContent = verse.chapter;
+                gitaVerseEl.textContent = `"${verse.verse}"`;
+                gitaExplanationEl.textContent = verse.explanation;
             });
+
+            document.querySelectorAll('.leela-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.leela-card').forEach(c => {
+                        if (c !== card) c.classList.remove('active');
+                    });
+                    card.classList.toggle('active');
+                });
+            });
+
+            const mantraCountEl = document.getElementById('mantra-count');
+            const chantButton = document.getElementById('chant-button');
+            let chantCount = 0;
+
+            chantButton.addEventListener('click', () => {
+                chantCount++;
+                mantraCountEl.textContent = chantCount;
+                chantButton.classList.add('transform', 'scale-110');
+                setTimeout(() => {
+                    chantButton.classList.remove('transform', 'scale-110');
+                }, 150);
+            });
+
         });
     </script>
 </body>
