@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Naam Jap </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Space Fonts: Orbitron for data, Rajdhani for UI -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
 
     <script>
@@ -16,8 +15,8 @@
                     colors: {
                         space: {
                             bg: '#030014',
-                            accent: '#00f3ff', /* Cyan */
-                            secondary: '#bc13fe', /* Neon Purple */
+                            accent: '#00f3ff',
+                            secondary: '#bc13fe',
                             glass: 'rgba(10, 10, 25, 0.6)',
                             border: 'rgba(255, 255, 255, 0.1)'
                         }
@@ -29,18 +28,6 @@
                     animation: {
                         'spin-slow': 'spin 120s linear infinite',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                        'nebula': 'nebula 20s ease infinite alternate',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        },
-                        nebula: {
-                            '0%': { filter: 'hue-rotate(0deg)' },
-                            '100%': { filter: 'hue-rotate(30deg)' },
-                        }
                     }
                 }
             }
@@ -50,616 +37,430 @@
     <style>
         :root {
             --cyan-glow: 0 0 20px rgba(0, 243, 255, 0.4);
-            --purple-glow: 0 0 30px rgba(188, 19, 254, 0.3);
         }
 
         body {
             background-color: #030014;
             color: #ffffff;
             font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
+            overflow: hidden; /* Prevent scroll bounce on mobile */
+            touch-action: manipulation; /* Improves touch response */
+            -webkit-tap-highlight-color: transparent;
         }
 
-        /* Moving Starfield Background */
+        /* GPU Accelerated Stars */
         .starfield {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
                 radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
-                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
-            background-size: 550px 550px, 350px 350px, 250px 250px;
-            background-position: 0 0, 40px 60px, 130px 270px;
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px);
+            background-size: 550px 550px, 350px 350px;
             z-index: -2;
+            will-change: transform; /* Optimization */
             animation: star-move 200s linear infinite;
         }
         
         @keyframes star-move {
-            from { background-position: 0 0, 40px 60px, 130px 270px; }
-            to { background-position: 550px 550px, 390px 410px, 680px 820px; }
+            from { transform: translateY(0); }
+            to { transform: translateY(-550px); }
         }
 
-        /* Galactic Gradient Orb */
-        .galaxy-bg {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            width: 120vmax;
-            height: 120vmax;
-            background: radial-gradient(circle, rgba(56, 11, 109, 0.3) 0%, rgba(0,0,0,0) 70%);
-            transform: translate(-50%, -50%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* Holographic Glass Panel */
         .holo-panel {
-            background: var(--space-glass);
+            background: rgba(10, 10, 25, 0.6);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--space-border);
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
-            position: relative;
-            overflow: hidden;
         }
 
-        .holo-panel::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.05), transparent);
-            transform: skewX(-25deg);
-            transition: 0.5s;
-            pointer-events: none;
-        }
-
-        .holo-panel:hover::before {
-            left: 150%;
-            transition: 0.7s;
-        }
-
-        /* Sci-Fi Inputs */
         .holo-input {
             background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(0, 243, 255, 0.2);
             color: #00f3ff;
             font-family: 'Orbitron', sans-serif;
-            transition: all 0.3s;
+            transition: border-color 0.2s;
         }
         .holo-input:focus {
             outline: none;
             border-color: #00f3ff;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
         }
 
-        /* The Reactor Core (Button) */
+        /* Optimized Core Button */
         .core-zone {
             background: radial-gradient(circle, rgba(0, 243, 255, 0.05) 0%, rgba(0,0,0,0) 70%);
             border: 1px solid rgba(0, 243, 255, 0.3);
-            box-shadow: 0 0 40px rgba(0, 243, 255, 0.1), inset 0 0 20px rgba(0, 243, 255, 0.1);
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.1);
             cursor: pointer;
+            user-select: none;
+            touch-action: manipulation;
+            /* Hardware Acceleration */
+            transform: translateZ(0); 
+            will-change: transform, box-shadow; 
         }
 
+        /* Faster Active State using CSS only */
         .core-zone:active {
-            transform: scale(0.96);
-            box-shadow: 0 0 60px rgba(188, 19, 254, 0.4), inset 0 0 40px rgba(188, 19, 254, 0.2);
+            transform: scale(0.96) translateZ(0);
             border-color: #bc13fe;
+            box-shadow: 0 0 30px rgba(188, 19, 254, 0.3);
         }
 
-        /* Cyan/Purple Ripple */
-        .ripple-tech {
-            position: absolute;
-            border-radius: 50%;
-            border: 1px solid rgba(0, 243, 255, 0.8);
-            background: rgba(0, 243, 255, 0.1);
-            transform: scale(0);
-            animation: ripple-tech 0.6s cubic-bezier(0, 0.2, 0.8, 1);
-            pointer-events: none;
+        /* Optimized Ripple (No DOM creation/deletion) */
+        @keyframes ripple-effect {
+            0% { transform: scale(0.8); opacity: 0.8; border-width: 2px; }
+            100% { transform: scale(2.5); opacity: 0; border-width: 0px; }
+        }
+        
+        .ripple-active {
+            animation: ripple-effect 0.4s cubic-bezier(0, 0.2, 0.8, 1) forwards;
         }
 
-        @keyframes ripple-tech {
-            to { transform: scale(3); opacity: 0; border-width: 0px; }
+        /* Counter Glitch Optimization */
+        #mainCount {
+            will-change: transform, text-shadow;
+        }
+        .bump-text {
+            animation: text-bump 0.1s ease-out forwards;
+        }
+        @keyframes text-bump {
+            0% { transform: scale(1); text-shadow: 0 0 10px rgba(0,243,255,0.6); }
+            50% { transform: scale(1.15); text-shadow: 0 0 30px rgba(0,243,255,1); }
+            100% { transform: scale(1); text-shadow: 0 0 10px rgba(0,243,255,0.6); }
         }
 
-        /* Progress Ring */
-        .progress-ring__circle {
-            transition: stroke-dashoffset 0.2s;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
-            filter: drop-shadow(0 0 4px #00f3ff);
-        }
-
-        /* Text Effects */
-        .text-neon-cyan {
-            text-shadow: 0 0 10px rgba(0, 243, 255, 0.6);
-        }
-        .text-neon-purple {
-            text-shadow: 0 0 10px rgba(188, 19, 254, 0.6);
-        }
+        .text-neon-cyan { text-shadow: 0 0 10px rgba(0, 243, 255, 0.6); }
+        .text-neon-purple { text-shadow: 0 0 10px rgba(188, 19, 254, 0.6); }
     </style>
 </head>
-<body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-100">
+<body class="antialiased h-screen w-screen overflow-hidden">
 
-    <!-- Dynamic Backgrounds -->
+    <!-- Background -->
     <div class="starfield"></div>
-    <div class="galaxy-bg animate-pulse-slow"></div>
     
-    <!-- Drifting Comets/Particles -->
-    <div id="particles" class="fixed inset-0 pointer-events-none z-0"></div>
-
-    <!-- Setup Screen (Initial View) -->
-    <div id="setupScreen" class="fixed inset-0 z-40 flex items-center justify-center p-4 transition-opacity duration-700 bg-black/80 backdrop-blur-md">
-        <div class="holo-panel rounded-2xl p-8 w-full max-w-md border-t border-cyan-500/30 relative">
-            
-            <!-- Tech Corners -->
-            <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyan-500"></div>
-            <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-cyan-500"></div>
-            <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-cyan-500"></div>
-            <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyan-500"></div>
-
-            <div class="text-center mb-8">
-                <div class="text-5xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 mb-2"><i class="fa-solid fa-atom animate-spin-slow"></i></div>
-                <h1 class="text-4xl font-display font-black tracking-wider text-white text-neon-cyan">NAAM JAP</h1>
-                <p class="text-cyan-500/60 mt-2 font-body text-sm tracking-[0.3em] uppercase">Universal Resonance</p>
+    <!-- Setup Screen -->
+    <div id="setupScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md transition-opacity duration-500">
+        <div class="holo-panel rounded-2xl p-6 w-full max-w-md border-t border-cyan-500/30 relative">
+            <div class="text-center mb-6">
+                <div class="text-5xl text-cyan-400 mb-2"><i class="fa-solid fa-atom animate-spin-slow"></i></div>
+                <h1 class="text-4xl font-display font-bold text-white text-neon-cyan">NAAM JAP</h1>
+                <p class="text-cyan-500/60 text-sm tracking-widest">UNIVERSAL COUNTER</p>
             </div>
             
-            <div class="space-y-8">
-                <div class="relative group">
-                    <label class="block text-cyan-400 text-xs uppercase tracking-widest mb-2 font-bold">ENTER NAAM</label>
-                    <input type="text" id="mantraInput" value="Om" class="holo-input w-full px-4 py-4 text-center text-xl rounded-lg placeholder-cyan-900">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-cyan-400 text-xs uppercase tracking-widest mb-2 font-bold">NAAM</label>
+                    <input type="text" id="mantraInput" value="Om" class="holo-input w-full px-4 py-3 text-center text-xl rounded-lg">
                 </div>
                 
-                <div class="relative">
-                    <label class="block text-purple-400 text-xs uppercase tracking-widest mb-2 font-bold">Mala (Target)</label>
-                    <div class="flex justify-between gap-2 mb-2">
-                        <button onclick="setPreset(21)" class="flex-1 py-1 rounded border border-white/10 hover:border-purple-500 hover:bg-purple-500/10 text-xs text-gray-400 hover:text-white transition">21</button>
-                        <button onclick="setPreset(54)" class="flex-1 py-1 rounded border border-white/10 hover:border-purple-500 hover:bg-purple-500/10 text-xs text-gray-400 hover:text-white transition">54</button>
-                        <button onclick="setPreset(108)" class="flex-1 py-1 rounded border border-purple-500/50 bg-purple-500/10 text-purple-300 text-xs shadow-[0_0_10px_rgba(188,19,254,0.3)]">108</button>
+                <div>
+                    <label class="block text-purple-400 text-xs uppercase tracking-widest mb-2 font-bold">TARGET</label>
+                    <div class="flex gap-2 mb-2">
+                        <button onclick="setPreset(21)" class="flex-1 py-2 rounded border border-white/10 hover:bg-white/10 text-xs text-gray-300">21</button>
+                        <button onclick="setPreset(108)" class="flex-1 py-2 rounded border border-purple-500/50 bg-purple-500/20 text-purple-300 text-xs font-bold">108</button>
                     </div>
-                    <input type="number" id="targetInput" value="108" class="holo-input w-full px-4 py-4 text-center text-xl rounded-lg">
+                    <input type="number" id="targetInput" value="108" class="holo-input w-full px-4 py-3 text-center text-xl rounded-lg">
                 </div>
 
-                <div class="pt-4">
-                    <button onclick="startSession()" class="group w-full relative px-6 py-4 rounded-lg bg-cyan-900/20 border border-cyan-500/50 overflow-hidden hover:border-cyan-400 transition-all">
-                        <div class="absolute inset-0 w-0 bg-cyan-500/20 transition-all duration-[0.4s] ease-out group-hover:w-full"></div>
-                        <span class="relative text-cyan-100 font-display font-bold tracking-widest flex items-center justify-center gap-3 text-lg">
-                            BEGIN SADHANA <i class="fa-solid fa-rocket"></i>
-                        </span>
-                    </button>
-                </div>
+                <button onclick="initAndStart()" class="w-full py-4 rounded-lg bg-cyan-900/40 border border-cyan-500/50 text-cyan-100 font-display font-bold tracking-widest hover:bg-cyan-500/20 transition-colors">
+                    BEGIN SADHANA
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Main Dashboard -->
-    <div id="dashboard" class="hidden min-h-screen flex flex-col p-4 md:p-6 relative z-10">
+    <!-- Dashboard -->
+    <div id="dashboard" class="hidden h-full flex flex-col p-4 relative z-10">
         
-        <!-- HUD Header -->
-        <header class="flex justify-between items-center mb-6 holo-panel rounded-none border-0 border-b border-white/10 px-6 py-4 clip-path-header">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-4 holo-panel rounded-lg px-4 py-3">
             <div class="flex items-center gap-3">
                 <div class="w-2 h-2 bg-cyan-500 rounded-full shadow-[0_0_10px_#00f3ff] animate-pulse"></div>
-                <span class="font-display font-bold text-lg tracking-wider text-white">SANATANI<span class="text-purple-500"> SENA</span></span>
+                <span class="font-display font-bold text-white tracking-wider">SANATANI SENA</span>
             </div>
             <div class="flex gap-3">
-                <button onclick="toggleSound()" id="soundBtn" class="w-10 h-10 rounded border border-cyan-500/20 flex items-center justify-center hover:bg-cyan-500/10 transition text-cyan-400" title="Toggle Resonance">
-                    <i class="fa-solid fa-wave-square"></i>
+                <button onclick="toggleSound()" id="soundBtn" class="w-10 h-10 rounded border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                    <i class="fa-solid fa-volume-high"></i>
                 </button>
-                <button onclick="resetCounter()" class="w-10 h-10 rounded border border-red-500/20 flex items-center justify-center hover:bg-red-500/10 transition text-red-400 hover:text-red-300" title="Reset System">
-                    <i class="fa-solid fa-rotate"></i>
+                <button onclick="resetCounter()" class="w-10 h-10 rounded border border-red-500/20 flex items-center justify-center text-red-400">
+                    <i class="fa-solid fa-rotate-right"></i>
                 </button>
-                <button onclick="exitToSetup()" class="w-10 h-10 rounded border border-gray-500/20 flex items-center justify-center hover:bg-white/10 transition text-gray-400" title="Abort">
-                    <i class="fa-solid fa-power-off"></i>
+                <button onclick="exitApp()" class="w-10 h-10 rounded border border-gray-500/20 flex items-center justify-center text-gray-400">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
         </header>
 
-        <!-- Main Interface Grid -->
-        <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-7xl mx-auto w-full items-center">
+        <!-- Main Content -->
+        <main class="flex-1 flex flex-col items-center justify-center relative">
             
-            <!-- Left: Telemetry -->
-            <aside class="lg:col-span-3 flex flex-col gap-6 order-2 lg:order-1">
-                <div class="holo-panel p-6 rounded-xl border-l-2 border-cyan-500 relative overflow-hidden group">
-                    <!-- Scanning line effect -->
-                    <div class="absolute top-0 left-0 w-full h-1 bg-cyan-400/30 blur-sm animate-[float_3s_linear_infinite] opacity-0 group-hover:opacity-100"></div>
-                    
-                    <h3 class="text-xs font-bold text-cyan-500 uppercase tracking-widest mb-1">Target Lock</h3>
-                    <div class="flex items-baseline gap-2">
-                        <div class="text-4xl font-display font-bold text-white" id="displayTarget">108</div>
-                        <span class="text-xs text-cyan-200/50 font-mono">UNITS</span>
-                    </div>
-                    
-                    <div class="mt-4 flex justify-between text-xs text-gray-500 font-mono mb-1">
-                        <span>PROGRESS</span>
-                        <span id="percentText">0%</span>
-                    </div>
-                    <div class="w-full bg-gray-900 h-1.5 rounded-full overflow-hidden border border-white/5">
-                        <div id="linearProgress" class="h-full bg-gradient-to-r from-purple-600 to-cyan-400 w-0 transition-all duration-300 shadow-[0_0_10px_#00f3ff]"></div>
-                    </div>
+            <!-- Stats Row -->
+            <div class="absolute top-0 w-full flex justify-between px-2 opacity-80">
+                <div class="text-left">
+                    <div class="text-xs text-cyan-500 tracking-widest">TARGET</div>
+                    <div class="text-2xl font-display text-white" id="displayTarget">108</div>
                 </div>
-
-                <div class="holo-panel p-6 rounded-xl flex flex-col gap-4">
-                    <div class="flex justify-between items-center border-b border-white/5 pb-2">
-                        <div class="text-xs text-purple-400 uppercase tracking-wider">Elapsed T-Minus</div>
-                        <div id="sessionTimer" class="text-xl font-display text-white font-mono">00:00</div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <div class="text-xs text-cyan-400 uppercase tracking-wider">Velocity (J/m)</div>
-                        <div id="japSpeed" class="text-xl font-display text-white font-mono">0</div>
-                    </div>
+                <div class="text-right">
+                    <div class="text-xs text-purple-500 tracking-widest">MALAS</div>
+                    <div class="text-2xl font-display text-white" id="roundCount">0</div>
                 </div>
-            </aside>
+            </div>
 
-            <!-- Center: The Core -->
-            <section class="lg:col-span-6 flex flex-col items-center justify-center relative order-1 lg:order-2 py-8">
+            <!-- Mantra -->
+            <div class="mb-8 mt-8 text-center">
+                <h2 id="displayMantra" class="text-3xl md:text-5xl font-display text-white font-bold tracking-wide text-neon-cyan uppercase">OM</h2>
+            </div>
+
+            <!-- THE CORE (Click Area) -->
+            <div class="relative" id="counterArea">
+                <!-- Decorative Rings (Pointer events none to prevent blocking click) -->
+                <div class="absolute inset-0 rounded-full border border-dashed border-cyan-500/30 pointer-events-none animate-[spin_12s_linear_infinite]"></div>
                 
-                <!-- Mantra Display -->
-                <div class="mb-10 text-center relative w-full">
-                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-1 bg-cyan-500/20 blur-xl"></div>
-                    <h2 id="displayMantra" class="relative text-3xl md:text-4xl font-display text-white font-bold tracking-wide text-neon-cyan uppercase break-words px-4">OM</h2>
-                </div>
+                <!-- Progress Ring -->
+                <svg class="w-72 h-72 pointer-events-none transform -rotate-90 drop-shadow-[0_0_15px_rgba(0,243,255,0.2)]" viewBox="0 0 120 120">
+                    <circle class="text-gray-800/50" stroke-width="3" stroke="currentColor" fill="transparent" r="52" cx="60" cy="60" />
+                    <circle id="ringProgress" class="text-cyan-400 transition-all duration-200 ease-linear" stroke-width="4" stroke-linecap="round" stroke="currentColor" fill="transparent" r="52" cx="60" cy="60" stroke-dasharray="326.72" stroke-dashoffset="326.72" />
+                </svg>
 
-                <!-- Interactive Core -->
-                <div class="relative group" id="counterArea">
-                    <!-- Spinning Reactor Rings -->
-                    <div class="absolute inset-0 rounded-full border border-dashed border-cyan-500/30 animate-[spin_10s_linear_infinite]"></div>
-                    <div class="absolute -inset-4 rounded-full border-2 border-transparent border-t-purple-500/40 border-b-purple-500/40 animate-[spin_5s_linear_infinite_reverse]"></div>
-                    <div class="absolute -inset-8 rounded-full border border-dotted border-white/10 animate-[spin_20s_linear_infinite]"></div>
+                <!-- Main Button -->
+                <button id="tapBtn" class="core-zone absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-56 h-56 rounded-full flex flex-col items-center justify-center z-20 backdrop-blur-sm overflow-hidden">
+                    <!-- Permanent Ripple Element (Performance Fix) -->
+                    <div id="rippleLayer" class="absolute inset-0 rounded-full border border-cyan-400 opacity-0 pointer-events-none"></div>
                     
-                    <!-- Progress SVG -->
-                    <svg class="w-72 h-72 md:w-80 md:h-80 transform -rotate-90 drop-shadow-[0_0_15px_rgba(0,243,255,0.3)]" viewBox="0 0 120 120">
-                        <circle class="text-gray-800/50" stroke-width="2" stroke="currentColor" fill="transparent" r="52" cx="60" cy="60" />
-                        <circle id="ringProgress" class="progress-ring__circle text-cyan-400" stroke-width="4" stroke-linecap="round" stroke="currentColor" fill="transparent" r="52" cx="60" cy="60" stroke-dasharray="326.72" stroke-dashoffset="326.72" />
-                    </svg>
+                    <span class="text-[10px] text-cyan-500/60 font-mono mb-2 tracking-widest">TAP CORE</span>
+                    <span id="mainCount" class="text-7xl font-display font-black text-white text-neon-cyan z-10 select-none">0</span>
+                </button>
+            </div>
 
-                    <!-- Core Button -->
-                    <button id="tapBtn" class="core-zone absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-52 h-52 rounded-full flex flex-col items-center justify-center z-20 backdrop-blur-sm group-hover:shadow-[0_0_50px_rgba(0,243,255,0.2)] transition-shadow duration-500">
-                        <div class="absolute inset-0 rounded-full bg-cyan-500/5 animate-pulse"></div>
-                        <span class="text-[10px] text-cyan-500/60 font-mono mb-2 tracking-widest border border-cyan-500/30 px-2 rounded py-0.5">ACTIVATE</span>
-                        <span id="mainCount" class="text-6xl font-display font-black text-white text-neon-cyan transition-all duration-100 z-10">0</span>
-                        <span class="text-[10px] text-purple-400/60 mt-2 font-mono tracking-widest">TAP CORE</span>
-                    </button>
-                </div>
+            <p class="mt-8 text-cyan-500/30 text-[10px] tracking-[0.3em] uppercase font-mono">
+                TAP SCREEN or SPACEBAR
+            </p>
 
-                <p class="mt-10 text-cyan-500/40 text-[10px] tracking-[0.4em] uppercase font-mono">
-                    [ SPACEBAR TO ENGAGE ]
-                </p>
-            </section>
+            <!-- Speed Stat -->
+            <div class="mt-6 font-mono text-xs text-gray-500">
+                SPEED: <span id="japSpeed" class="text-cyan-400">0</span> J/min
+            </div>
 
-            <!-- Right: Mission Stats -->
-            <aside class="lg:col-span-3 flex flex-col gap-6 order-3 h-full justify-center">
-                 <div class="holo-panel p-6 rounded-xl h-full flex flex-col items-center justify-center relative overflow-hidden">
-                    <!-- Background Grid -->
-                    <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#00f3ff 1px, transparent 1px), linear-gradient(90deg, #00f3ff 1px, transparent 1px); background-size: 20px 20px;"></div>
-                    
-                    <div class="text-center relative z-10">
-                        <div class="text-6xl font-display font-bold text-purple-400 text-neon-purple mb-2" id="roundCount">0</div>
-                        <div class="text-xs text-purple-200/60 uppercase tracking-widest font-bold">Malas Complete</div>
-                    </div>
-
-                    <!-- Visual Stack -->
-                    <div class="mt-8 w-full px-8 flex flex-col gap-1 items-center opacity-50">
-                        <div class="w-1 h-8 bg-cyan-500/50"></div>
-                        <div class="w-1 h-8 bg-cyan-500/30"></div>
-                        <div class="w-1 h-8 bg-cyan-500/10"></div>
-                    </div>
-                </div>
-            </aside>
         </main>
     </div>
 
-    <!-- Notification -->
-    <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 holo-panel px-8 py-4 rounded-lg text-cyan-300 text-sm font-display tracking-wider opacity-0 transition-opacity duration-500 pointer-events-none z-50 flex items-center gap-3 border-l-4 border-cyan-400">
-        <i class="fa-solid fa-check-circle"></i> <span id="toastMsg">MALAS COMPLETE</span>
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 holo-panel px-6 py-3 rounded-full text-cyan-300 text-sm font-bold tracking-wider opacity-0 pointer-events-none z-50 transition-opacity duration-300">
+        MALA COMPLETE
     </div>
 
     <script>
-        // --- STATE ---
-        let state = {
+        // --- HIGH PERFORMANCE STATE ---
+        const state = {
             count: 0,
             target: 108,
             mantra: "Om",
             rounds: 0,
-            soundEnabled: true,
             startTime: null,
-            active: false
+            soundEnabled: true,
+            audioBuffer: null, // Pre-rendered sound
+            audioCtx: null,
+            lastClickTime: 0
         };
 
-        // --- AUDIO CONTEXT (Space Synth) ---
-        let audioCtx = null;
+        // DOM Cache (Accessing DOM is slow, do it once)
+        const dom = {
+            mainCount: document.getElementById('mainCount'),
+            ringProgress: document.getElementById('ringProgress'),
+            tapBtn: document.getElementById('tapBtn'),
+            ripple: document.getElementById('rippleLayer'),
+            roundCount: document.getElementById('roundCount'),
+            speed: document.getElementById('japSpeed'),
+            toast: document.getElementById('toast')
+        };
 
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if(audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
-
-        function playCosmicSound() {
-            if (!state.soundEnabled) return;
-            initAudio();
-
-            const t = audioCtx.currentTime;
-            
-            // Oscillator 1: The Crystal Sine
-            const osc1 = audioCtx.createOscillator();
-            const gain1 = audioCtx.createGain();
-            
-            // Oscillator 2: The Deep Space Drone (lower harmonic)
-            const osc2 = audioCtx.createOscillator();
-            const gain2 = audioCtx.createGain();
-
-            osc1.type = 'sine';
-            osc2.type = 'triangle';
-
-            // Higher, clearer frequency for space theme (Crystalline)
-            // Base around 528Hz (DNA Repair/Miracle freq) or similar high chime
-            const baseFreq = 528 + (Math.random() * 10); 
-            
-            osc1.frequency.setValueAtTime(baseFreq, t);
-            osc2.frequency.setValueAtTime(baseFreq / 2, t); // Octave down
-
-            // Envelope - very sharp attack, long glassy decay
-            gain1.gain.setValueAtTime(0, t);
-            gain1.gain.linearRampToValueAtTime(0.15, t + 0.02); 
-            gain1.gain.exponentialRampToValueAtTime(0.001, t + 1.5);
-
-            gain2.gain.setValueAtTime(0, t);
-            gain2.gain.linearRampToValueAtTime(0.05, t + 0.05);
-            gain2.gain.exponentialRampToValueAtTime(0.001, t + 2.0);
-
-            // Filter to remove harshness from triangle wave
-            const filter = audioCtx.createBiquadFilter();
-            filter.type = "lowpass";
-            filter.frequency.value = 1000;
-            osc2.connect(filter);
-            filter.connect(gain2);
-
-            osc1.connect(gain1);
-            gain1.connect(audioCtx.destination);
-            gain2.connect(audioCtx.destination);
-
-            osc1.start(t);
-            osc2.start(t);
-            osc1.stop(t + 2.0);
-            osc2.stop(t + 2.5);
-        }
-
-        // --- DOM ELEMENTS ---
-        const setupScreen = document.getElementById('setupScreen');
-        const dashboard = document.getElementById('dashboard');
-        const mainCountEl = document.getElementById('mainCount');
-        const ringProgress = document.getElementById('ringProgress');
-        const linearProgress = document.getElementById('linearProgress');
-        const tapBtn = document.getElementById('tapBtn');
-        const displayMantra = document.getElementById('displayMantra');
-        const displayTarget = document.getElementById('displayTarget');
-        const roundCountEl = document.getElementById('roundCount');
-        const sessionTimerEl = document.getElementById('sessionTimer');
-        const japSpeedEl = document.getElementById('japSpeed');
-
-        // Ring Math
-        const radius = ringProgress.r.baseVal.value;
+        // Ring Geometry
+        const radius = dom.ringProgress.r.baseVal.value;
         const circumference = radius * 2 * Math.PI;
-        ringProgress.style.strokeDasharray = `${circumference} ${circumference}`;
-        ringProgress.style.strokeDashoffset = circumference;
 
-        // --- FUNCTIONS ---
+        // --- OPTIMIZED AUDIO ENGINE ---
+        // Fix: Instead of creating oscillators every click, we generate a buffer ONCE 
+        // and just play the recording. This removes the audio lag.
+        
+        async function initAudioEngine() {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            state.audioCtx = new AudioContext();
+            
+            // Create an OfflineContext to render the sound into a buffer instantly
+            const offlineCtx = new OfflineAudioContext(2, 44100 * 0.5, 44100);
+            
+            const osc = offlineCtx.createOscillator();
+            const gain = offlineCtx.createGain();
+            
+            // High crystalline ping
+            osc.type = 'sine'; 
+            osc.frequency.setValueAtTime(880, 0); // A5
+            osc.frequency.exponentialRampToValueAtTime(440, 0.5);
+            
+            // Sharp attack, quick decay
+            gain.gain.setValueAtTime(0, 0);
+            gain.gain.linearRampToValueAtTime(0.1, 0.01);
+            gain.gain.exponentialRampToValueAtTime(0.001, 0.4);
+            
+            osc.connect(gain);
+            gain.connect(offlineCtx.destination);
+            osc.start(0);
+            
+            // Render audio to buffer
+            state.audioBuffer = await offlineCtx.startRendering();
+        }
+
+        function playSound() {
+            if (!state.soundEnabled || !state.audioCtx || !state.audioBuffer) return;
+            
+            // If context suspended (browser policy), resume it
+            if (state.audioCtx.state === 'suspended') state.audioCtx.resume();
+
+            // Create a lightweight source from our pre-rendered buffer
+            const source = state.audioCtx.createBufferSource();
+            source.buffer = state.audioBuffer;
+            source.connect(state.audioCtx.destination);
+            source.start(0);
+        }
+
+        // --- CORE LOGIC ---
 
         function setPreset(val) {
             document.getElementById('targetInput').value = val;
         }
 
-        function startSession() {
-            const mantraInput = document.getElementById('mantraInput').value;
-            const targetInput = document.getElementById('targetInput').value;
+        async function initAndStart() {
+            state.mantra = document.getElementById('mantraInput').value || "Om";
+            state.target = parseInt(document.getElementById('targetInput').value) || 108;
+            
+            document.getElementById('displayMantra').innerText = state.mantra;
+            document.getElementById('displayTarget').innerText = state.target;
+            
+            // Initialize Audio Engine
+            try {
+                await initAudioEngine();
+            } catch(e) { console.log("Audio Init Fail", e); }
 
-            if(!mantraInput) {
-                showToast("ENTER MANTRA PROTOCOL");
-                return;
-            }
-
-            state.mantra = mantraInput;
-            state.target = parseInt(targetInput) || 108;
+            document.getElementById('setupScreen').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            
+            state.startTime = new Date();
             state.count = 0;
             state.rounds = 0;
-            state.startTime = new Date();
-            state.active = true;
-
-            initAudio();
-
-            // UI Updates
-            displayMantra.innerText = state.mantra;
-            displayTarget.innerText = state.target;
-            updateUI();
-            
-            // Transition
-            setupScreen.classList.add('opacity-0');
-            setTimeout(() => {
-                setupScreen.classList.add('hidden');
-                dashboard.classList.remove('hidden');
-                startTimer();
-            }, 700);
+            render();
         }
 
-        function exitToSetup() {
-            if(confirm("ABORT MISSION?")) {
-                state.active = false;
-                dashboard.classList.add('hidden');
-                setupScreen.classList.remove('hidden', 'opacity-0');
-            }
-        }
-
-        function increment() {
+        function performTap() {
+            // Update Data Model
             state.count++;
             
-            if(state.count >= state.target) {
-                completeRound();
-            }
-
-            playCosmicSound();
-
-            if(navigator.vibrate) {
-                navigator.vibrate(15);
-            }
-
-            animateCounter();
-            updateUI();
-        }
-
-        function completeRound() {
-            state.count = 0;
-            state.rounds++;
-            showToast(`ORBIT ${state.rounds} COMPLETE`);
+            // Fire Audio (Optimized)
+            playSound();
             
-            setTimeout(() => {
-                playCosmicSound();
-                setTimeout(() => playCosmicSound(), 150);
-            }, 200);
+            // Fire Vibration (Small 5ms is less blocking than 15ms)
+            if(navigator.vibrate) navigator.vibrate(5);
+
+            // Calculate Completion
+            if (state.count >= state.target) {
+                state.count = 0;
+                state.rounds++;
+                showToast();
+                if(navigator.vibrate) navigator.vibrate([30, 50, 30]);
+            }
+
+            // Trigger Visuals using RequestAnimationFrame to prevent blocking
+            requestAnimationFrame(render);
+            
+            // Trigger Animation CSS
+            triggerAnimations();
+            
+            // Calc Speed
+            calculateSpeed();
         }
 
-        function updateUI() {
-            mainCountEl.innerText = state.count;
-            roundCountEl.innerText = state.rounds;
+        function triggerAnimations() {
+            // Reset CSS animation by removing/adding class (Reflow trick)
+            dom.ripple.classList.remove('ripple-active');
+            void dom.ripple.offsetWidth; // Force reflow
+            dom.ripple.classList.add('ripple-active');
 
+            // Text Bump
+            dom.mainCount.classList.remove('bump-text');
+            void dom.mainCount.offsetWidth;
+            dom.mainCount.classList.add('bump-text');
+        }
+
+        function render() {
+            // Text Updates
+            dom.mainCount.innerText = state.count;
+            dom.roundCount.innerText = state.rounds;
+
+            // Ring Calculation (Math)
             const percentage = Math.min((state.count / state.target), 1);
             const offset = circumference - (percentage * circumference);
-            ringProgress.style.strokeDashoffset = offset;
+            dom.ringProgress.style.strokeDashoffset = offset;
+        }
 
-            // Linear Bar
-            linearProgress.style.width = `${percentage * 100}%`;
-            document.getElementById('percentText').innerText = `${Math.round(percentage*100)}%`;
-            
-            // Speed
-            if(state.startTime) {
-                const now = new Date();
-                const minutes = (now - state.startTime) / 60000;
-                if(minutes > 0) {
-                    const totalJaps = (state.rounds * state.target) + state.count;
-                    japSpeedEl.innerText = Math.round(totalJaps / minutes);
-                }
+        function calculateSpeed() {
+            const now = new Date();
+            const diffMins = (now - state.startTime) / 60000;
+            if (diffMins > 0.1) {
+                const total = (state.rounds * state.target) + state.count;
+                dom.speed.innerText = Math.round(total / diffMins);
             }
         }
 
-        function animateCounter() {
-            // Tech Ripple
-            const btn = tapBtn;
-            const ripple = document.createElement('span');
-            ripple.classList.add('ripple-tech');
-            
-            // Center explosion
-            const size = 200;
-            ripple.style.width = ripple.style.height = `${size}px`;
-            ripple.style.left = `calc(50% - ${size/2}px)`;
-            ripple.style.top = `calc(50% - ${size/2}px)`;
-            btn.appendChild(ripple);
-
-            setTimeout(() => ripple.remove(), 600);
-
-            // Digital Glitch/Bump
-            mainCountEl.style.transform = "scale(1.3)";
-            mainCountEl.style.textShadow = "0 0 40px rgba(0, 243, 255, 1)";
+        function showToast() {
+            dom.toast.innerText = `MALA ${state.rounds} COMPLETED`;
+            dom.toast.classList.remove('opacity-0');
+            dom.toast.style.bottom = '80px';
             setTimeout(() => {
-                mainCountEl.style.transform = "scale(1)";
-                mainCountEl.style.textShadow = "";
-            }, 100);
+                dom.toast.classList.add('opacity-0');
+                dom.toast.style.bottom = '40px';
+            }, 2000);
         }
 
         function toggleSound() {
             state.soundEnabled = !state.soundEnabled;
             const btn = document.getElementById('soundBtn');
-            if(state.soundEnabled) {
-                btn.innerHTML = '<i class="fa-solid fa-wave-square"></i>';
-                btn.classList.add('text-cyan-400');
-                btn.classList.remove('text-gray-500');
-            } else {
-                btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
-                btn.classList.remove('text-cyan-400');
-                btn.classList.add('text-gray-500');
-            }
+            btn.innerHTML = state.soundEnabled ? '<i class="fa-solid fa-volume-high"></i>' : '<i class="fa-solid fa-volume-xmark"></i>';
+            btn.classList.toggle('text-cyan-400');
+            btn.classList.toggle('text-gray-500');
         }
 
         function resetCounter() {
-            if(confirm("RESET SYSTEM COUNTS?")) {
+            if(confirm("Reset?")) {
                 state.count = 0;
-                updateUI();
+                state.startTime = new Date();
+                render();
             }
         }
 
-        let timerInterval;
-        function startTimer() {
-            clearInterval(timerInterval);
-            state.startTime = new Date();
-            timerInterval = setInterval(() => {
-                if(!state.active) return;
-                const now = new Date();
-                const diff = new Date(now - state.startTime);
-                const m = diff.getMinutes().toString().padStart(2, '0');
-                const s = diff.getSeconds().toString().padStart(2, '0');
-                sessionTimerEl.innerText = `${m}:${s}`;
-            }, 1000);
+        function exitApp() {
+            location.reload();
         }
 
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastMsg').innerText = msg;
-            toast.classList.remove('opacity-0');
-            toast.style.bottom = '80px';
-            setTimeout(() => {
-                toast.classList.add('opacity-0');
-                toast.style.bottom = '40px';
-            }, 2000);
-        }
-
-        // --- EVENT LISTENERS ---
+        // --- OPTIMIZED EVENT LISTENERS ---
         
-        tapBtn.addEventListener('mousedown', (e) => {
-            increment();
+        // Use pointerdown for fastest reaction (covers touch and mouse)
+        dom.tapBtn.addEventListener('pointerdown', (e) => {
+            // Prevent default to stop double-firing on some touch devices
+            // e.preventDefault(); 
+            performTap();
+            dom.tapBtn.style.transform = "translate(-50%, -50%) scale(0.95)";
         });
 
-        tapBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            increment();
-            tapBtn.classList.add('scale-95');
-        }, {passive: false});
-
-        tapBtn.addEventListener('touchend', (e) => {
-             tapBtn.classList.remove('scale-95');
+        dom.tapBtn.addEventListener('pointerup', () => {
+            dom.tapBtn.style.transform = "translate(-50%, -50%) scale(1)";
         });
 
+        // Keyboard support
         document.addEventListener('keydown', (e) => {
-            if(e.code === 'Space' && state.active && !setupScreen.classList.contains('hidden')) {
-                // Do nothing if setup is open
-            } else if (e.code === 'Space' && state.active) {
-                e.preventDefault();
-                increment();
-                tapBtn.classList.add('scale-95', 'border-cyan-400');
-                setTimeout(() => tapBtn.classList.remove('scale-95', 'border-cyan-400'), 100);
+            if (e.code === 'Space' && !document.getElementById('dashboard').classList.contains('hidden')) {
+                e.preventDefault(); // Stop scrolling
+                performTap();
             }
         });
-
-        document.getElementById('mantraInput').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') startSession();
-        });
-
-        // Star Particles
-        const particlesContainer = document.getElementById('particles');
-        for(let i=0; i<50; i++) {
-            const p = document.createElement('div');
-            p.className = 'absolute rounded-full bg-white opacity-0 animate-pulse';
-            const size = Math.random() * 2 + 1;
-            p.style.width = `${size}px`;
-            p.style.height = `${size}px`;
-            p.style.left = `${Math.random() * 100}vw`;
-            p.style.top = `${Math.random() * 100}vh`;
-            p.style.opacity = Math.random() * 0.7;
-            p.style.animationDuration = `${Math.random() * 3 + 2}s`;
-            particlesContainer.appendChild(p);
-        }
 
     </script>
 </body>
